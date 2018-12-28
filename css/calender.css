@@ -1,0 +1,134 @@
+.calender{
+    height: auto;
+    background-color: #fff;
+}
+
+.calender-header{
+    position: relative;
+    width: 100%;
+    height: 60px;
+}
+
+.calender-header-text{
+    float: left;
+    margin: 30px 0px 0px 30px;
+    font-size: 25px;
+}
+
+.calender-header-text p{
+    font-size: 25px;
+    font-weight: normal;
+}
+
+.calender-header-btn{
+    float: right;
+    margin-right: 30px;
+    margin-top: 20px;
+}
+
+.calender-header-btn .switch-btn,
+.calender-header-btn .choose-btn{
+    float: left;
+    margin-right: 20px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.calender-header-btn .switch-btn{
+    margin-top: 13px;
+}
+
+.calender-header-btn .choose-btn{
+    font-size: 1.9em;
+    color: #333333;
+}
+
+.calender-header-btn .choose-btn svg{
+    margin-right: 15px;
+}
+
+
+.calender-body{
+    margin: 10px 30px;
+}
+
+.calender-table{
+    width: 100%;
+    height: auto;
+    border-collapse: collapse;
+    table-layout:fixed;
+}
+
+.calender-table thead{
+    width: 100%;
+    display:block;
+}
+
+.calender-table .calender-date{
+    border-bottom: solid 0.8px #c2c2c2;
+    padding: 5px 0 7px 0;
+    color: #333333;
+    font-weight: normal;
+    text-align: center;
+}
+
+.calender-table .blank,
+.calender-table .calender-time{
+    width: 70px;
+    border: none;
+    font-size: 0.8em;
+    color: #333333;
+    vertical-align: top;
+    text-align: left;
+    table-layout:fixed;
+}
+
+.calender-table .calender-time{
+    padding-right: 4px;
+}
+
+/* 文字隠す */
+.calender-table .blank{
+    color: #fff;
+}
+
+.calender-table tbody{
+    overflow-y: scroll;
+    display: block;
+    height: 500px;
+}
+
+.calender-table .calender-content,
+.calender-table .calender-date{
+    width: 14%;
+}
+
+.calender-table .calender-content{
+    border-bottom: dotted 0.6px #e4e3e3;
+    border-right: solid 0.3px #e4e3e3;
+    border-top: none;
+}
+.calender-table tbody tr{
+    height: 20px;
+}
+
+.calender-content{
+    cursor: pointer;
+}
+
+.calender-table .add-plan{
+    background-color: #E1F5FE;
+    color: #0288D1;
+    border-left: solid 3px #0288D1;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: left;
+    vertical-align: top;
+    padding: 3px 0px 0px 7px;
+    font-weight: bold;
+}
+
+.calender-time-border .calender-content{
+    border-top: solid 0.3px #e4e3e3;
+}
+

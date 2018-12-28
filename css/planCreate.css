@@ -1,0 +1,66 @@
+.planCreate-content{
+    position: relative;
+    width: 98%;
+    margin-top: 10px;
+    background-color: #ffffff;
+    margin-left: 1%;
+    height: 95%;
+}
+.analysis-form{
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.pmd-textfield-floating-label label{
+    font-size: 14px;
+    margin-bottom: 25px;
+    color: #333333;
+}
+
+.form-group.pmd-textfield{
+    width: 25%;
+}
+
+.analysis-button{
+    text-align: center;
+    margin: 10px;
+}
+
+.analysis-button button{
+    width: 100px;
+    background-color: #2196F3;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.analysis-button button:hover{
+    background: #1976D2;
+}
+
+.planProgress{
+    position: relative;
+    text-align: right;
+    margin-right: 30px;
+    width: 30%;
+    float: right;
+}
+
+.progress label{
+    font-weight: normal;
+    font-size: 15px;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.progress-title{
+    float: left;
+}
+
+.progress-persent{
+    float: right;
+}
+
+.progress-bar-success{
+    background-color: #2196F3;
+}

@@ -1,0 +1,19 @@
+body{
+    background: #e6ecf0;
+}
+/* メニューアイコン */
+.mdl-layout__drawer-button{
+    top: 10;
+    color: #333333;
+}
+
+/* ヘッダー */
+.mdl-layout__header{
+    background-color: #ffffff;
+    color: #333333;
+}
+
+/* メニューリンク */
+.mdl-layout__header-row .mdl-navigation__link{
+    color: #333333;
+}
