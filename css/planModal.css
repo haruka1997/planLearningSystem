@@ -77,11 +77,3 @@
 .edit-button button:hover{
     background: #1976D2;
 }
-
-.analysis-roading{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ffffff;
-    font-size: 30px;
-}

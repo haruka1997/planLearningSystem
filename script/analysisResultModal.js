@@ -15,6 +15,8 @@ function analysis(){
 
     // 分析結果モーダル表示
     $('.analysis-result-modal-wrapper').addClass('is-visible');
+    // 分析中...表示
+    $('.analysis-roading').css('display', '');
     // 分析結果コンテンツ非表示
     $('.plan-modal').css('display', 'none');
 
@@ -25,7 +27,7 @@ function analysis(){
             $('.analysis-roading').css('display', 'none');
             // 分析結果コンテンツ表示
             $('.plan-modal').css('display', 'block');
-        },2000);
+        },1000);
     });
 
 
