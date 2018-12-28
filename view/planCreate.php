@@ -12,10 +12,8 @@
     <link rel="stylesheet" href="./../css/planModal.css">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./../script/calender.js"></script>
-    <script type="text/javascript" src="./../script/planCreate.js"></script>
     <script type="text/javascript" src="./../script/planModal.js"></script>
-
+    <script type="text/javascript" src="./../script/analysisResultModal.js"></script>
 
   </head>
   <body>
@@ -94,6 +92,8 @@
       <?php include ('./planCreateModal.php'); ?>
       <!-- 計画詳細モーダル -->
       <?php include ('./planDetailModal.php'); ?>
+      <!-- 分析結果モーダル -->
+      <?php include ('./analysisResultModal.php'); ?>
     </div>
   </body>
 </html>

@@ -1,5 +1,6 @@
 .plan-create-modal-wrapper,
-.plan-detail-modal-wrapper{
+.plan-detail-modal-wrapper,
+.analysis-result-modal-wrapper{
     display: flex;
     justify-content: center;
     overflow: auto;
@@ -15,7 +16,8 @@
     transform: scale(0);
 }
 .plan-create-modal-wrapper.is-visible,
-.plan-detail-modal-wrapper.is-visible{
+.plan-detail-modal-wrapper.is-visible,
+.analysis-result-modal-wrapper.is-visible{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;
@@ -74,4 +76,12 @@
 .add-button button:hover,
 .edit-button button:hover{
     background: #1976D2;
+}
+
+.analysis-roading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 30px;
 }

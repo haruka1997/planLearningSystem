@@ -148,8 +148,6 @@ function calenderPlanSet(plan){
  * 計画詳細表示
  */
 function planDetail(id){
-    console.log(id)
-    console.log(plans)
     for(var i=0; i<plans.length; i++){
         if(plans[i].id == id){ //選択した計画データ一致
             var plan = plans[i];
