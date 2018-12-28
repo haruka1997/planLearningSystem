@@ -12,7 +12,7 @@
                 <!-- タブ -->
                 <div class="mdl-tabs__tab-bar">
                     <a href="#starks-panel" class="mdl-tabs__tab is-active">学習時間</a>
-                    <a href="#lannisters-panel" class="mdl-tabs__tab">学習内容</a>
+                    <a href="#lannisters-panel" class="mdl-tabs__tab">学習時間帯</a>
                 </div>
                 <!-- 学習時間タブ -->
                 <div class="mdl-tabs__panel is-active" id="starks-panel">
@@ -87,7 +87,53 @@
                 </div>
                 <!-- 学習時間帯タブ -->
                 <div class="mdl-tabs__panel" id="lannisters-panel">
-                   学習時間帯
+                    <div class="table-content">
+                        <div id="myself">
+                            <p>●過去の自分のデータ</p>
+                            <table class="mdl-data-table mdl-js-data-table">
+                                <thead>
+                                    <tr>
+                                    <th>テスト点数</th>
+                                    <th>学習時間帯</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <td>10点</td>
+                                    <td>12:00〜13:00</td>
+                                    </tr>
+                                    <tr>
+                                    <td>9点</td>
+                                    <td>14:00〜15:00</td>
+                                    </tr>
+                                    <tr>
+                                    <td>9点</td>
+                                    <td>12:00〜15:00</td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                    <td>9点</td>
+                                    <td>12:00〜15:00</td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                    <td>9点</td>
+                                    <td>12:00〜15:00</td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                    <td>9点</td>
+                                    <td>12:00〜15:00</td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                    <td>9点</td>
+                                    <td>12:00〜15:00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
