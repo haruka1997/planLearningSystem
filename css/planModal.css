@@ -1,6 +1,7 @@
 .plan-create-modal-wrapper,
 .plan-detail-modal-wrapper,
-.analysis-result-modal-wrapper{
+.analysis-result-modal-wrapper,
+.plan-check-modal-wrapper{
     display: flex;
     justify-content: center;
     overflow: auto;
@@ -17,7 +18,8 @@
 }
 .plan-create-modal-wrapper.is-visible,
 .plan-detail-modal-wrapper.is-visible,
-.analysis-result-modal-wrapper.is-visible{
+.analysis-result-modal-wrapper.is-visible,
+.plan-check-modal-wrapper.is-visible{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;
@@ -60,13 +62,15 @@
 }
 
 .add-button,
-.edit-button{
+.edit-button,
+.check-button{
     text-align: center;
     margin: 10px;
 }
 
 .add-button button,
-.edit-button button{
+.edit-button button,
+.check-button button{
     width: 100px;
     background-color: #2196F3;
     color: #ffffff;
@@ -74,6 +78,7 @@
 }
 
 .add-button button:hover,
-.edit-button button:hover{
+.edit-button button:hover,
+.check-button button:hover{
     background: #1976D2;
 }
