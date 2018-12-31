@@ -41,7 +41,7 @@
 .planProgress{
     position: relative;
     text-align: right;
-    margin-right: 30px;
+    margin: 30px;
     width: 30%;
     float: right;
 }
