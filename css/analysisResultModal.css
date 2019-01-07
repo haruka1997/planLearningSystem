@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     color: #ffffff;
-    font-size: 30px;
+    font-size: 32px;
 }
 
 .table-content{
@@ -11,7 +11,7 @@
 }
 
 .table-content p{
-    font-size: 15px;
+    font-size: 17px;
 }
 
 .table-content #others,
@@ -28,7 +28,7 @@
 .mdl-data-table th,
 .mdl-data-table td{
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .mdl-tabs{

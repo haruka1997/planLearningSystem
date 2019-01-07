@@ -16,5 +16,5 @@ function init(){
     }
 
     // ヘッダータイトルの書き換え
-    $('.header-title').text(headerTitle);
+    $('.header-title-text').text(headerTitle);
 }
