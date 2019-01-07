@@ -6,28 +6,51 @@ var testPlan = {
             start: '09:00',
             end: '10:30'
         },
-        memo: "全て正解するまで解く"
+        memo: "全て正解するまで解く",
+        planFlag: true,
+        recordFlag: false
 };
+
+var testPlans = [];
+testPlans.push(testPlan);
+
+var record = {
+    id: 0,
+    studyContent: "",
+    studyDate: "",
+    studyTime: {
+        start: 0,
+        end: 0
+    },
+    memo: "",
+    planFlag: false,
+    recordFlag: true
+}
+
+var records = [];
 
 $(function(){
     
     $(window).on('load',function(){
-        calenderPlanSet(testPlan);  //テストデータの配置
+        calenderSet(testPlan);  //テストデータの配置
     });
 
     // カレンダー内を押されたら
     $('.calender-content').click(function () {
         var id = $(this).attr("id");
+        var planFlag = $(this).hasClass("add-plan");
         if(id == undefined){    //記録追加の場合
             recordAdd();  //記録追加表示
-        }else{                  //記録詳細表示の場合
+        }else if(planFlag){                  //記録詳細表示の場合
+            planDetail(id);   //計画チェック表示
+        }else{
             recordDetail(id);   //記録詳細表示
         }
     });
 });
 
 
-function calenderPlanSet(plan){
+function calenderSet(plan){
     var startHour = Number(plan.studyTime.start.slice(0, plan.studyTime.start.indexOf(":"))); //開始時
     var startMinute = Number(plan.studyTime.start.slice(plan.studyTime.start.indexOf(":")+1, 5)); //開始分
     startMinute = Math.floor(startMinute / 15) * 15; //開始分を15分刻みで切り捨て
@@ -83,13 +106,19 @@ function calenderPlanSet(plan){
 
     //予定を追加する対象行列に時間と予定名を追加
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plan.studyTime.start + ' ' +plan.studyContent);
-    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
+    if(plan.planFlag){
+        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
+        if(!plan.recordFlag){
+            //行の削除
+            for(var j=0; j<deletetrNthChild.length; j++){ //削除する行分
+                $('.calender-table tbody tr:' + deletetrNthChild[j] + ' td:' + tdNthChild).remove(); //対象要素を削除
+            }
+        }
+    }else{
+        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-record'); //classを付与
+    }
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', plan.id); //idを付与
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('rowspan', rowspan);  //rowspanの設定
-    //行の削除
-    for(var j=0; j<deletetrNthChild.length; j++){ //削除する行分
-        $('.calender-table tbody tr:' + deletetrNthChild[j] + ' td:' + tdNthChild).remove(); //対象要素を削除
-    }
 
     // plans.push(plan);   //テストデータに追加
 
@@ -101,10 +130,67 @@ function calenderPlanSet(plan){
     // $('#memo').val('');
 }
 
+/**
+ * 学習計画チェックモーダル表示
+ * @param {*} id 
+ */
+function planDetail(id){
+    for(var i=0; i<testPlans.length; i++){
+        if(testPlans[i].id == id){ //選択した計画データ一致
+            var plan = testPlans[i];
+            $('.plan-check-modal-wrapper').addClass('is-visible');    //学習計画チェックモーダル表示
+
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                $('.plan-check-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの値セット
+            $('#detailStudyContent').val(plan.studyContent);
+            $('#detailStudyDate').val(plan.studyDate);
+            $('#detailStudyTimeStart').val(plan.studyTime.start);
+            $('#detailStudyTimeEnd').val(plan.studyTime.end);
+            $('#detailMemo').val(plan.memo);
+        }
+
+        // 完了ボタンが押されたら
+        $('.check-button').click(function () {
+            $('.plan-check-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            plan.recordFlag = true;
+            records.push(plan); //計画データを記録データに移行
+            calenderSet(plan);
+        });
+    }
+}
+
+/**
+ * 学習記録追加
+ */
 function recordAdd(){
 
 };
 
+/**
+ * 学習記録詳細表示
+ * @param {} id 
+ */
 function recordDetail(id){
+    for(var i=0; i<records.length; i++){
+        if(records[i].id == id){ //選択した計画データ一致
+            var record = records[i];
+            $('.plan-detail-modal-wrapper').addClass('is-visible');    //計画作成モーダル表示
 
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                $('.plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの値セット
+            $('#detailStudyContent').val(record.studyContent);
+            $('#detailStudyDate').val(record.studyDate);
+            $('#detailStudyTimeStart').val(record.studyTime.start);
+            $('#detailStudyTimeEnd').val(record.studyTime.end);
+            $('#detailMemo').val(record.memo);
+        }
+    }
 }

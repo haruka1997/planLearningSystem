@@ -128,6 +128,18 @@
     font-weight: bold;
 }
 
+.calender-table .add-record{
+    background-color: #0288D1;
+    color: #ffffff;
+    border-left: solid 3px #0288D1;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: left;
+    vertical-align: top;
+    padding: 3px 0px 0px 7px;
+    font-weight: bold;
+}
+
 .calender-time-border .calender-content{
     border-top: solid 0.3px #e4e3e3;
 }
