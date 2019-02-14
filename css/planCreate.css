@@ -6,6 +6,26 @@
     margin-left: 1%;
     height: 95%;
 }
+.header-menu{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 20px 0 10px 0;
+    width: 100%;
+    border-bottom: 0.5px solid #c9c9c9;
+}
+.header-menu button{
+    font-size: 17px;
+}
+.header-menu button.unselected{
+    color: #c9c9c9;
+}
+.header-menu i{
+    font-size: 2em;
+    color: #c9c9c9;
+}
+
 .analysis-form{
     height: auto;
     display: flex;

@@ -28,64 +28,21 @@
       <main class="mdl-layout__content">
         <!-- 計画作成画面 -->
         <div class="planCreate-content">
-            <!-- 分析 -->
-            <div class="analysis-form">
-                <!-- 授業回 -->
-                <div class="form-group pmd-textfield pmd-textfield-floating-label">       
-                    <label>授業回を選択</label>
-                    <select class="select-simple form-control pmd-select2">
-                        <option></option>
-                        <option>第1回</option>
-                        <option>第2回</option>
-                        <option>第3回</option>
-                        <option>第4回</option>
-                        <option>第5回</option>
-                        <option>第6回</option>
-                        <option>第7回</option>
-                        <option>第8回</option>
-                        <option>第9回</option>
-                        <option>第10回</option>
-                        <option>第11回</option>
-                        <option>第12回</option>
-                        <option>第13回</option>
-                    </select>
-                </div>
-                <!-- 理解度 -->
-                <div class="form-group pmd-textfield pmd-textfield-floating-label">       
-                    <label>理解度を選択</label>
-                    <select class="select-simple form-control pmd-select2">
-                        <option></option>
-                        <option>高</option>
-                        <option>中</option>
-                        <option>低</option>
-                    </select>
-                </div>
-                <!-- 目標点数 -->
-                <div class="form-group pmd-textfield pmd-textfield-floating-label">       
-                    <label>目標点数を選択</label>
-                    <select class="select-simple form-control pmd-select2">
-                        <option></option>
-                        <option>6点</option>
-                        <option>7点</option>
-                        <option>8点</option>
-                        <option>9点</option>
-                        <option>10点</option>
-                    </select>
-                </div>
-            </div>
-            <div class="analysis-button">
-                <button class="mdl-button mdl-js-button mdl-button--raised">
-                <i class="material-icons">search</i> 分析
+            <div class="header-menu">
+                <button class="mdl-button mdl-js-button">
+                ⑴ 学習の設定
+                </button>
+                <i class="material-icons">keyboard_arrow_right</i>
+                <button class="mdl-button mdl-js-button unselected">
+                ⑵ 学習リストの作成
+                </button>
+                <i class="material-icons">keyboard_arrow_right</i>
+                <button class="mdl-button mdl-js-button unselected">
+                ⑶ 計画の作成
                 </button>
             </div>
-            <!-- 計画実施率 -->
-            <!-- <div class="planProgress">
-                <div class="progress-rounded progress">
-                    <label class="progress-title">計画実施率：</label>
-                    <div class="progress-bar progress-bar-success" style="width: 34%;"></div>
-                    <label class="progress-persent">30%</label>
-                </div>
-            </div> -->
+            <!-- 学習の設定 -->
+            <?php include('./learningSetting.php'); ?>
             <!-- カレンダ -->
             <?php include ('./../common/calender.php'); ?>
         </div>
