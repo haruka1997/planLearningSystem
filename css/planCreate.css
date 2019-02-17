@@ -26,35 +26,35 @@
     color: #c9c9c9;
 }
 
-.analysis-form{
+.analysis-form,
+.learning-list-form{
     height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    margin: 3em auto;
+    width: 80%;
 }
 .pmd-textfield-floating-label label{
-    font-size: 16px;
-    margin-bottom: 25px;
-    color: #333333;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: gray;
 }
 
 .form-group.pmd-textfield{
-    width: 25%;
+    width: 100%;
 }
 
-.analysis-button{
+.regist-button{
     text-align: center;
     margin: 10px;
 }
 
-.analysis-button button{
+.regist-button button{
     width: 100px;
     background-color: #2196F3;
     color: #ffffff;
     font-weight: bold;
 }
 
-.analysis-button button:hover{
+.regist-button button:hover{
     background: #1976D2;
 }
 
@@ -83,4 +83,22 @@
 
 .progress-bar-success{
     background-color: #2196F3;
+}
+
+.learning-list-item-example{
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.form-group.learning-content{
+    width: 90%;
+    margin-right: 30px; 
+}
+
+.form-group.expected-time{
+    width: 30%;
+}
+
+.learning-list-item{
+    display: flex;
 }
