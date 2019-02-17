@@ -42,9 +42,11 @@
                 </button>
             </div>
             <!-- 学習の設定 -->
-            <?php include('./learningSetting.php'); ?>
+            
+            <!-- 学習リストの作成 -->
+            <?php include('./learningList.php'); ?>
             <!-- カレンダ -->
-            <?php include ('./../common/calender.php'); ?>
+            <!-- <?php include ('./../common/calender.php'); ?> -->
         </div>
       </main>
       <!-- 計画作成モーダル -->
