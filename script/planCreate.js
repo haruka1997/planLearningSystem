@@ -23,12 +23,20 @@ var editPlan = {
 var plans =  [];
 
 $(function(){
+    // 学習の計画追加ボタンを押されたら
+    $('#add-learning-plan').click(function (){
+        learningPlanAdd();
+    });
+
+    // プライベートの予定追加ボタンを押されたら
+    $('#add-private-plan').click(function (){
+        // privatePlanAdd();
+    });
+
     // カレンダー内を押されたら
     $('.calender-content').click(function () {
         var id = $(this).attr("id");
-        if(id == undefined){    //計画作成の場合
-            planAdd();  //計画作成表示
-        }else{                  //計画詳細表示の場合
+        if(id !== undefined){   //計画詳細表示の場合
             planDetail(id);   //計画詳細表示
         }
     });
@@ -40,9 +48,9 @@ $(function(){
 });
 
 /**
- * 予定追加処理
+ * 学習の計画追加処理
  */
-function planAdd(){
+function learningPlanAdd(){
     $('.plan-create-modal-wrapper').addClass('is-visible');    //計画作成モーダル表示
 
     // キャンセルボタン押されたら
@@ -154,7 +162,6 @@ function calenderPlanSet(plan){
  * 計画詳細表示
  */
 function planDetail(id){
-    console.log(id)
     for(var i=0; i<plans.length; i++){
         if(plans[i].id == id){ //選択した計画データ一致
             var plan = plans[i];

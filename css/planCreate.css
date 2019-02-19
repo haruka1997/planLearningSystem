@@ -102,3 +102,14 @@
 .learning-list-item{
     display: flex;
 }
+
+.floating-action-button{
+    bottom: 1rem;
+    position: fixed;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.floating-action-button button{
+    margin: 10px;
+}

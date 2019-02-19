@@ -44,9 +44,13 @@
             <!-- 学習の設定 -->
             
             <!-- 学習リストの作成 -->
-            <?php include('./learningList.php'); ?>
+            <!-- <?php include('./learningList.php'); ?> -->
             <!-- カレンダ -->
-            <!-- <?php include ('./../common/calender.php'); ?> -->
+            <?php include ('./../common/calender.php'); ?>
+            <div class="floating-action-button">
+              <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
+              <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
+            </div>
         </div>
       </main>
       <!-- 計画作成モーダル -->
