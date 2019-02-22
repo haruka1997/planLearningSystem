@@ -56,18 +56,6 @@ $(function(){
  * 学習の計画追加処理
  */
 function learningPlanAdd(){
-    var plan = {
-        id: 0,
-        content: "",
-        date: "",
-        time: {
-            start: 0,
-            end: 0
-        },
-        tag: "",
-        memo: "",
-        studyFlag: true
-    };
     $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
 
     // キャンセルボタン押されたら
@@ -102,18 +90,6 @@ function learningPlanAdd(){
  * 学習の計画追加処理
  */
 function privatePlanAdd(){
-    var plan = {
-        id: 0,
-        content: "",
-        date: "",
-        time: {
-            start: 0,
-            end: 0
-        },
-        tag: "",
-        memo: "",
-        studyFlag: true
-    };
     $('.private-plan-create-modal-wrapper').addClass('is-visible');    //プライベートの予定モーダル表示
 
     // キャンセルボタン押されたら
@@ -207,9 +183,10 @@ function calenderPlanSet(plan){
     }
 
     //予定を追加する対象行列に時間と予定名を追加
-    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plan.time.start + ' ' + plan.content);
+    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plan.time.start + ' ' + plan.content);   //学習内容を設定
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
-    if(!plan.studyFlag){
+    
+    if(!plan.studyFlag){ //プライベートの予定の追加の場合
         $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass(plan.tag); //classを付与(タグ色)
     }
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', plan.id); //idを付与
