@@ -129,19 +129,19 @@
 }
 
 .calender-table .add-plan.red{
-    background-color: #EF9A9A;
+    background-color: #FFEBEE;
     color: #F44336;
     border-left: solid 3px #F44336;
 }
 
 .calender-table .add-plan.yellow{
-    background-color: #FFF59D;
+    background-color: #FFFDE7;
     color: #FFEB3B;
     border-left: solid 3px #FFEB3B;
 }
 
 .calender-table .add-plan.green{
-    background-color: #A5D6A7;
+    background-color: #E8F5E9;
     color: #4CAF50;
     border-left: solid 3px #4CAF50;
 }
