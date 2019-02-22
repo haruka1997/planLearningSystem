@@ -9,10 +9,10 @@
         <div id="modal-content">
             <!-- 学習内容 -->
             <div class="form-group pmd-textfield">
-                <label for="studyContent" class="control-label">
+                <label for="content" class="control-label">
                     学習内容
                 </label>
-                <input type="text" id="studyContent" class="form-control">
+                <input type="text" id="content" class="form-control">
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">
@@ -40,7 +40,7 @@
                 <textarea class="form-control" id="memo"></textarea>
             </div>
             <!-- 追加ボタン -->
-            <div class="add-button">
+            <div class="learning-add-button">
                 <button class="mdl-button mdl-js-button mdl-button--raised">追加</button>
             </div>
         </div>

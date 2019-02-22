@@ -128,6 +128,31 @@
     font-weight: bold;
 }
 
+.calender-table .add-plan.red{
+    background-color: #EF9A9A;
+    color: #F44336;
+    border-left: solid 3px #F44336;
+}
+
+.calender-table .add-plan.blue{
+    background-color: #90CAF9;
+    color: #2196F3;
+    border-left: solid 3px #2196F3;
+}
+
+.calender-table .add-plan.yellow{
+    background-color: #FFF59D;
+    color: #FFEB3B;
+    border-left: solid 3px #FFEB3B;
+}
+
+.calender-table .add-plan.green{
+    background-color: #A5D6A7;
+    color: #4CAF50;
+    border-left: solid 3px #4CAF50;
+}
+
+
 .calender-table .add-record{
     background-color: #0288D1;
     color: #ffffff;

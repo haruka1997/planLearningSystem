@@ -45,7 +45,7 @@
                 <textarea class="form-control" id="memo"></textarea>
             </div>
             <!-- 追加ボタン -->
-            <div class="add-button">
+            <div class="private-add-button">
                 <button class="mdl-button mdl-js-button mdl-button--raised">追加</button>
             </div>
         </div>

@@ -64,14 +64,16 @@
     width: 100%;
 }
 
-.add-button,
+.learning-add-button,
+.private-add-button,
 .edit-button,
 .check-button{
     text-align: center;
     margin: 10px;
 }
 
-.add-button button,
+.learning-add-button button,
+.private-add-button button,
 .edit-button button,
 .check-button button{
     width: 100px;
@@ -80,7 +82,8 @@
     font-weight: bold;
 }
 
-.add-button button:hover,
+.learning-add-button button:hover,
+.private-add-button button:hover,
 .edit-button button:hover,
 .check-button button:hover{
     background: #1976D2;
