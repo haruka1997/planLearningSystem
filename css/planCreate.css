@@ -130,10 +130,6 @@
     background: #EF9A9A;
 }
 
-.form-tag #blue{
-    background: #90CAF9;
-}
-
 .form-tag #yellow{
     background: #FFF59D;
 }
@@ -144,10 +140,6 @@
 
 .form-tag #red.active{
     background: #F44336;
-}
-
-.form-tag #blue.active{
-    background: #2196F3;
 }
 
 .form-tag #yellow.active{

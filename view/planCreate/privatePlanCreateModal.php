@@ -34,7 +34,6 @@
                 </label>
                 <div class="form-tag">
                     <div class="tag" id="red"></div>
-                    <div class="tag" id="blue"></div>
                     <div class="tag" id="yellow"></div>
                     <div class="tag" id="green"></div>
                 </div>
