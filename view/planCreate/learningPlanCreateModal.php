@@ -1,4 +1,4 @@
-<div class="plan-create-modal-wrapper">
+<div class="learning-plan-create-modal-wrapper">
     <div class="plan-modal">
         <!-- ヘッダー -->
         <div id="modal-header">

@@ -6,7 +6,9 @@ var plan = {
         start: 0,
         end: 0
     },
-    memo: ""
+    tag: "",
+    memo: "",
+    studyFlag: true
 };
 
 var editPlan = {
@@ -22,6 +24,9 @@ var editPlan = {
 // テストデータ
 var plans =  [];
 
+// 選択されたタグ色
+var selectTag = '';
+
 $(function(){
     // 学習の計画追加ボタンを押されたら
     $('#add-learning-plan').click(function (){
@@ -30,7 +35,7 @@ $(function(){
 
     // プライベートの予定追加ボタンを押されたら
     $('#add-private-plan').click(function (){
-        // privatePlanAdd();
+        privatePlanAdd();
     });
 
     // カレンダー内を押されたら
@@ -51,11 +56,11 @@ $(function(){
  * 学習の計画追加処理
  */
 function learningPlanAdd(){
-    $('.plan-create-modal-wrapper').addClass('is-visible');    //計画作成モーダル表示
+    $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
 
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
-        $('.plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
     });
 
     // 追加ボタン押されたら
@@ -68,6 +73,47 @@ function learningPlanAdd(){
         plan.studyTime.start = $('#studyTimeStart').val();
         plan.studyTime.end = $('#studyTimeEnd').val();
         plan.memo = $('#memo').val();
+        plan.studyFlag = true;
+
+        // idの設定
+        plan.id = new Date().getTime();
+
+        calenderPlanSet(plan);
+
+        // TODO: DBに予定追加
+
+    });
+}
+
+/**
+ * 学習の計画追加処理
+ */
+function privatePlanAdd(){
+    $('.private-plan-create-modal-wrapper').addClass('is-visible');    //プライベートの予定モーダル表示
+
+    // キャンセルボタン押されたら
+    $('.header-cansel-button').click(function () {
+        $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+    });
+
+    // タグボタンを押されたら
+    $('.tag').click(function (){
+        selectTag =  $(this).attr("id");    //選択されたタグ色取得
+        $('.tag').removeClass('active');// タグ選択状態を全解除
+        $(this).addClass('active'); //選択したタグを選択状態にセット
+    });
+
+    // 追加ボタン押されたら
+    $('.add-button').click(function () {
+        $('.plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+
+        //  入力内容の取得
+        plan.privateDate = $('#studyDate').val();
+        plan.privateTime.start = $('#studyTimeStart').val();
+        plan.privateTime.end = $('#studyTimeEnd').val();
+        plan.tag = selectTag;
+        plan.memo = $('#memo').val();
+        plan.studyFlag = false;
 
         // idの設定
         plan.id = new Date().getTime();
@@ -84,7 +130,6 @@ function learningPlanAdd(){
  * @param {*} plan 
  */
 function calenderPlanSet(plan){
-    console.log(plan)
 
     var startHour = Number(plan.studyTime.start.slice(0, plan.studyTime.start.indexOf(":"))); //開始時
     var startMinute = Number(plan.studyTime.start.slice(plan.studyTime.start.indexOf(":")+1, 5)); //開始分

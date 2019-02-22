@@ -1,4 +1,5 @@
-.plan-create-modal-wrapper,
+.learning-plan-create-modal-wrapper,
+.private-plan-create-modal-wrapper,
 .plan-detail-modal-wrapper,
 .analysis-result-modal-wrapper,
 .plan-check-modal-wrapper{
@@ -16,7 +17,8 @@
     transition: opacity 0.5s, transform 0s 0.5s;
     transform: scale(0);
 }
-.plan-create-modal-wrapper.is-visible,
+.learning-plan-create-modal-wrapper.is-visible,
+.private-plan-create-modal-wrapper.is-visible,
 .plan-detail-modal-wrapper.is-visible,
 .analysis-result-modal-wrapper.is-visible,
 .plan-check-modal-wrapper.is-visible{

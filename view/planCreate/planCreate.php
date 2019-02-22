@@ -53,8 +53,10 @@
             </div>
         </div>
       </main>
-      <!-- 計画作成モーダル -->
-      <?php include ('./planCreateModal.php'); ?>
+      <!-- 学習計画作成モーダル -->
+      <?php include ('./learningPlanCreateModal.php'); ?>
+      <!-- プライベートの予定作成モーダル -->
+      <?php include ('./privatePlanCreateModal.php'); ?>
       <!-- 計画詳細モーダル -->
       <?php include ('./planDetailModal.php'); ?>
       <!-- 分析結果モーダル -->
