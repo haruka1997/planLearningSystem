@@ -36,6 +36,7 @@
     transform: translateY(40px);
     transition: 0.5s;
     border-radius: 10px;
+    overflow: scroll;
 }
 
 .plan-modal #modal-header{
