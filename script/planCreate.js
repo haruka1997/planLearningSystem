@@ -80,6 +80,13 @@ function learningPlanAdd(){
 
         calenderPlanSet(plan);
 
+        // 入力内容の削除
+        $('#content').val('');
+        $('#studyDate').val('');
+        $('#studyTimeStart').val('');
+        $('#studyTimeEnd').val('');
+        $('#memo').val('');
+
 
         // TODO: DBに予定追加
 
@@ -109,6 +116,7 @@ function privatePlanAdd(){
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
         //  入力内容の取得
+        plan.content = "";
         plan.date = $('#privateDate').val();
         plan.time.start = $('#privateTimeStart').val();
         plan.time.end = $('#privateTimeEnd').val();
@@ -120,6 +128,14 @@ function privatePlanAdd(){
         plan.id = new Date().getTime();
 
         calenderPlanSet(plan);
+
+        // 入力内容の削除
+        $('#privateDate').val('');
+        $('#privateTimeStart').val('');
+        $('#privateTimeEnd').val('');
+        $('#studyTimeEnd').val('');
+        $('.tag').removeClass('active');
+        $('#memo').val('');
 
         // TODO: DBに予定追加
 
@@ -198,13 +214,6 @@ function calenderPlanSet(plan){
 
     plans.push(plan);   //テストデータに追加
 
-    // 入力内容の削除
-    $('#content').val('');
-    $('#Date').val('');
-    $('#timeStart').val('');
-    $('#timeEnd').val('');
-    $('#tag').val('');
-    $('#memo').val('');
 }
 
 
