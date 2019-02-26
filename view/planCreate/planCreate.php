@@ -45,6 +45,9 @@
             
             <!-- 学習リストの作成 -->
             <!-- <?php include('./learningList.php'); ?> -->
+            <!-- 計画の作成 -->
+            <!-- 参考データ -->
+            <?php include ('./referenceData.php') ?>
             <!-- カレンダ -->
             <?php include ('./../common/calender.php'); ?>
             <div class="floating-action-button">

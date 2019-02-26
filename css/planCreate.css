@@ -114,38 +114,12 @@
     margin: 10px;
 }
 
-.form-tag{
+.reference-data{
+    position: relative;
+    padding: 20px;
     display: flex;
 }
 
-.form-tag .tag{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin: 10px;
-    cursor: pointer;
-}
-
-.form-tag #red{
-    background: #EF9A9A;
-}
-
-.form-tag #yellow{
-    background: #FFF59D;
-}
-
-.form-tag #green{
-    background: #A5D6A7;
-}
-
-.form-tag #red.active{
-    background: #F44336;
-}
-
-.form-tag #yellow.active{
-    background: #FFEB3B;
-}
-
-.form-tag #green.active{
-    background: #4CAF50;
+.learning-list-item{
+    display: inline;
 }
