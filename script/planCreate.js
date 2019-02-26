@@ -185,10 +185,6 @@ $(function(){
 	});
 });
 
-function createChart(){
-    
-}
-
 /**
  * 学習の計画追加処理
  */
