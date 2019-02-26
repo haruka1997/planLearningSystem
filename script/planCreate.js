@@ -28,7 +28,10 @@ var learningListData = [
 ];
 
 var learningListFlag = false,
-    referenceDataFlag = false;
+    learningListSet = false,
+    planReferenceFlag = false,
+    planReferenceChartSet = false;
+
 
 // 選択されたタグ色
 var selectTag = '';
@@ -60,19 +63,131 @@ $(function(){
     // 学習リストボタンが押されたら
     $('.learning-list-button').click(function(){
         learningListFlag = !learningListFlag;
-        $('.reference-data-list').slideToggle();    //学習リスト開閉
         
         if(learningListFlag){   //学習リスト開
-            $('.learning-list-item').empty();   //学習リストを空にする
-            // 学習リストデータ出力
-            for(var i=0; i<learningListData.length; i++){
-                $('<p>・' + learningListData[i].learningList + '</p>').appendTo('.learning-list-item');
+            $('.learning-list-button i').text('keyboard_arrow_down');
+            if(!learningListSet){
+                // 学習リストデータ出力
+                for(var i=0; i<learningListData.length; i++){
+                    $('<p>・' + learningListData[i].learningList + '(' + learningListData[i].time + ')</p>').appendTo('.learning-list-item');
+                }
+                learningListSet = true;
             }
         }else{  //学習リスト閉
             $('.learning-list-button i').text('keyboard_arrow_right');
         }
+
+        $('.learning-list-item').slideToggle();
+    });
+    
+    // 学習計画参考データボタンが押されたら
+    $('.plan-reference-button').click(function(){
+        planReferenceFlag = !planReferenceFlag;
+        $('.plan-reference-item').slideToggle();
+        
+        if(planReferenceFlag){   //学習リスト開
+            $('.plan-reference-button i').text('keyboard_arrow_down');
+            if(!planReferenceChartSet){
+                var ctx = document.getElementById("planReferenceLine").getContext('2d');
+                var planReferenceLine = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ["10分", "20分", "30分", "40分", "50分", "60分"],
+                        datasets: [
+                            {
+                                label: '計画実施率',
+                                data: [100, 90, 60, 70, 80, 100],
+                                backgroundColor: "#1E88E5",
+                                borderColor: '#64B5F6',
+                                fill: false
+                            },
+                            {
+                                label: '目標達成率',
+                                data: [90, 80, 50, 40, 80, 90],
+                                backgroundColor: "#D81B60",
+                                borderColor: '#F06292',
+                                fill: false
+                            },
+                            {
+                                label: '学習満足率',
+                                data: [80, 70, 50, 30, 20, 90],
+                                backgroundColor: "#C0CA33",
+                                borderColor: '#DCE775',
+                                fill: false
+                            }
+                        ],
+                    },
+                    options:{
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {                 // 軸ラベル
+                                    display: true,                // 表示設定
+                                    labelString: '学習時間',    // ラベル
+                                },
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    callback: function(value){
+                                        return value+'%';
+                                    }
+                                }
+                                }]
+                        }                            
+                    }
+                });
+
+                var ctx = document.getElementById("planReferenceBar").getContext('2d');
+                var planReferenceBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["6:00〜12:00", "12:00〜18:00", "18:00〜24:00"],
+                        datasets: [
+                            {
+                                label: '計画実施率',
+                                data: [90, 100, 30],
+                                backgroundColor: "#64B5F6"
+                            },
+                            {
+                                label: '目標達成率',
+                                data: [80, 90, 100],
+                                backgroundColor: "#F06292"
+                            },
+                            {
+                                label: '学習満足率',
+                                data: [30, 40, 100],
+                                backgroundColor: "#DCE775"
+                            }
+                        ],
+                    },
+                    options:{
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {                 // 軸ラベル
+                                    display: true,                // 表示設定
+                                    labelString: '学習時間帯',    // ラベル
+                                },
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    callback: function(value){
+                                        return value+'%';
+                                    }
+                                }
+                                }]
+                        }                            
+                    }
+                });
+                planReferenceChartSet = true;
+            }
+        }else{  //学習リスト閉
+            $('.plan-reference-button i').text('keyboard_arrow_right');
+        }
 	});
 });
+
+function createChart(){
+    
+}
 
 /**
  * 学習の計画追加処理
