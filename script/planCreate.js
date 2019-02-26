@@ -21,8 +21,14 @@ var editPlan = {
     },
     memo: ""
 };
-// テストデータ
-var plans =  [];
+
+var learningListData = [
+    {learningList: '三角関数の問題を解く', time: '30分'},
+    {learningList: '弧度法の問題を解く', time: '60分'}
+];
+
+var learningListFlag = false,
+    referenceDataFlag = false;
 
 // 選択されたタグ色
 var selectTag = '';
@@ -50,6 +56,22 @@ $(function(){
     $('.analysis-button button').click(function () {
         analysis(); //分析処理
     });
+
+    // 学習リストボタンが押されたら
+    $('.learning-list-button').click(function(){
+        learningListFlag = !learningListFlag;
+        $('.reference-data-list').slideToggle();    //学習リスト開閉
+        
+        if(learningListFlag){   //学習リスト開
+            $('.learning-list-item').empty();   //学習リストを空にする
+            // 学習リストデータ出力
+            for(var i=0; i<learningListData.length; i++){
+                $('<p>・' + learningListData[i].learningList + '</p>').appendTo('.learning-list-item');
+            }
+        }else{  //学習リスト閉
+            $('.learning-list-button i').text('keyboard_arrow_right');
+        }
+	});
 });
 
 /**

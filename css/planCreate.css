@@ -99,10 +99,6 @@
     width: 30%;
 }
 
-.learning-list-item{
-    display: flex;
-}
-
 .floating-action-button{
     bottom: 1rem;
     position: fixed;
@@ -117,9 +113,27 @@
 .reference-data{
     position: relative;
     padding: 20px;
+    width: 100%;
+}
+
+.reference-data-title{
     display: flex;
 }
 
-.learning-list-item{
-    display: inline;
+.reference-data-list{
+    padding: 0 16px;
+    margin: 10px 20px;
+    background: #f9f9f9;
+    border-left: solid 10px #2196F3;
+    display: none;
+}
+
+.learning-list-item p{
+    padding: 7px;
+    margin: 0;
+    /* display: none; */
+}
+
+.plan-reference-item{
+    /* display:none; */
 }
