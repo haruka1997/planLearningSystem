@@ -151,3 +151,132 @@
     padding: 10px;
     width: 50%;
 }
+
+
+/* モーダル */
+.learning-plan-create-modal-wrapper,
+.private-plan-create-modal-wrapper,
+.plan-detail-modal-wrapper,
+.analysis-result-modal-wrapper,
+.plan-check-modal-wrapper{
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.5s, transform 0s 0.5s;
+    transform: scale(0);
+}
+.learning-plan-create-modal-wrapper.is-visible,
+.private-plan-create-modal-wrapper.is-visible,
+.plan-detail-modal-wrapper.is-visible,
+.analysis-result-modal-wrapper.is-visible,
+.plan-check-modal-wrapper.is-visible{
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s;
+}
+.plan-modal{
+    align-self: flex-start;
+    width: 60%;
+    height: 80%;
+    box-sizing: border-box;
+    background: #fff;
+    line-height: 1.4em;
+    transform: translateY(40px);
+    transition: 0.5s;
+    border-radius: 10px;
+    overflow: scroll;
+}
+
+.plan-modal #modal-header{
+    position: relative;
+    height: 50px;
+    border-bottom: 1px #c2c2c2 solid;
+    width: 100%;
+    padding: 15px 0px 10px 20px;
+    font-size: 19px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#modal-header .header-cansel-button{
+    margin-left: auto;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.plan-modal #modal-content{
+    padding: 20px;
+}
+
+#modal-content .form-group.pmd-textfield{
+    width: 100%;
+}
+
+.learning-add-button,
+.private-add-button,
+.edit-button,
+.check-button{
+    text-align: center;
+    margin: 10px;
+}
+
+.learning-add-button button,
+.private-add-button button,
+.edit-button button,
+.check-button button{
+    width: 100px;
+    background-color: #2196F3;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.learning-add-button button:hover,
+.private-add-button button:hover,
+.edit-button button:hover,
+.check-button button:hover{
+    background: #1976D2;
+}
+
+.form-tag{
+    display: flex;
+}
+
+.form-tag .tag{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.form-tag #red{
+    background: #EF9A9A;
+}
+
+.form-tag #yellow{
+    background: #FFF59D;
+}
+
+.form-tag #green{
+    background: #A5D6A7;
+}
+
+.form-tag #red.active{
+    background: #F44336;
+}
+
+.form-tag #yellow.active{
+    background: #FFEB3B;
+}
+
+.form-tag #green.active{
+    background: #4CAF50;
+}
