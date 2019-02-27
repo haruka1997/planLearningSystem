@@ -20,13 +20,34 @@ var learningListFlag = false,
     learningListSet = false,
     planReferenceFlag = false,
     planReferenceChartSet = false;
-    learningListDataModalSet = false;
+    learningListDataModalSet = false,
+    learningSettingShow = true,
+    learningListCreateShow = false,
+    planCreateShow = false;
 
 
 // 選択されたタグ色
 var selectTag = '';
 
 $(function(){
+
+    $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
+
+    // 学習の設定ボタンが押されたら
+    $('.learning-setting-button').click(function (){
+        learningSetting();
+    });
+
+    // 学習リストの作成ボタンが押されたら
+    $('.learning-list-create-button').click(function (){
+        learningListCreate();
+    });
+
+    // 計画の作成ボタンが押されたら
+    $('.plan-create-button').click(function (){
+        planCreate();
+    });
+
     // 学習の計画追加ボタンを押されたら
     $('#add-learning-plan').click(function (){
         learningPlanAdd();
@@ -169,6 +190,60 @@ $(function(){
         }
 	});
 });
+
+function learningSetting(){
+    if(!learningSettingShow){   // 学習の設定画面が表示中でなければ
+        $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
+        $(this).removeClass('unselected');  // 学習の設定ボタンを選択状態にする
+        if(learningListCreateShow){ // 学習リストの作成画面が表示中なら
+            $('#learning-list-create-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
+            $('.learning-list-create-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
+            learningListCreateShow = false;
+        }
+        if(planCreateShow){ // 計画の作成画面が表示中なら
+            $('#plan-create-content').removeClass('show');  // 計画の作成画面を非表示状態にする
+            $('.plan-create-button').addClass('unselected');    // 計画の作成ボタンを非選択状態にする
+            planCreateShow = false;
+        }
+        learningSettingShow = true;
+    }
+}
+
+function learningListCreate(){
+    if(!learningListCreateShow){   // 学習リストの作成画面が表示中でなければ
+        $('#learning-list-create-content').addClass('show');    // 学習の設定画面を表示状態にする
+        $(this).removeClass('unselected');  // 学習の設定ボタンを選択状態にする
+        if(learningSettingShow){ // 学習リストの作成画面が表示中なら
+            $('#learning-setting-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
+            $('.learning-setting-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
+            learningSettingShow = false;
+        }
+        if(planCreateShow){ // 計画の作成画面が表示中なら
+            $('#plan-create-content').removeClass('show');  // 計画の作成画面を非表示状態にする
+            $('.plan-create-button').addClass('unselected');    // 計画の作成ボタンを非選択状態にする
+            planCreateShow = false;
+        }
+        learningListCreateShow = true;
+    }
+}
+
+function planCreate(){
+    if(!planCreateShow){   // 学習の設定画面が表示中でなければ
+        $('#plan-create-content').addClass('show');    // 学習の設定画面を表示状態にする
+        $(this).removeClass('unselected');  // 学習の設定ボタンを選択状態にする
+        if(learningListCreateShow){ // 学習リストの作成画面が表示中なら
+            $('#learning-list-create-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
+            $('.learning-list-create-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
+            learningListCreateShow = false;
+        }
+        if(learningSettingShow){ // 計画の作成画面が表示中なら
+            $('#learning-setting-content').removeClass('show');  // 計画の作成画面を非表示状態にする
+            $('.learning-setting-button').addClass('unselected');    // 計画の作成ボタンを非選択状態にする
+            learningSettingShow = false;
+        }
+        planCreateShow = true;
+    }
+}
 
 /**
  * 学習の計画追加処理

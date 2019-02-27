@@ -152,6 +152,18 @@
     width: 50%;
 }
 
+#learning-setting-content,
+#learning-list-create-content,
+#plan-create-content{
+    display: none;
+}
+
+#learning-setting-content.show,
+#learning-list-create-content.show,
+#plan-create-content.show{
+    display: initial;
+}
+
 
 /* モーダル */
 .learning-plan-create-modal-wrapper,

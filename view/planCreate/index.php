@@ -28,27 +28,33 @@
         <!-- 計画作成画面 -->
         <div class="planCreate-content">
             <div class="header-menu">
-                <button class="mdl-button mdl-js-button">
+                <button class="mdl-button mdl-js-button learning-setting-button">
                 ⑴ 学習の設定
                 </button>
                 <i class="material-icons">keyboard_arrow_right</i>
-                <button class="mdl-button mdl-js-button unselected">
+                <button class="mdl-button mdl-js-button learning-list-create-button unselected">
                 ⑵ 学習リストの作成
                 </button>
                 <i class="material-icons">keyboard_arrow_right</i>
-                <button class="mdl-button mdl-js-button unselected">
+                <button class="mdl-button mdl-js-button plan-create-button unselected">
                 ⑶ 計画の作成
                 </button>
             </div>
             <!-- 学習の設定 -->
-            
+            <div id="learning-setting-content">
+              <?php include('./learningSetting.php'); ?>
+            </div>
             <!-- 学習リストの作成 -->
-            <!-- <?php include('./learningList.php'); ?> -->
+            <div id="learning-list-create-content">
+              <?php include('./learningList.php'); ?>
+            </div>
             <!-- 計画の作成 -->
-            <!-- 参考データ -->
-            <?php include ('./referenceData.php') ?>
-            <!-- カレンダ -->
-            <?php include ('./../common/calender.php'); ?>
+            <div id="plan-create-content">
+              <!-- 参考データ -->
+              <?php include ('./referenceData.php') ?>
+              <!-- カレンダ -->
+              <?php include ('./../common/calender.php'); ?>
+            </div>
             <div class="floating-action-button">
               <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
               <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
