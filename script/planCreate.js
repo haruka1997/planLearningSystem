@@ -191,6 +191,11 @@ $(function(){
 function learningPlanAdd(){
     $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
 
+    // 学習内容のリスト表示
+    for(var i=0; i<learningListData.length; i++){
+        $('<option>' + learningListData[i].learningList + '</option>').appendTo('.learning-content');
+    }
+
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
@@ -332,7 +337,7 @@ function calenderPlanSet(plan){
     }
 
     //予定を追加する対象行列に時間と予定名を追加
-    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plan.time.start + ' ' + plan.content);   //学習内容を設定
+    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plan.time.start + '<br>' + plan.content);   //学習内容を設定
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
     
     if(!plan.studyFlag){ //プライベートの予定の追加の場合

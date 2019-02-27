@@ -7,12 +7,12 @@
         </div>
         <!-- コンテンツ -->
         <div id="modal-content">
-            <!-- 学習内容 -->
-            <div class="form-group pmd-textfield">
-                <label for="content" class="control-label">
-                    学習内容
-                </label>
-                <input type="text" id="content" class="form-control">
+            <!--学習内容 -->
+            <div class="form-group pmd-textfield">       
+                <label>学習内容</label>
+                <select class="select-simple form-control pmd-select2 learning-content" id="content">
+                    <option></option>
+                </select>
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">
