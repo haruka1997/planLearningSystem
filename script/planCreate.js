@@ -11,17 +11,6 @@ var plan = {
     studyFlag: true
 };
 
-var editPlan = {
-    id: 0,
-    content: "",
-    date: "",
-    time: {
-        start: 0,
-        end: 0
-    },
-    memo: ""
-};
-
 var learningListData = [
     {learningList: '三角関数の問題を解く', time: '30分'},
     {learningList: '弧度法の問題を解く', time: '60分'}
@@ -31,6 +20,7 @@ var learningListFlag = false,
     learningListSet = false,
     planReferenceFlag = false,
     planReferenceChartSet = false;
+    learningListDataModalSet = false;
 
 
 // 選択されたタグ色
@@ -53,11 +43,6 @@ $(function(){
         if(id !== undefined){   //計画詳細表示の場合
             planDetail(id);   //計画詳細表示
         }
-    });
-
-    // 分析ボタンが押されたら
-    $('.analysis-button button').click(function () {
-        analysis(); //分析処理
     });
 
     // 学習リストボタンが押されたら
@@ -192,8 +177,11 @@ function learningPlanAdd(){
     $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
 
     // 学習内容のリスト表示
-    for(var i=0; i<learningListData.length; i++){
-        $('<option>' + learningListData[i].learningList + '</option>').appendTo('.learning-content');
+    if(!learningListDataModalSet){
+        for(var i=0; i<learningListData.length; i++){
+            $('<option>' + learningListData[i].learningList + '</option>').appendTo('.learning-content');
+        }
+        learningListDataModalSet = true;
     }
 
     // キャンセルボタン押されたら
@@ -217,14 +205,6 @@ function learningPlanAdd(){
         plan.id = new Date().getTime();
 
         calenderPlanSet(plan);
-
-        // 入力内容の削除
-        $('#content').val('');
-        $('#studyDate').val('');
-        $('#studyTimeStart').val('');
-        $('#studyTimeEnd').val('');
-        $('#memo').val('');
-
 
         // TODO: DBに予定追加
 
@@ -267,17 +247,30 @@ function privatePlanAdd(){
 
         calenderPlanSet(plan);
 
-        // 入力内容の削除
-        $('#privateDate').val('');
-        $('#privateTimeStart').val('');
-        $('#privateTimeEnd').val('');
-        $('#studyTimeEnd').val('');
-        $('.tag').removeClass('active');
-        $('#memo').val('');
-
         // TODO: DBに予定追加
 
     });
+}
+
+/**
+ * モーダルフォームの初期化
+ * @param {array} plan 
+ */
+function initModalForm(plan){
+    if(plan.studyFlag){
+        $('#content').val('');
+        $('#studyDate').val('');
+        $('#studyTimeStart').val('');
+        $('#studyTimeEnd').val('');
+        $('#memo').val('');
+    }else{
+        $('#privateDate').val('');
+        $('#privateTimeStart').val('');
+        $('#privateTimeEnd').val('');
+        $('#privateTimeEnd').val('');
+        $('.tag').removeClass('active');
+        $('#memo').val('');
+    }
 }
 
 /**
@@ -350,7 +343,7 @@ function calenderPlanSet(plan){
         $('.calender-table tbody tr:' + deletetrNthChild[j] + ' td:' + tdNthChild).remove(); //対象要素を削除
     }
 
-    plans.push(plan);   //テストデータに追加
+    initModalForm(plan);
 
 }
 
@@ -399,31 +392,4 @@ function planDetail(id){
         }
     }
     
-}
-
-// 分析処理
-function analysis(){
-
-    // キャンセルボタン押されたら
-    $('.header-cansel-button').click(function () {
-        $('.analysis-result-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-    });
-
-    // 分析結果モーダル表示
-    $('.analysis-result-modal-wrapper').addClass('is-visible');
-    // 分析中...表示
-    $('.analysis-roading').css('display', '');
-    // 分析結果コンテンツ非表示
-    $('.plan-modal').css('display', 'none');
-
-    // TODO: 分析結果をDBから取得したら分析結果コンテンツを表示する
-    $(function(){
-        setTimeout(function(){
-            // 分析中...非表示
-            $('.analysis-roading').css('display', 'none');
-            // 分析結果コンテンツ表示
-            $('.plan-modal').css('display', 'block');
-        },1000);
-    });
-
 }

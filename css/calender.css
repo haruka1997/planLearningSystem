@@ -112,10 +112,6 @@
     height: 20px;
 }
 
-.calender-content{
-    cursor: pointer;
-}
-
 .calender-table .add-plan{
     background-color: #E1F5FE;
     color: #0288D1;
