@@ -120,8 +120,8 @@
     display: flex;
 }
 
-.learning-list-item,
-.plan-reference-item{
+.reference-data-list .learning-list-item,
+.reference-data-list .plan-reference-item{
     padding: 0 16px;
     margin: 10px 20px;
     background: #f9f9f9;
@@ -129,7 +129,7 @@
     display: none;
 }
 
-.learning-list-item p{
+.reference-data-list .learning-list-item p{
     padding: 7px;
     margin: 0;
 }
@@ -162,6 +162,10 @@
 #learning-list-create-content.show,
 #plan-create-content.show{
     display: initial;
+}
+
+.learning-list-form .learning-list-item{
+    display: flex;
 }
 
 
