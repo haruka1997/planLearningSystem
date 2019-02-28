@@ -15,9 +15,11 @@
     width: 100%;
     border-bottom: 0.5px solid #c9c9c9;
 }
+
 .header-menu button{
-    font-size: 17px;
+    font-size: 16px;
 }
+
 .header-menu button.unselected{
     color: #c9c9c9;
 }
@@ -45,18 +47,7 @@
 
 .regist-button{
     text-align: center;
-    padding: 5px 0px 10px 0px;
-}
-
-.regist-button button{
-    width: 100px;
-    background-color: #2196F3;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.regist-button button:hover{
-    background: #1976D2;
+    padding: 5px 0px 20px 0px;
 }
 
 .planProgress{
@@ -91,7 +82,7 @@
     margin-bottom: 30px;
 }
 
-.form-group.learning-content{
+.form-group.learning-list-content{
     width: 90%;
     margin-right: 30px; 
 }
@@ -254,23 +245,6 @@
 .check-button{
     text-align: center;
     margin: 10px;
-}
-
-.learning-add-button button,
-.private-add-button button,
-.edit-button button,
-.check-button button{
-    width: 100px;
-    background-color: #2196F3;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.learning-add-button button:hover,
-.private-add-button button:hover,
-.edit-button button:hover,
-.check-button button:hover{
-    background: #1976D2;
 }
 
 .form-tag{

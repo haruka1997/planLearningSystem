@@ -55,8 +55,8 @@
               <!-- カレンダ -->
               <?php include ('./../common/calender.php'); ?>
               <div class="floating-action-button">
-                <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
-                <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
+                <button class="mdl-button mdl-js-button mdl-button--fab" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
+                <button class="mdl-button mdl-js-button mdl-button--fab" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
               </div>
             </div>
         </div>

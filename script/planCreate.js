@@ -93,7 +93,7 @@ $(function(){
             if(!flag.learningListDataSetFlag){
                 // 学習リストデータ出力
                 for(var i=0; i<learningListData.length; i++){
-                    $('<p>・' + learningListData[i].learningList + '(' + learningListData[i].time + ')</p>').appendTo('.learning-list-item');
+                    $('<p>・' + learningListData[i].learningList + '(' + learningListData[i].time + ')</p>').appendTo('.reference-data-list .learning-list-item');
                 }
                 flag.learningListDataSetFlag = true;
             }
@@ -101,7 +101,7 @@ $(function(){
             $('.learning-list-button i').text('keyboard_arrow_right');
         }
 
-        $('.learning-list-item').slideToggle();
+        $('.reference-data-list .learning-list-item').slideToggle();
     });
     
     // 学習計画参考データボタンが押されたら
@@ -265,7 +265,7 @@ function referenceDataStateSet(){
     if(flag.learningListOpenFlag){
         flag.learningListOpenFlag = false;
         $('.learning-list-button i').text('keyboard_arrow_right');
-        $('.learning-list-item').css('display', 'none');
+        $('.reference-data-list .learning-list-item').css('display', 'none');
     }
 
     // 学習計画参考データの表示初期化

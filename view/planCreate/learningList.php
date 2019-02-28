@@ -1,6 +1,6 @@
 <div class="learning-list-form">
     <div class="learning-list-item-example">
-        <div class="form-group pmd-textfield learning-content">
+        <div class="form-group pmd-textfield learning-list-content">
             <label for="inputError1" class="control-label pmd-input-group-label">学習内容</label>
             <div class="input-group">
                 <div class="input-group-addon"><i class="material-icons md-dark pmd-sm">create</i></div>
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="learning-list-item">
-        <div class="form-group pmd-textfield learning-content">
+        <div class="form-group pmd-textfield learning-list-content">
             <label for="inputError1" class="control-label pmd-input-group-label">学習内容</label>
             <div class="input-group">
                 <div class="input-group-addon"><i class="material-icons md-dark pmd-sm">create</i></div>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="learning-list-item">
-        <div class="form-group pmd-textfield learning-content">
+        <div class="form-group pmd-textfield learning-list-content">
             <label for="inputError1" class="control-label pmd-input-group-label">学習内容</label>
             <div class="input-group">
                 <div class="input-group-addon"><i class="material-icons md-dark pmd-sm">create</i></div>
@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="learning-list-item">
-        <div class="form-group pmd-textfield learning-content">
+        <div class="form-group pmd-textfield learning-list-content">
             <label for="inputError1" class="control-label pmd-input-group-label">学習内容</label>
             <div class="input-group">
                 <div class="input-group-addon"><i class="material-icons md-dark pmd-sm">create</i></div>
