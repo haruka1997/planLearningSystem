@@ -1,5 +1,5 @@
 <!-- 分析 -->
-<div class="analysis-form">
+<div class="learning-setting-form">
     <!-- 授業回 -->
     <div class="form-group pmd-textfield pmd-textfield-floating-label">       
         <label>学習する授業範囲を選択してください</label>

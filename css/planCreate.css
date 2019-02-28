@@ -26,17 +26,10 @@
     color: #c9c9c9;
 }
 
-.analysis-form,
+.learning-setting-form,
 .learning-list-form{
     height: auto;
     width: 80%;
-}
-
-.analysis-form{
-    margin: 3em auto;
-}
-
-.learning-list-form{
     margin: 1em auto;
 }
 
