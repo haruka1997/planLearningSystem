@@ -42,11 +42,13 @@
             </div>
             <!-- 学習の設定 -->
             <div id="learning-setting-content">
-              <?php include('./learningSetting.php'); ?>
+              <?php include ('./learningSetting.php'); ?>
             </div>
             <!-- 学習リストの作成 -->
             <div id="learning-list-create-content">
-              <?php include('./learningList.php'); ?>
+              <!-- 参考データ -->
+              <?php include ('./referenceData.php') ?>
+              <?php include ('./learningList.php'); ?>
             </div>
             <!-- 計画の作成 -->
             <div id="plan-create-content">

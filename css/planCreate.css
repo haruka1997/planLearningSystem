@@ -168,6 +168,15 @@
     display: flex;
 }
 
+.reference-data-title .learning-list-button{
+    display: none;
+}
+
+.reference-data-title .learning-list-button.show{
+    display: initial;
+}
+
+
 
 /* モーダル */
 .learning-plan-create-modal-wrapper,
