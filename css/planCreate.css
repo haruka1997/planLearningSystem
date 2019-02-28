@@ -4,7 +4,7 @@
     margin-top: 10px;
     background-color: #ffffff;
     margin-left: 1%;
-    height: 95%;
+    height: auto;
 }
 .header-menu{
     position: relative;
@@ -29,9 +29,17 @@
 .analysis-form,
 .learning-list-form{
     height: auto;
-    margin: 3em auto;
     width: 80%;
 }
+
+.analysis-form{
+    margin: 3em auto;
+}
+
+.learning-list-form{
+    margin: 1em auto;
+}
+
 .pmd-textfield-floating-label label{
     font-size: 15px;
     margin-bottom: 30px;
@@ -44,7 +52,7 @@
 
 .regist-button{
     text-align: center;
-    margin: 10px;
+    padding: 5px 0px 10px 0px;
 }
 
 .regist-button button{
@@ -168,11 +176,13 @@
     display: flex;
 }
 
-.reference-data-title .learning-list-button{
+.reference-data-title .learning-list-button,
+.reference-data-title .plan-reference-button{
     display: none;
 }
 
-.reference-data-title .learning-list-button.show{
+.reference-data-title .learning-list-button.show,
+.reference-data-title .plan-reference-button.show{
     display: initial;
 }
 

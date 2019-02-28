@@ -16,14 +16,14 @@ var learningListData = [
     {learningList: '弧度法の問題を解く', time: '60分'}
 ];
 
-var learningListFlag = false,
-    learningListSet = false,
-    planReferenceFlag = false,
-    planReferenceChartSet = false;
-    learningListDataModalSet = false,
-    learningSettingShow = true,
-    learningListCreateShow = false,
-    planCreateShow = false;
+var learningListOpenFlag = false,   // 学習リスト開閉フラグ
+    learningListDataSetFlag = false,    // 学習リストデータセットフラグ
+    planReferenceOpenFlag = false,  // 学習計画参考データ開閉フラグ
+    planReferenceChartSetFlag = false;  // 学習計画参考データグラフセット
+    learningListDataModalSetFlag = false,   // 学習計画の作成モーダルの学習リストデータセット
+    learningSettingWindowShowFlag = true, // 学習の設定画面表示フラグ
+    learningListCreateWindowShowFlag = false,   // 学習リストの作成画面表示フラグ
+    planCreateWindowShowFlag = false;   // 計画の作成画面表示フラグ
 
 
 // 選択されたタグ色
@@ -84,16 +84,16 @@ $(function(){
 
     // 学習リストボタンが押されたら
     $('.learning-list-button').click(function(){
-        learningListFlag = !learningListFlag;
+        learningListOpenFlag = !learningListOpenFlag;
         
-        if(learningListFlag){   //学習リスト開
+        if(learningListOpenFlag){   //学習リスト開
             $('.learning-list-button i').text('keyboard_arrow_down');
-            if(!learningListSet){
+            if(!learningListDataSetFlag){
                 // 学習リストデータ出力
                 for(var i=0; i<learningListData.length; i++){
                     $('<p>・' + learningListData[i].learningList + '(' + learningListData[i].time + ')</p>').appendTo('.learning-list-item');
                 }
-                learningListSet = true;
+                learningListDataSetFlag = true;
             }
         }else{  //学習リスト閉
             $('.learning-list-button i').text('keyboard_arrow_right');
@@ -104,12 +104,12 @@ $(function(){
     
     // 学習計画参考データボタンが押されたら
     $('.plan-reference-button').click(function(){
-        planReferenceFlag = !planReferenceFlag;
+        planReferenceOpenFlag = !planReferenceOpenFlag;
         $('.plan-reference-item').slideToggle();
         
-        if(planReferenceFlag){   //学習リスト開
+        if(planReferenceOpenFlag){   //学習リスト開
             $('.plan-reference-button i').text('keyboard_arrow_down');
-            if(!planReferenceChartSet){
+            if(!planReferenceChartSetFlag){
                 var ctx = document.getElementById("planReferenceLine").getContext('2d');
                 var planReferenceLine = new Chart(ctx, {
                     type: 'line',
@@ -199,7 +199,7 @@ $(function(){
                         }                            
                     }
                 });
-                planReferenceChartSet = true;
+                planReferenceChartSetFlag = true;
             }
         }else{  //学習リスト閉
             $('.plan-reference-button i').text('keyboard_arrow_right');
@@ -208,58 +208,67 @@ $(function(){
 });
 
 function learningSetting(){
-    if(!learningSettingShow){   // 学習の設定画面が表示中でなければ
+    if(!learningSettingWindowShowFlag){   // 学習の設定画面が表示中でなければ
         $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
         $('.learning-setting-button').removeClass('unselected');  // 学習の設定ボタンを選択状態にする
-        if(learningListCreateShow){ // 学習リストの作成画面が表示中なら
+        if(learningListCreateWindowShowFlag){ // 学習リストの作成画面が表示中なら
             $('#learning-list-create-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
             $('.learning-list-create-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
-            learningListCreateShow = false;
-        }
-        if(planCreateShow){ // 計画の作成画面が表示中なら
+            learningListCreateWindowShowFlag = false;
+        }jk
+        if(planCreateWindowShowFlag){ // 計画の作成画面が表示中なら
             $('#plan-create-content').removeClass('show');  // 計画の作成画面を非表示状態にする
             $('.plan-create-button').addClass('unselected');    // 計画の作成ボタンを非選択状態にする
-            planCreateShow = false;
+            planCreateWindowShowFlag = false;
         }
-        learningSettingShow = true;
+        learningSettingWindowShowFlag = true;
     }
 }
 
 function learningListCreate(){
-    if(!learningListCreateShow){   // 学習リストの作成画面が表示中でなければ
+    if(!learningListCreateWindowShowFlag){   // 学習リストの作成画面が表示中でなければ
         $('#learning-list-create-content').addClass('show');    // 学習の設定画面を表示状態にする
         $('.learning-list-create-button').removeClass('unselected');  // 学習の設定ボタンを選択状態にする
-        $('.learning-list-button').removeClass('show'); //学習リストボタンを非表示にする
-        if(learningSettingShow){ // 学習リストの作成画面が表示中なら
+        $('.plan-reference-button').addClass('show'); //学習計画参考データボタンを表示する
+        if(learningSettingWindowShowFlag){ // 学習リストの作成画面が表示中なら
             $('#learning-setting-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
             $('.learning-setting-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
-            learningSettingShow = false;
+            learningSettingWindowShowFlag = false;
         }
-        if(planCreateShow){ // 計画の作成画面が表示中なら
+        if(planCreateWindowShowFlag){ // 計画の作成画面が表示中なら
             $('#plan-create-content').removeClass('show');  // 計画の作成画面を非表示状態にする
             $('.plan-create-button').addClass('unselected');    // 計画の作成ボタンを非選択状態にする
-            planCreateShow = false;
+            planCreateWindowShowFlag = false;
         }
-        learningListCreateShow = true;
+        learningListCreateWindowShowFlag = true;
     }
 }
 
 function planCreate(){
-    if(!planCreateShow){   // 学習の設定画面が表示中でなければ
+    if(!planCreateWindowShowFlag){   // 学習の設定画面が表示中でなければ
         $('#plan-create-content').addClass('show');    // 学習の設定画面を表示状態にする
         $('.plan-create-button').removeClass('unselected');  // 学習の設定ボタンを選択状態にする
         $('.learning-list-button').addClass('show'); //学習リストボタンを非表示にする
-        if(learningListCreateShow){ // 学習リストの作成画面が表示中なら
+
+        // 学習計画参考データの表示初期化
+        if(planReferenceOpenFlag){
+            planReferenceOpenFlag = false;
+            planReferenceChartSetFlag = false;
+            $('.plan-reference-button i').text('keyboard_arrow_right');
+            $('.plan-reference-item').css('display', 'none');
+        }
+
+        if(learningListCreateWindowShowFlag){ // 学習リストの作成画面が表示中なら
             $('#learning-list-create-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
             $('.learning-list-create-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
-            learningListCreateShow = false;
+            learningListCreateWindowShowFlag = false;
         }
-        if(learningSettingShow){ // 計画の作成画面が表示中なら
+        if(learningSettingWindowShowFlag){ // 計画の作成画面が表示中なら
             $('#learning-setting-content').removeClass('show');  // 計画の作成画面を非表示状態にする
             $('.learning-setting-button').addClass('unselected');    // 計画の作成ボタンを非選択状態にする
-            learningSettingShow = false;
+            learningSettingWindowShowFlag = false;
         }
-        planCreateShow = true;
+        planCreateWindowShowFlag = true;
     }
 }
 
@@ -270,11 +279,11 @@ function learningPlanAdd(){
     $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
 
     // 学習内容のリスト表示
-    if(!learningListDataModalSet){
+    if(!learningListDataModalSetFlag){
         for(var i=0; i<learningListData.length; i++){
             $('<option>' + learningListData[i].learningList + '</option>').appendTo('.learning-content');
         }
-        learningListDataModalSet = true;
+        learningListDataModalSetFlag = true;
     }
 
     // キャンセルボタン押されたら
