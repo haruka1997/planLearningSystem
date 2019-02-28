@@ -54,10 +54,10 @@
               <?php include ('./referenceData.php') ?>
               <!-- カレンダ -->
               <?php include ('./../common/calender.php'); ?>
-            </div>
-            <div class="floating-action-button">
-              <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
-              <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
+              <div class="floating-action-button">
+                <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-primary" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
+                <button class="btn pmd-btn-fab pmd-btn-raised pmd-ripple-effect btn-success" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
+              </div>
             </div>
         </div>
       </main>
