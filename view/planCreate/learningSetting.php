@@ -45,7 +45,7 @@
     </div>
 </div>
 <div class="regist-button">
-    <button class="mdl-button mdl-js-button mdl-button--raised">
+    <button class="mdl-button mdl-js-button mdl-button--raised learning-setting-regist-button">
      登録
     </button>
 </div>

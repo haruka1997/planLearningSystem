@@ -33,6 +33,22 @@ $(function(){
 
     $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
 
+    // 学習の設定画面の登録ボタンが押されたら
+    $('.learning-setting-regist-button').click(function (){
+        // DB登録処理
+
+        // 学習リストの作成画面に遷移
+        learningListCreate();
+    });
+
+    // 学習リストの作成画面の登録ボタンが押されたら
+    $('.learning-list-regist-button').click(function (){
+        // DB登録処理
+
+        // 学習リストの作成画面に遷移
+        planCreate();
+    });
+
     // 学習の設定ボタンが押されたら
     $('.learning-setting-button').click(function (){
         learningSetting();
