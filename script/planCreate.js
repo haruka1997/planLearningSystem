@@ -8,7 +8,19 @@ var plan = {
     },
     tag: "",
     memo: "",
-    studyFlag: true
+    learningFlag: true
+};
+var editPlan = {
+    id: 0,
+    content: "",
+    date: "",
+    time: {
+        start: 0,
+        end: 0
+    },
+    tag: "",
+    memo: "",
+    learningFlag: true
 };
 
 var learningListData = [
@@ -26,6 +38,9 @@ var flag = {
     learningListCreateWindowShowFlag: false,   // 学習リストの作成画面表示フラグ
     planCreateWindowShowFlag: false   // 計画の作成画面表示フラグ
 };
+
+var learningPlans = [], // 登録された学習計画
+    privatePlans = [];  // 登録されたプライベート予定
 
 
 // 選択されたタグ色
@@ -318,7 +333,7 @@ function learningPlanAdd(){
     // 学習内容のリスト表示
     if(!flag.learningListDataModalSetFlag){
         for(var i=0; i<learningListData.length; i++){
-            $('<option>' + learningListData[i].learningList + '</option>').appendTo('.learning-content');
+            $('<option>' + learningListData[i].learningList + '</option>').appendTo('#content');
         }
         flag.learningListDataModalSetFlag = true;
     }
@@ -334,11 +349,11 @@ function learningPlanAdd(){
 
         //  入力内容の取得
         plan.content = $('#content').val();
-        plan.date = $('#studyDate').val();
-        plan.time.start = $('#studyTimeStart').val();
-        plan.time.end = $('#studyTimeEnd').val();
-        plan.memo = $('#memo').val();
-        plan.studyFlag = true;
+        plan.date = $('#learningDate').val();
+        plan.time.start = $('#learningTimeStart').val();
+        plan.time.end = $('#learningTimeEnd').val();
+        plan.memo = $('#learningMemo').val();
+        plan.learningFlag = true;
 
         // idの設定
         plan.id = new Date().getTime();
@@ -378,8 +393,8 @@ function privatePlanAdd(){
         plan.time.start = $('#privateTimeStart').val();
         plan.time.end = $('#privateTimeEnd').val();
         plan.tag = selectTag;
-        plan.memo = $('#memo').val();
-        plan.studyFlag = false;
+        plan.memo = $('#privateMemo').val();
+        plan.learningFlag = false;
 
         // idの設定
         plan.id = new Date().getTime();
@@ -396,19 +411,19 @@ function privatePlanAdd(){
  * @param {array} plan 
  */
 function initModalForm(plan){
-    if(plan.studyFlag){
+    if(plan.learningFlag){
         $('#content').val('');
-        $('#studyDate').val('');
-        $('#studyTimeStart').val('');
-        $('#studyTimeEnd').val('');
-        $('#memo').val('');
+        $('#learningDate').val('');
+        $('#learningTimeStart').val('');
+        $('#learningTimeEnd').val('');
+        $('#learningMemo').val('');
     }else{
         $('#privateDate').val('');
         $('#privateTimeStart').val('');
         $('#privateTimeEnd').val('');
         $('#privateTimeEnd').val('');
         $('.tag').removeClass('active');
-        $('#memo').val('');
+        $('#privateMemo').val('');
     }
 }
 
@@ -471,19 +486,82 @@ function calenderPlanSet(plan){
     //予定を追加する対象行列に時間と予定名を追加
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plan.time.start + '<br>' + plan.content);   //学習内容を設定
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
-    
-    if(!plan.studyFlag){ //プライベートの予定の追加の場合
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass(plan.tag); //classを付与(タグ色)
-    }
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', plan.id); //idを付与
     $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('rowspan', rowspan);  //rowspanの設定
     //行の削除
     for(var j=0; j<deletetrNthChild.length; j++){ //削除する行分
-        $('.calender-table tbody tr:' + deletetrNthChild[j] + ' td:' + tdNthChild).remove(); //対象要素を削除
+        $('.calender-table tbody tr:' + deletetrNthChild[j] + ' td:' + tdNthChild).remove(); //対象要素を追加
+    }
+
+    if(!plan.learningFlag){ //プライベートの予定の追加の場合
+        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass(plan.tag); //classを付与(タグ色)
+        privatePlans.push(plan);
+    }else{
+        learningPlans.push(plan);
     }
 
     initModalForm(plan);
 
+}
+
+function calenderPlanRemove(plan){
+    var startHour = Number(plan.time.start.slice(0, plan.time.start.indexOf(":"))); //開始時
+    var startMinute = Number(plan.time.start.slice(plan.time.start.indexOf(":")+1, 5)); //開始分
+    startMinute = Math.floor(startMinute / 15) * 15; //開始分を15分刻みで切り捨て
+    var tdNthChild = ''; //どの曜日に予定を追加するかを設定 (例：nth-child(2) => 月曜日)
+    var trNthChild = ''; //どの時間に予定を追加するかを設定(例：nth-child(1) => 0時)
+    var rowspan = ''; //結合するマス数 (例：15分間 => 1)
+
+    /**
+     * どの列の予定を削除するか調整
+     */
+    var nthDay = new Date(plan.date).getDay(); //曜日(0:日曜, 1:月曜...)
+    if(nthDay == 0){ //日曜日の場合
+        tdNthChild = 'nth-child(' + 8 + ')'; //8列目(日曜日の列)に設定
+    }else{          //その他
+        tdNthChild = 'nth-child(' + Number(nthDay+1) + ')'; //曜日値 + 1列目に設定(例：月曜 => 1+1=2列目)
+    }
+
+    /**
+     * どの行の予定を削除するか調整 
+     */
+    var nthHour = (startHour-6) * 4 + 1; //例6時 => 1行目
+    nthHour += startMinute / 15; //例：30分 => +2行目
+    trNthChild = 'nth-child(' + nthHour + ')'; //例：0時30分 => 4行目 から予定を追加する
+
+    /**
+     * rowspanの設定
+     */ 
+    //終了時間 - 開始時間の分を取得(例：00:30〜01:00 => 30)
+    var endHour = Number(plan.time.end.slice(0, plan.time.end.indexOf(":")));
+    var endMinute = Number(plan.time.end.slice(plan.time.end.indexOf(":")+1, 5));
+    var gapMinute = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
+    rowspan = gapMinute / 15; //例：30分間 => 2行分結合する
+
+    /**
+     * 追加する行の設定(結合した分だけ行を追加する)
+     */
+    var addtrNthChild = []; //削除する行の配列
+    for(var i=1; i<rowspan; i++){ //rowspanした分だけ
+        addtrNthChild.push('nth-child(' + Number(nthHour+i) + ')'); //削除する行の情報を配列に格納
+    }
+
+    //予定を追加する対象行列に時間と予定名を追加
+    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html("");   //学習内容を設定
+    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass('add-plan'); //classを付与
+    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', ''); //idを付与
+    $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('rowspan', '');  //rowspanの設定
+
+    //行の追加
+    for(var j=0; j<addtrNthChild.length; j++){ //削除する行分
+        $('.calender-table tbody tr:' + addtrNthChild[j] + ' td:' + tdNthChild).after('<td class="calender-content">'); //対象要素を追加
+    }
+
+    if(!plan.learningFlag){ //プライベートの予定の追加の場合
+        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass(plan.tag); //classを付与(タグ色)
+    }
+
+    initModalForm(plan);
 }
 
 
@@ -491,43 +569,54 @@ function calenderPlanSet(plan){
  * 計画詳細表示
  */
 function planDetail(id){
-    for(var i=0; i<plans.length; i++){
-        if(plans[i].id == id){ //選択した計画データ一致
-            var plan = plans[i];
-            $('.plan-detail-modal-wrapper').addClass('is-visible');    //計画作成モーダル表示
+    for(var i=0; i<learningPlans.length; i++){
+        if(learningPlans[i].id == id){ //選択した計画データ一致
+            var plan = learningPlans[i];
+            $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
 
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
-                $('.plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
             });
 
+            // 学習リストの設定
+            for(var i=0; i<learningListData.length; i++){
+                if(learningListData[i].learningList == plan.content){
+                    $('<option selected>' + learningListData[i].learningList + '</option>').appendTo('#detailLearningContent');
+                }else{
+                    $('<option>' + learningListData[i].learningList + '</option>').appendTo('#detailLearningContent');
+                }
+            }
+
             // フォームの値セット
-            $('#detailcontent').val(plan.content);
-            $('#detaildate').val(plan.date);
-            $('#detailtimeStart').val(plan.time.start);
-            $('#detailtimeEnd').val(plan.time.end);
-            $('#detailMemo').val(plan.memo);
+            $('#detailLearningContent').val(plan.content);
+            $('#detailLearningDate').val(plan.date);
+            $('#detailLearningTimeStart').val(plan.time.start);
+            $('#detailLearningTimeEnd').val(plan.time.end);
+            $('#detailLearningMemo').val(plan.memo);
 
             // TODO: 予定編集処理
             // 編集ボタン押されたら
-            // $('.edit-button').click(function () {
-            //     $('.plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            $('.learning-edit-button').click(function () {
+                $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
-            //     //  入力内容の取得
-            //     editPlan.content = $('#detailcontent').val();
-            //     editPlan.date = $('#detaildate').val();
-            //     editPlan.time.start = $('#detailtimeStart').val();
-            //     editPlan.time.end = $('#detailtimeEnd').val();
-            //     editPlan.memo = $('#detailMemo').val();
-            //     // editPlan.id = id;
+                //  入力内容の取得
+                editPlan.content = $('#detailLearningContent').val();
+                editPlan.date = $('#detailLearningDate').val();
+                editPlan.time.start = $('#detailLearningTimeStart').val();
+                editPlan.time.end = $('#detailLearningTimeEnd').val();
+                editPlan.memo = $('#detailLearningMemo').val();
+                editPlan.learningFlag = true;
+                editPlan.id = new Date().getTime();
 
-            //     // カレンダーに編集前の予定を削除
-            //     calenderPlanSet(plan);
-            //     // カレンダーに編集後の予定を追加
-            //     // calenderPlanSet(editPlan);
+                // カレンダーに編集前の予定を削除
+                calenderPlanRemove(plan);
+                // カレンダーに編集後の予定を追加
+                calenderPlanSet(editPlan);
 
-            //     // TODO: DBに変更内容の編集
-            // });
+                // TODO: DBに変更内容の編集
+            });
+            break;
         }
     }
     

@@ -1,4 +1,4 @@
-<div class="plan-detail-modal-wrapper">
+<div class="learning-plan-detail-modal-wrapper">
     <div class="plan-modal">
         <!-- ヘッダー -->
         <div id="modal-header">
@@ -7,40 +7,40 @@
         </div>
         <!-- コンテンツ -->
         <div id="modal-content">
-            <!-- 学習内容 -->
-            <div class="form-group pmd-textfield">
-                <label for="detailStudyContent" class="control-label">
-                    学習内容
-                </label>
-                <input type="text" id="detailStudyContent" class="form-control" value="">
+            <!--学習内容 -->
+            <div class="form-group pmd-textfield">       
+                <label>学習内容</label>
+                <select class="select-simple form-control pmd-select2 learning-content" id="detailLearningContent">
+                    <option></option>
+                </select>
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">
-                <label for="detailStudyDate" class="control-label">
+                <label for="learningDate" class="control-label">
                     学習日
                 </label>
-                <input type="date" id="detailStudyDate" class="form-control" value="">
+                <input type="date" id="detailLearningDate" class="form-control">
             </div>
              <!-- 学習時間 -->
              <div class="form-group pmd-textfield">
-                <label for="detailStudyTimeStart" class="control-label">
+                <label for="learningTimeStart" class="control-label">
                     学習時間
                 </label>
                 <div style="display:flex;">
-                    <input type="time" id="detailStudyTimeStart" class="form-control" value="">
+                    <input type="time" id="detailLearningTimeStart" class="form-control">
                     <p style="margin:20px;">〜</p>
-                    <label for="detailStudyTimeEnd" class="control-label">
+                    <label for="learningTimeEnd" class="control-label">
                     </label>
-                    <input type="time" id="detailStudyTimeEnd" class="form-control" value="">
+                    <input type="time" id="detailLearningTimeEnd" class="form-control">
                 </div>
             </div>
             <!-- メモ -->
             <div class="form-group pmd-textfield">
                 <label class="control-label">メモ</label>
-                <textarea class="form-control" id="detailMemo" value=""></textarea>
+                <textarea class="form-control" id="detailLearningMemo"></textarea>
             </div>
             <!-- 追加ボタン -->
-            <div class="edit-button">
+            <div class="learning-edit-button">
                 <button class="mdl-button mdl-js-button mdl-button--raised">編集</button>
             </div>
         </div>

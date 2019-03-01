@@ -41,7 +41,7 @@
             <!-- メモ -->
             <div class="form-group pmd-textfield">
                 <label class="control-label">メモ</label>
-                <textarea class="form-control" id="memo"></textarea>
+                <textarea class="form-control" id="privateMemo"></textarea>
             </div>
             <!-- 追加ボタン -->
             <div class="private-add-button">

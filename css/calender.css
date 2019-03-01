@@ -159,3 +159,6 @@
     border-top: solid 0.3px #e4e3e3;
 }
 
+.calender-table tbody tr td:last-child{
+    border-right:none;
+}

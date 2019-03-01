@@ -66,7 +66,7 @@
       <!-- プライベートの予定作成モーダル -->
       <?php include ('./privatePlanCreateModal.php'); ?>
       <!-- 計画詳細モーダル -->
-      <?php include ('./planDetailModal.php'); ?>
+      <?php include ('./learningPlanDetailModal.php'); ?>
       <!-- 分析結果モーダル -->
       <?php include ('./analysisResultModal.php'); ?>
     </div>
