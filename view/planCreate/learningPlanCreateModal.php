@@ -10,7 +10,7 @@
             <!--学習内容 -->
             <div class="form-group pmd-textfield">       
                 <label>学習内容</label>
-                <select class="select-simple form-control pmd-select2 learning-content" id="content">
+                <select class="select-simple form-control pmd-select2 learning-content" id="learningContent">
                     <option></option>
                 </select>
             </div>
