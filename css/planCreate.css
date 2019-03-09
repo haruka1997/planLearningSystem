@@ -176,8 +176,7 @@
 .learning-plan-create-modal-wrapper,
 .private-plan-create-modal-wrapper,
 .learning-plan-detail-modal-wrapper,
-.analysis-result-modal-wrapper,
-.plan-check-modal-wrapper{
+.private-plan-detail-modal-wrapper{
     display: flex;
     justify-content: center;
     overflow: auto;
@@ -195,8 +194,7 @@
 .learning-plan-create-modal-wrapper.is-visible,
 .private-plan-create-modal-wrapper.is-visible,
 .learning-plan-detail-modal-wrapper.is-visible,
-.analysis-result-modal-wrapper.is-visible,
-.plan-check-modal-wrapper.is-visible{
+.private-plan-detail-modal-wrapper.is-visible{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;
@@ -242,7 +240,7 @@
 .learning-add-button,
 .private-add-button,
 .learning-edit-button,
-.check-button{
+.private-edit-button{
     text-align: center;
     margin: 10px;
 }

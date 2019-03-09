@@ -65,10 +65,10 @@
       <?php include ('./learningPlanCreateModal.php'); ?>
       <!-- プライベートの予定作成モーダル -->
       <?php include ('./privatePlanCreateModal.php'); ?>
-      <!-- 計画詳細モーダル -->
+      <!-- 学習計画詳細モーダル -->
       <?php include ('./learningPlanDetailModal.php'); ?>
-      <!-- 分析結果モーダル -->
-      <?php include ('./analysisResultModal.php'); ?>
+      <!-- プライベートの予定詳細モーダル -->
+      <?php include ('./privatePlanDetailModal.php'); ?>
     </div>
   </body>
 </html>

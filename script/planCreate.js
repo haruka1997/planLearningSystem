@@ -95,7 +95,12 @@ $(function(){
     $('.calender-content').click(function () {
         var id = $(this).attr("id");
         if(id !== undefined){   //計画詳細表示の場合
-            planDetail(id);   //計画詳細表示
+            var category = id.slice(0,1);
+            if(category === 'L'){
+                learningPlanDetail(id);   //学習計画詳細表示
+            }else{
+                privatePlanDetail(id);  // プライベートの予定詳細表示
+            }
         }
     });
 
@@ -356,7 +361,7 @@ function learningPlanAdd(){
         plan.learningFlag = true;
 
         // idの設定
-        plan.id = new Date().getTime();
+        plan.id = 'L' + new Date().getTime();
 
         // カレンダー初期化
         var beforeLearningPlans = JSON.parse(JSON.stringify(learningPlans));
@@ -407,7 +412,7 @@ function privatePlanAdd(){
         plan.learningFlag = false;
 
         // idの設定
-        plan.id = new Date().getTime();
+        plan.id = 'P' + new Date().getTime();
 
         // カレンダー初期化
         var beforePrivatePlans = JSON.parse(JSON.stringify(privatePlans));
@@ -590,9 +595,9 @@ function calenderPlanRemove(plans){
 
 
 /**
- * 計画詳細表示
+ * 学習計画詳細表示
  */
-function planDetail(id){
+function learningPlanDetail(id){
     for(var i=0; i<learningPlans.length; i++){
         if(learningPlans[i].id == id){ //選択した計画データ一致
             var plan = learningPlans[i];
@@ -631,7 +636,7 @@ function planDetail(id){
                 editPlan.time.end = $('#detailLearningTimeEnd').val();
                 editPlan.memo = $('#detailLearningMemo').val();
                 editPlan.learningFlag = true;
-                editPlan.id = new Date().getTime();
+                editPlan.id = 'L' + new Date().getTime();
 
                 // カレンダー初期化
                 var beforeLearningPlans = JSON.parse(JSON.stringify(learningPlans));
@@ -651,5 +656,60 @@ function planDetail(id){
             break;
         }
     }
-    
+}
+
+/**
+ * プライベートの予定詳細表示
+ */
+function privatePlanDetail(id){
+    console.log(id)
+    for(var i=0; i<privatePlans.length; i++){
+        if(privatePlans[i].id == id){ //選択した計画データ一致
+            var plan = privatePlans[i];
+            $('.private-plan-detail-modal-wrapper').addClass('is-visible');    //プライベートの予定詳細モーダル表示
+
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの値セット
+            $('#detailPrivateDate').val(plan.date);
+            $('#detailPrivateTimeStart').val(plan.time.start);
+            $('#detailPrivateTimeEnd').val(plan.time.end);
+            $('#detailPrivateMemo').val(plan.memo);
+            $('#' + plan.tag).addClass('active');
+
+            // TODO: 予定編集処理
+            // 編集ボタン押されたら
+            $('.private-edit-button').one("click", function () {
+                $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+
+                //  入力内容の取得
+                editPlan.date = $('#detailPrivateDate').val();
+                editPlan.time.start = $('#detailPrivateTimeStart').val();
+                editPlan.time.end = $('#detailPrivateTimeEnd').val();
+                editPlan.memo = $('#detailPrivateMemo').val();
+                editPlan.tag = selectTag;
+                editPlan.learningFlag = false;
+                editPlan.id = 'P' + new Date().getTime();
+
+                // カレンダー初期化
+                var beforePrivatePlans = JSON.parse(JSON.stringify(privatePlans));
+                calenderPlanRemove(beforePrivatePlans);
+
+                var afterPrivatePlans = JSON.parse(JSON.stringify(beforePrivatePlans));
+                afterPrivatePlans.splice(i,1);
+                afterPrivatePlans.push(editPlan);
+
+                // カレンダーセット
+                calenderPlanSet(afterPrivatePlans);
+                privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
+
+
+                // TODO: DBに変更内容の編集
+            });
+            break;
+        }
+    }
 }
