@@ -408,9 +408,21 @@ function privatePlanAdd(){
 
         // idの設定
         plan.id = new Date().getTime();
-        privatePlans.push(plan);
 
-        calenderPlanSet(privatePlans);
+        // カレンダー初期化
+        var beforePrivatePlans = JSON.parse(JSON.stringify(privatePlans));
+        calenderPlanRemove(beforePrivatePlans);
+
+        var afterPrivatePlans = JSON.parse(JSON.stringify(beforePrivatePlans));
+        afterPrivatePlans.push(plan);
+
+        // カレンダーセット
+        calenderPlanSet(afterPrivatePlans);
+        privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
+        
+        // privatePlans.push(plan);
+
+        // calenderPlanSet(privatePlans);
 
         // TODO: DBに予定追加
 
@@ -573,7 +585,6 @@ function calenderPlanRemove(plans){
             $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass(plans[plansIndex].tag); //classを付与(タグ色)
         }
 
-        // initModalForm(plans[plansIndex]);
     }
 }
 
