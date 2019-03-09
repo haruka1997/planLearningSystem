@@ -7,6 +7,8 @@
         </div>
         <!-- コンテンツ -->
         <div id="modal-content">
+             <!-- エラー -->
+             <div class="modal-error"></div>
             <!--学習内容 -->
             <div class="form-group pmd-textfield">       
                 <label>学習内容</label>

@@ -280,3 +280,9 @@
 .form-tag #green.active{
     background: #4CAF50;
 }
+
+.modal-error{
+    color: #EF6262;
+    margin-bottom: 10px;
+    font-size: 15px;
+}

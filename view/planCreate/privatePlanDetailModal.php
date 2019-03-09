@@ -7,6 +7,8 @@
         </div>
         <!-- コンテンツ -->
         <div id="modal-content">
+            <!-- エラー -->
+            <div class="modal-error"></div>
             <!-- 予定日 -->
             <div class="form-group pmd-textfield">
                 <label for="privateDate" class="control-label">
