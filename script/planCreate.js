@@ -216,7 +216,6 @@ function registLearningSatisfaction(){
 function learningSettingWindowInit(){
 
     flag.learningSettingWindowShowFlag = true;
-    // flag.learningListCreateWindowShowFlag = false;
     flag.planCreateWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
@@ -227,7 +226,6 @@ function learningSettingWindowInit(){
  */
 function planCreateWindowInit(){
     flag.planCreateWindowShowFlag = true;
-    // flag.learningListCreateWindowShowFlag = false;
     flag.learningSettingWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
