@@ -29,15 +29,11 @@
         <div class="planCreate-content">
             <div class="header-menu">
                 <button class="mdl-button mdl-js-button learning-setting-button">
-                ⑴ 学習の設定
-                </button>
-                <i class="material-icons">keyboard_arrow_right</i>
-                <button class="mdl-button mdl-js-button learning-list-create-button unselected">
-                ⑵ 学習リストの作成
+                学習の設定
                 </button>
                 <i class="material-icons">keyboard_arrow_right</i>
                 <button class="mdl-button mdl-js-button plan-create-button unselected">
-                ⑶ 計画の作成
+                計画の作成
                 </button>
             </div>
             <!-- 参考データ -->
@@ -45,10 +41,6 @@
             <!-- 学習の設定 -->
             <div id="learning-setting-content">
               <?php include ('./learningSetting.php'); ?>
-            </div>
-            <!-- 学習リストの作成 -->
-            <div id="learning-list-create-content">
-              <?php include ('./learningList.php'); ?>
             </div>
             <!-- 計画の作成 -->
             <div id="plan-create-content">

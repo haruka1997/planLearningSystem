@@ -23,19 +23,10 @@ var editPlan = {
     learningFlag: true
 };
 
-var learningListData = [
-    {learningList: '三角関数の問題を解く', time: '30分'},
-    {learningList: '弧度法の問題を解く', time: '60分'}
-];
-
 var flag = {
-    learningListOpenFlag: false,   // 学習リスト開閉フラグ
-    learningListDataSetFlag: false,    // 学習リストデータセットフラグ
     planReferenceOpenFlag: false,  // 学習計画参考データ開閉フラグ
     planReferenceChartSetFlag: false,  // 学習計画参考データグラフセット
-    learningListDataModalSetFlag: false,   // 学習計画の作成モーダルの学習リストデータセット
     learningSettingWindowShowFlag: true, // 学習の設定画面表示フラグ
-    learningListCreateWindowShowFlag: false,   // 学習リストの作成画面表示フラグ
     planCreateWindowShowFlag: false   // 計画の作成画面表示フラグ
 };
 
@@ -60,25 +51,12 @@ $(function(){
         // DB登録処理
 
         // 学習リストの作成画面に遷移
-        learningListCreateWindowInit();
-    });
-
-    // 学習リストの作成画面の登録ボタンが押されたら
-    $('.learning-list-regist-button').click(function (){
-        // DB登録処理
-
-        // 学習リストの作成画面に遷移
         planCreateWindowInit();
     });
 
     // 学習の設定ボタンが押されたら
     $('.learning-setting-button').click(function (){
         learningSettingWindowInit();
-    });
-
-    // 学習リストの作成ボタンが押されたら
-    $('.learning-list-create-button').click(function (){
-        learningListCreateWindowInit();
     });
 
     // 計画の作成ボタンが押されたら
@@ -107,26 +85,6 @@ $(function(){
                 privatePlanDetail(id);  // プライベートの予定詳細表示
             }
         }
-    });
-
-    // 学習リストボタンが押されたら
-    $('.learning-list-button').click(function(){
-        flag.learningListOpenFlag = !flag.learningListOpenFlag;
-        
-        if(flag.learningListOpenFlag){   //学習リスト開
-            $('.learning-list-button i').text('keyboard_arrow_down');
-            if(!flag.learningListDataSetFlag){
-                // 学習リストデータ出力
-                for(var i=0; i<learningListData.length; i++){
-                    $('<p>・' + learningListData[i].learningList + '(' + learningListData[i].time + ')</p>').appendTo('.reference-data-list .learning-list-item');
-                }
-                flag.learningListDataSetFlag = true;
-            }
-        }else{  //学習リスト閉
-            $('.learning-list-button i').text('keyboard_arrow_right');
-        }
-
-        $('.reference-data-list .learning-list-item').slideToggle();
     });
     
     // 学習計画参考データボタンが押されたら
@@ -262,18 +220,7 @@ function learningSatisfactionModal(){
 function learningSettingWindowInit(){
 
     flag.learningSettingWindowShowFlag = true;
-    flag.learningListCreateWindowShowFlag = false;
-    flag.planCreateWindowShowFlag = false;
-    referenceDataStateSet();
-    headerMenuStateSet();
-}
-
-/**
- * 学習リストの作成画面の初期化
- */
-function learningListCreateWindowInit(){
-    flag.learningListCreateWindowShowFlag = true;
-    flag.learningSettingWindowShowFlag = false;
+    // flag.learningListCreateWindowShowFlag = false;
     flag.planCreateWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
@@ -284,7 +231,7 @@ function learningListCreateWindowInit(){
  */
 function planCreateWindowInit(){
     flag.planCreateWindowShowFlag = true;
-    flag.learningListCreateWindowShowFlag = false;
+    // flag.learningListCreateWindowShowFlag = false;
     flag.learningSettingWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
@@ -296,23 +243,10 @@ function planCreateWindowInit(){
 function referenceDataStateSet(){
     if(flag.learningSettingWindowShowFlag){
         // 参考データ非表示
-        $('.learning-list-button').removeClass('show');
         $('.plan-reference-button').removeClass('show');
-    }else if(flag.learningListCreateWindowShowFlag){
-        // 学習計画参考データのみ表示
-        $('.learning-list-button').removeClass('show');
-        $('.plan-reference-button').addClass('show');
     }else{
         // 学習リストと学習計画参考データを表示
-        $('.learning-list-button').addClass('show');
         $('.plan-reference-button').addClass('show');
-    }
-
-    // 学習リストの表示初期化
-    if(flag.learningListOpenFlag){
-        flag.learningListOpenFlag = false;
-        $('.learning-list-button i').text('keyboard_arrow_right');
-        $('.reference-data-list .learning-list-item').css('display', 'none');
     }
 
     // 学習計画参考データの表示初期化
@@ -338,15 +272,6 @@ function headerMenuStateSet(){
         $('.learning-setting-button').addClass('unselected');  // 学習の設定ボタンを非選択状態にする
     } 
     
-    // 学習リストの作成画面が表示中なら
-    if(flag.learningListCreateWindowShowFlag){
-        $('#learning-list-create-content').addClass('show'); // 学習リストの作成画面を表示状態にする
-        $('.learning-list-create-button').removeClass('unselected');   // 学習リストの作成ボタンを選択状態にする
-    }else{
-        $('#learning-list-create-content').removeClass('show'); // 学習リストの作成画面を非表示状態にする
-        $('.learning-list-create-button').addClass('unselected');   // 学習リストの作成ボタンを非選択状態にする
-    }
-    
     // 計画の作成画面が表示中なら
     if(flag.planCreateWindowShowFlag){
         $('#plan-create-content').addClass('show');  // 計画の作成画面を表示状態にする
@@ -361,14 +286,6 @@ function headerMenuStateSet(){
  */
 function learningPlanAdd(){
     $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
-
-    // 学習内容のリスト表示
-    if(!flag.learningListDataModalSetFlag){
-        for(var i=0; i<learningListData.length; i++){
-            $('<option>' + learningListData[i].learningList + '</option>').appendTo('#learningContent');
-        }
-        flag.learningListDataModalSetFlag = true;
-    }
 
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
@@ -610,15 +527,6 @@ function learningPlanDetail(id){
             $('.header-cansel-button').click(function () {
                 $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
             });
-
-            // 学習リストの設定
-            for(var j=0; j<learningListData.length; j++){
-                if(learningListData[j].learningList == plan.content){
-                    $('<option selected>' + learningListData[j].learningList + '</option>').appendTo('#detailLearningContent');
-                }else{
-                    $('<option>' + learningListData[j].learningList + '</option>').appendTo('#detailLearningContent');
-                }
-            }
 
             // フォームの値セット
             $('#detailLearningContent').val(plan.content);
