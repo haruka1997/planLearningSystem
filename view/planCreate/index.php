@@ -61,6 +61,8 @@
             </div>
         </div>
       </main>
+      <!-- 学習満足度モーダル -->
+      <?php include ('./learningSatisfactionModal.php') ?>
       <!-- 学習計画作成モーダル -->
       <?php include ('./learningPlanCreateModal.php'); ?>
       <!-- プライベートの予定作成モーダル -->

@@ -48,6 +48,17 @@ var selectTag = '';
 
 $(function(){
 
+    // 学習満足度未入力だったら
+    if(true){
+
+        $('.learning-satisfaction-modal-wrapper').addClass('is-visible');    // 学習満足度モーダルの表示
+    
+        // 学習満足度の完了ボタンが押されたら
+        $('.learning-satisfaction-complete-button').click(function (){
+            registLearningSatisfaction();
+        })
+    }
+
     $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
 
     // 学習の設定画面の登録ボタンが押されたら
@@ -233,6 +244,15 @@ $(function(){
 });
 
 /**
+ * 学習満足度の登録
+ */
+function registLearningSatisfaction(){
+    console.log($('#learningSatisfaction').val());
+
+    // 学習満足度モーダルを閉じる
+    $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');
+}
+/**
  * 学習の設定画面の初期化
  */
 function learningSettingWindowInit(){
@@ -408,23 +428,6 @@ function privatePlanAdd(){
 
         // ダブルブッキングチェック
         planDubleBookingCheck(plan, plan.learningFlag, false);
-
-        // カレンダー初期化
-        // var beforePrivatePlans = JSON.parse(JSON.stringify(privatePlans));
-        // calenderPlanRemove(beforePrivatePlans);
-
-        // var afterPrivatePlans = JSON.parse(JSON.stringify(beforePrivatePlans));
-        // afterPrivatePlans.push(plan);
-
-        // // カレンダーセット
-        // calenderPlanSet(afterPrivatePlans);
-        // privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
-        
-        // privatePlans.push(plan);
-
-        // calenderPlanSet(privatePlans);
-
-        // TODO: DBに予定追加
 
     });
 }
@@ -635,21 +638,6 @@ function learningPlanDetail(id){
 
                 // ダブルブッキングチェック
                 planDubleBookingCheck(editPlan, editPlan.learningFlag, i);
-
-                // // カレンダー初期化
-                // var beforeLearningPlans = JSON.parse(JSON.stringify(learningPlans));
-                // calenderPlanRemove(beforeLearningPlans);
-
-                // var afterLearningPlans = JSON.parse(JSON.stringify(beforeLearningPlans));
-                // afterLearningPlans.splice(i,1);
-                // afterLearningPlans.push(editPlan);
-
-                // // カレンダーセット
-                // calenderPlanSet(afterLearningPlans);
-                // learningPlans = JSON.parse(JSON.stringify(afterLearningPlans));
-
-
-                // TODO: DBに変更内容の編集
             });
             break;
         }
@@ -693,18 +681,6 @@ function privatePlanDetail(id){
 
                 // ダブルブッキングチェック
                 planDubleBookingCheck(editPlan, editPlan.learningFlag, i);
-
-                // カレンダー初期化
-                // var beforePrivatePlans = JSON.parse(JSON.stringify(privatePlans));
-                // calenderPlanRemove(beforePrivatePlans);
-
-                // var afterPrivatePlans = JSON.parse(JSON.stringify(beforePrivatePlans));
-                // afterPrivatePlans.splice(i,1);
-                // afterPrivatePlans.push(editPlan);
-
-                // // カレンダーセット
-                // calenderPlanSet(afterPrivatePlans);
-                // privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
 
             });
             break;
