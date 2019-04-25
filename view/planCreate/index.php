@@ -29,11 +29,11 @@
         <div class="planCreate-content">
             <div class="header-menu">
                 <button class="mdl-button mdl-js-button learning-setting-button">
-                ⑴ 学習の設定
+                学習の設定
                 </button>
                 <i class="material-icons">keyboard_arrow_right</i>
                 <button class="mdl-button mdl-js-button plan-create-button unselected">
-                ⑶ 計画の作成
+                計画の作成
                 </button>
             </div>
             <!-- 参考データ -->
