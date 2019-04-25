@@ -50,13 +50,7 @@ $(function(){
 
     // 学習満足度未入力だったら
     if(true){
-
-        $('.learning-satisfaction-modal-wrapper').addClass('is-visible');    // 学習満足度モーダルの表示
-    
-        // 学習満足度の完了ボタンが押されたら
-        $('.learning-satisfaction-complete-button').click(function (){
-            registLearningSatisfaction();
-        })
+        learningSatisfactionModal();
     }
 
     $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
@@ -246,11 +240,21 @@ $(function(){
 /**
  * 学習満足度の登録
  */
-function registLearningSatisfaction(){
-    console.log($('#learningSatisfaction').val());
+function learningSatisfactionModal(){
 
-    // 学習満足度モーダルを閉じる
-    $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');
+    $('.learning-satisfaction-modal-wrapper').addClass('is-visible');    // 学習満足度モーダルの表示
+
+    // キャンセルボタン押されたら
+    $('.header-cansel-button').click(function () {
+        $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+    });
+
+    // 完了ボタンが押されたら
+    $('.learning-satisfaction-complete-button').click(function (){
+        console.log($('#learningSatisfaction').val());
+         // 学習満足度モーダルを閉じる
+        $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');
+    });    
 }
 /**
  * 学習の設定画面の初期化
