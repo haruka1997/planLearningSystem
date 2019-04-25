@@ -143,21 +143,24 @@ $(function(){
                                 data: [100, 90, 60, 70, 80, 100],
                                 backgroundColor: "#1E88E5",
                                 borderColor: '#64B5F6',
-                                fill: false
+                                fill: false,
+                                lineTension: 0
                             },
                             {
                                 label: '目標達成率',
                                 data: [90, 80, 50, 40, 80, 90],
                                 backgroundColor: "#D81B60",
                                 borderColor: '#F06292',
-                                fill: false
+                                fill: false,
+                                lineTension: 0
                             },
                             {
                                 label: '学習満足率',
                                 data: [80, 70, 50, 30, 20, 90],
                                 backgroundColor: "#C0CA33",
                                 borderColor: '#DCE775',
-                                fill: false
+                                fill: false,
+                                lineTension: 0
                             }
                         ],
                     },
