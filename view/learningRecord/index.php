@@ -9,12 +9,10 @@
     <link rel="stylesheet" href="./../../css/main.css">
     <link rel="stylesheet" href="./../../css/planCreate.css">
     <link rel="stylesheet" href="./../../css/calender.css">
-    <link rel="stylesheet" href="./../../css/planModal.css">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="./../../script/header.js"></script>
     <script type="text/javascript" src="./../../script/learningRecord.js"></script>
-    <script type="text/javascript" src="./../../script/planModal.js"></script>
 
   </head>
   <body>
@@ -27,22 +25,16 @@
       <main class="mdl-layout__content">
         <!-- 学習記録追加画面 -->
         <div class="planCreate-content">
-            <!-- 計画実施率 -->
-            <div class="planProgress">
-                <div class="progress-rounded progress">
-                    <label class="progress-title">計画実施率：</label>
-                    <div class="progress-bar progress-bar-success" style="width: 34%;"></div>
-                    <label class="progress-persent">30%</label>
-                </div>
-            </div>
-            <!-- カレンダ -->
-            <?php include ('./../common/calender.php'); ?>
+        <!-- カレンダ -->
+        <?php include ('./../common/calender.php'); ?>
+        <div class="floating-action-button">
+          <button class="mdl-button mdl-js-button mdl-button--fab" id="add-learning-record" type="button" title="学習の記録追加"><i class="material-icons pmd-sm">create</i></button>
         </div>
       </main>
       <!-- 学習記録追加モーダル -->
-      <?php include ('./recordAddModal.php'); ?>
-      <!-- 学習計画完了モーダル -->
-      <?php include ('./planCheckModal.php'); ?>
+      <?php include ('./learningRecordCreateModal.php'); ?>
+      <!-- 学習記録詳細モーダル -->
+      <?php include ('./learningRecordDetailModal.php'); ?>
     </div>
   </body>
 </html>

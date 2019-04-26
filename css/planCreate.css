@@ -177,7 +177,9 @@
 .private-plan-create-modal-wrapper,
 .learning-plan-detail-modal-wrapper,
 .private-plan-detail-modal-wrapper,
-.learning-satisfaction-modal-wrapper{
+.learning-satisfaction-modal-wrapper,
+.learning-record-create-modal-wrapper,
+.learning-record-detail-modal-wrapper{
     display: flex;
     justify-content: center;
     overflow: auto;
@@ -196,7 +198,9 @@
 .private-plan-create-modal-wrapper.is-visible,
 .learning-plan-detail-modal-wrapper.is-visible,
 .private-plan-detail-modal-wrapper.is-visible,
-.learning-satisfaction-modal-wrapper.is-visible{
+.learning-satisfaction-modal-wrapper.is-visible,
+.learning-record-create-modal-wrapper.is-visible,
+.learning-record-detail-modal-wrapper.is-visible{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;

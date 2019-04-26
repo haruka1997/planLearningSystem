@@ -448,6 +448,8 @@ function calenderPlanSet(plans){
         initModalForm(plans[plansIndex].learningFlag);
     }
 
+    console.log(plans);
+
 }
 
 function calenderPlanRemove(plans){
