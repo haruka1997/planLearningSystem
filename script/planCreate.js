@@ -31,13 +31,17 @@ var flag = {
 };
 
 var learningPlans = [], // 登録された学習計画
-    privatePlans = [];  // 登録されたプライベート予定
+    privatePlans = [],  // 登録されたプライベート予定
+    displayPlans = []; // 表示する予定
 
 
 // 選択されたタグ色
 var selectTag = '';
 
 $(function(){
+
+    // html読み込み
+    initCalenderHtml();
 
     // 学習満足度未入力だったら
     if(true){
@@ -75,7 +79,7 @@ $(function(){
     });
 
     // カレンダー内を押されたら
-    $('.calender-content').click(function () {
+    $(document).on("click", ".calender-content", function () {
         var id = $(this).attr("id");
         if(id !== undefined){   //計画詳細表示の場合
             var category = id.slice(0,1);
@@ -402,9 +406,8 @@ function calenderPlanSet(plans){
          */
         var nthDay = new Date(plans[plansIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
         if(nthDay == 0){ //日曜日の場合
-            tdNthChild = 'nth-child(' + 8 + ')'; //8列目(日曜日の列)に設定
-        }else{          //その他
-            tdNthChild = 'nth-child(' + Number(nthDay+1) + ')'; //曜日値 + 1列目に設定(例：月曜 => 1+1=2列目)
+            // tdNthChild = 'nth-child(' + 8 + ')'; //8列目(日曜日の列)に設定
+            nthDay = 7;
         }
 
         /**
@@ -441,6 +444,14 @@ function calenderPlanSet(plans){
             startMinute = '0' + startMinute;
         }
 
+        var calenderContent = $('.calender-table tbody tr:' + trNthChild)[0].childNodes;
+        for(var i=1; i<calenderContent.length; i++){
+            if(calenderContent[i].classList[1] == nthDay){
+                tdNthChild = 'nth-child(' + Number(i+1) + ')';
+                break;
+            }
+        }
+
         //予定を追加する対象行列に時間と予定名を追加
         $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(plans[plansIndex].time.start + '<br>' + plans[plansIndex].content);   //学習内容を設定
         $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
@@ -461,65 +472,12 @@ function calenderPlanSet(plans){
 
 }
 
-function calenderPlanRemove(plans){
-    for(var plansIndex=0; plansIndex<plans.length; plansIndex++){
-        var startHour = Number(plans[plansIndex].time.start.slice(0, plans[plansIndex].time.start.indexOf(":"))); //開始時
-        var startMinute = Number(plans[plansIndex].time.start.slice(plans[plansIndex].time.start.indexOf(":")+1, 5)); //開始分
-        startMinute = Math.floor(startMinute / 15) * 15; //開始分を15分刻みで切り捨て
-        var tdNthChild = ''; //どの曜日に予定を追加するかを設定 (例：nth-child(2) => 月曜日)
-        var trNthChild = ''; //どの時間に予定を追加するかを設定(例：nth-child(1) => 0時)
-        var rowspan = ''; //結合するマス数 (例：15分間 => 1)
-
-        /**
-         * どの列の予定を削除するか調整
-         */
-        var nthDay = new Date(plans[plansIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
-        if(nthDay == 0){ //日曜日の場合
-            tdNthChild = 'nth-child(' + 8 + ')'; //8列目(日曜日の列)に設定
-        }else{          //その他
-            tdNthChild = 'nth-child(' + Number(nthDay+1) + ')'; //曜日値 + 1列目に設定(例：月曜 => 1+1=2列目)
-        }
-
-        /**
-         * どの行の予定を削除するか調整 
-         */
-        var nthHour = (startHour-6) * 4 + 1; //例6時 => 1行目
-        nthHour += startMinute / 15; //例：30分 => +2行目
-        trNthChild = 'nth-child(' + nthHour + ')'; //例：0時30分 => 4行目 から予定を追加する
-
-        /**
-         * rowspanの設定
-         */ 
-        //終了時間 - 開始時間の分を取得(例：00:30〜01:00 => 30)
-        var endHour = Number(plans[plansIndex].time.end.slice(0, plans[plansIndex].time.end.indexOf(":")));
-        var endMinute = Number(plans[plansIndex].time.end.slice(plans[plansIndex].time.end.indexOf(":")+1, 5));
-        var gapMinute = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
-        rowspan = gapMinute / 15; //例：30分間 => 2行分結合する
-
-        /**
-         * 追加する行の設定(結合した分だけ行を追加する)
-         */
-        var addtrNthChild = []; //削除する行の配列
-        for(var i=1; i<rowspan; i++){ //rowspanした分だけ
-            addtrNthChild.push('nth-child(' + Number(nthHour+i) + ')'); //削除する行の情報を配列に格納
-        }
-
-        //予定を追加する対象行列に時間と予定名を追加
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html("");   //学習内容を設定
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass('add-plan'); //classを付与
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', ''); //idを付与
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('rowspan', '');  //rowspanの設定
-
-        //行の追加
-        for(var j=0; j<addtrNthChild.length; j++){ //削除する行分
-            $('.calender-table tbody tr:' + addtrNthChild[j] + ' td:' + tdNthChild).after('<td class="calender-content">'); //対象要素を追加
-        }
-
-        if(!plans[plansIndex].learningFlag){ //プライベートの予定の追加の場合
-            $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass(plans[plansIndex].tag); //classを付与(タグ色)
-        }
-
+function initCalenderHtml(){
+    if($("#plan-create-content").find('.calender')){
+        $(".calender").remove();
     }
+    var calender = require('./../view/common/calender.html');
+    $("#plan-create-content").append(calender);
 }
 
 
@@ -656,14 +614,16 @@ function planDubleBookingCheck(plan, id){
 
 function planDataSet(plan, learningFlag, editFlag){
     if(learningFlag){
-        var beforeLearningPlans = JSON.parse(JSON.stringify(learningPlans));
-        calenderPlanRemove(beforeLearningPlans);
+        
+        initCalenderHtml();
 
-        var afterLearningPlans = JSON.parse(JSON.stringify(beforeLearningPlans));
+        var afterLearningPlans = JSON.parse(JSON.stringify(learningPlans));
         if(editFlag !== false){
             afterLearningPlans.splice(Number(editFlag),1);
         }
         afterLearningPlans.push(plan);
+
+        displayPlans = afterLearningPlans.concat(privatePlans);
 
         // カレンダーセット
         calenderPlanSet(afterLearningPlans);
@@ -676,17 +636,19 @@ function planDataSet(plan, learningFlag, editFlag){
         }
 
     }else{
-        var beforePrivatePlans = JSON.parse(JSON.stringify(privatePlans));
-        calenderPlanRemove(beforePrivatePlans);
 
-        var afterPrivatePlans = JSON.parse(JSON.stringify(beforePrivatePlans));
+        initCalenderHtml();
+
+        var afterPrivatePlans = JSON.parse(JSON.stringify(privatePlans));
         if(editFlag !== false){
             afterPrivatePlans.splice(Number(editFlag),1);
         }
         afterPrivatePlans.push(plan);
 
+        displayPlans = afterPrivatePlans.concat(learningPlans);
+
         // カレンダーセット
-        calenderPlanSet(afterPrivatePlans);
+        calenderPlanSet(displayPlans);
         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
 
         if(editFlag === false){
