@@ -71,7 +71,13 @@ function learningRecordAdd(){
         record.id = 'R' + new Date().getTime();
 
         // ダブルブッキングチェック
-        recordDubleBookingCheck(record, false);
+        var doubleBookingFlag = recordDubleBookingCheck(editRecord, record.id);
+
+        if(doubleBookingFlag){
+            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+        }else{
+            recordDataSet(record, false);
+        }
 
     });
 }
@@ -230,7 +236,6 @@ function calenderItemRemove(items){
  * 学習記録詳細表示
  */
 function learningRecordDetail(id){
-    console.log(id);
     for(var i=0; i<learningRecords.length; i++){
         if(learningRecords[i].id == id){ //選択した計画データ一致
             var record = learningRecords[i];
@@ -260,10 +265,20 @@ function learningRecordDetail(id){
                 editRecord.time.end = $('#detailLearningTimeEnd').val();
                 editRecord.memo = $('#detailLearningMemo').val();
                 editRecord.learningFlag = true;
+<<<<<<< HEAD
                 editRecord.id = 'R' + new Date().getTime();
+=======
+>>>>>>> fix/double-booking-check
 
                 // ダブルブッキングチェック
-                recordDubleBookingCheck(editRecord, i);
+                var doubleBookingFlag = recordDubleBookingCheck(editRecord, id);
+
+                if(doubleBookingFlag){
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }else{
+                    editRecord.id = 'R' + new Date().getTime();
+                    recordDataSet(editRecord, i);
+                }
             });
             break;
         }
@@ -271,29 +286,22 @@ function learningRecordDetail(id){
 }
 
 
-function recordDubleBookingCheck(record, editFlag){
-    var doubleBookingFlag = undefined;
+function recordDubleBookingCheck(record, id){
+    var doubleBookingFlag = false;
     // 学習計画とのダブりチェック
     for(var learningIndex = 0; learningIndex < learningRecords.length; learningIndex++){
-        if(learningRecords[learningIndex].date == record.date){
-            // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-            if((learningRecords[learningIndex].time.start < record.time.start && learningRecords[learningIndex].time.end > record.time.start)
-            || (learningRecords[learningIndex].time.start < record.time.end && learningRecords[learningIndex].time.end > record.time.end)){
-                doubleBookingFlag = true;
-                break;
-            }else{
-                doubleBookingFlag = false;
+        if(id !== learningRecords[learningIndex].id){
+            if(learningRecords[learningIndex].date == record.date){
+                // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                if((learningRecords[learningIndex].time.start < record.time.start && learningRecords[learningIndex].time.end > record.time.start)
+                || (learningRecords[learningIndex].time.start < record.time.end && learningRecords[learningIndex].time.end > record.time.end)){
+                    doubleBookingFlag = true;
+                    break;
+                }
             }
-        }else{
-            doubleBookingFlag = false;
         }
-    } 
-
-    if(doubleBookingFlag){
-        $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-    }else{
-        recordDataSet(record, editFlag);
     }
+    return doubleBookingFlag; 
 }
 
 function recordDataSet(record, editFlag){
