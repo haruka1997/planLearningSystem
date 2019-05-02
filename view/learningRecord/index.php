@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="./../../css/main.css">
     <link rel="stylesheet" href="./../../css/planCreate.css">
+    <link rel="stylesheet" href="./../../css/learningRecord.css">
     <link rel="stylesheet" href="./../../css/calender.css">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
