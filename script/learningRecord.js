@@ -23,38 +23,11 @@ var editRecord = {
     learningFlag: true
 };
 
-var learningPlans = []; // 登録された学習計画
 var learningRecords = []; // 登録された学習記録
-
-learningPlans.push({
-    content: "演習問題",
-    date: "2019-04-24",
-    id: "L1556248172784",
-    learningFlag: true,
-    memo: "",
-    tag: "",
-    time: {
-        end: "10:00",
-        start: "09:00"
-    }
-},{
-    content: "教科書",
-    date: "2019-04-26",
-    id: "L1556248186185",
-    learningFlag: true,
-    memo: "",
-    tag: "",
-    time: {
-        end: "12:00",
-        start: "10:00"
-    }
-});
 
 $(function(){
 
-    calenderItemSet(learningPlans);
-
-    // 学習の計画追加ボタンを押されたら
+    // 学習の記録追加ボタンを押されたら
     $('#add-learning-record').click(function (){
         learningRecordAdd();
     });
@@ -262,7 +235,7 @@ function learningRecordDetail(id){
         if(learningRecords[i].id == id){ //選択した計画データ一致
             var record = learningRecords[i];
 
-            $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
+            $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習記録詳細モーダル表示
 
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
@@ -287,7 +260,7 @@ function learningRecordDetail(id){
                 editRecord.time.end = $('#detailLearningTimeEnd').val();
                 editRecord.memo = $('#detailLearningMemo').val();
                 editRecord.learningFlag = true;
-                editRecord.id = 'L' + new Date().getTime();
+                editRecord.id = 'R' + new Date().getTime();
 
                 // ダブルブッキングチェック
                 recordDubleBookingCheck(editRecord, i);
