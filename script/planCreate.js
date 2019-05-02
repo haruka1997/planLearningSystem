@@ -546,7 +546,7 @@ function planDataSet(plan, learningFlag, editFlag){
         
         // カレンダーセット
         calenderItemSet.set(displayPlans);
-        // calenderPlanSet(displayPlans);
+
         learningPlans = JSON.parse(JSON.stringify(afterLearningPlans));
 
         if(editFlag === false){
@@ -569,7 +569,7 @@ function planDataSet(plan, learningFlag, editFlag){
 
         // カレンダーセット
         calenderPlanSet.set(displayPlans);
-        // calenderPlanSet(displayPlans);
+        
         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
 
         if(editFlag === false){
