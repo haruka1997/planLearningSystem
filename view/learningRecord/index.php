@@ -12,7 +12,7 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="./../../script/header.js"></script>
-    <script type="text/javascript" src="./../../script/learningRecord.js"></script>
+    <script type="text/javascript" src="./../../dist/learningRecord.bundle.js"></script>
 
   </head>
   <body>
@@ -24,9 +24,7 @@
       <!-- コンテンツ -->
       <main class="mdl-layout__content">
         <!-- 学習記録追加画面 -->
-        <div class="planCreate-content">
-        <!-- カレンダ -->
-        <?php include ('./../common/calender.php'); ?>
+        <div id="record-create-content">
         <div class="floating-action-button">
           <button class="mdl-button mdl-js-button mdl-button--fab" id="add-learning-record" type="button" title="学習の記録追加"><i class="material-icons pmd-sm">create</i></button>
         </div>

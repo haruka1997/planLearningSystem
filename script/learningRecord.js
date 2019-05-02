@@ -27,13 +27,15 @@ var learningRecords = []; // 登録された学習記録
 
 $(function(){
 
+    initCalenderHtml();
+
     // 学習の記録追加ボタンを押されたら
     $('#add-learning-record').click(function (){
         learningRecordAdd();
     });
 
     // カレンダー内を押されたら
-    $('.calender-content').click(function () {
+    $(document).on("click", ".calender-content", function () {
         var id = $(this).attr("id");
         if(id !== undefined){   //計画詳細表示の場合
             var category = id.slice(0,1);
@@ -171,67 +173,6 @@ function calenderItemSet(items){
 
 }
 
-function calenderItemRemove(items){
-    for(var itemsIndex=0; itemsIndex<items.length; itemsIndex++){
-        var startHour = Number(items[itemsIndex].time.start.slice(0, items[itemsIndex].time.start.indexOf(":"))); //開始時
-        var startMinute = Number(items[itemsIndex].time.start.slice(items[itemsIndex].time.start.indexOf(":")+1, 5)); //開始分
-        startMinute = Math.floor(startMinute / 15) * 15; //開始分を15分刻みで切り捨て
-        var tdNthChild = ''; //どの曜日に予定を追加するかを設定 (例：nth-child(2) => 月曜日)
-        var trNthChild = ''; //どの時間に予定を追加するかを設定(例：nth-child(1) => 0時)
-        var rowspan = ''; //結合するマス数 (例：15分間 => 1)
-
-        /**
-         * どの列の予定を削除するか調整
-         */
-        var nthDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
-        if(nthDay == 0){ //日曜日の場合
-            tdNthChild = 'nth-child(' + 8 + ')'; //8列目(日曜日の列)に設定
-        }else{          //その他
-            tdNthChild = 'nth-child(' + Number(nthDay+1) + ')'; //曜日値 + 1列目に設定(例：月曜 => 1+1=2列目)
-        }
-
-        /**
-         * どの行の予定を削除するか調整 
-         */
-        var nthHour = (startHour-6) * 4 + 1; //例6時 => 1行目
-        nthHour += startMinute / 15; //例：30分 => +2行目
-        trNthChild = 'nth-child(' + nthHour + ')'; //例：0時30分 => 4行目 から予定を追加する
-
-        /**
-         * rowspanの設定
-         */ 
-        //終了時間 - 開始時間の分を取得(例：00:30〜01:00 => 30)
-        var endHour = Number(items[itemsIndex].time.end.slice(0, items[itemsIndex].time.end.indexOf(":")));
-        var endMinute = Number(items[itemsIndex].time.end.slice(items[itemsIndex].time.end.indexOf(":")+1, 5));
-        var gapMinute = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
-        rowspan = gapMinute / 15; //例：30分間 => 2行分結合する
-
-        /**
-         * 追加する行の設定(結合した分だけ行を追加する)
-         */
-        var addtrNthChild = []; //削除する行の配列
-        for(var i=1; i<rowspan; i++){ //rowspanした分だけ
-            addtrNthChild.push('nth-child(' + Number(nthHour+i) + ')'); //削除する行の情報を配列に格納
-        }
-
-        //予定を追加する対象行列に時間と予定名を追加
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html("");   //学習内容を設定
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass('add-plan'); //classを付与
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', ''); //idを付与
-        $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('rowspan', '');  //rowspanの設定
-
-        //行の追加
-        for(var j=0; j<addtrNthChild.length; j++){ //削除する行分
-            $('.calender-table tbody tr:' + addtrNthChild[j] + ' td:' + tdNthChild).after('<td class="calender-content">'); //対象要素を追加
-        }
-
-        if(!items[itemsIndex].learningFlag){ //プライベートの予定の追加の場合
-            $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).removeClass(items[itemsIndex].tag); //classを付与(タグ色)
-        }
-
-    }
-}
-
 /**
  * 学習記録詳細表示
  */
@@ -300,19 +241,26 @@ function recordDubleBookingCheck(record, id){
     return doubleBookingFlag; 
 }
 
-function recordDataSet(record, editFlag){
-    var beforelearningRecords = JSON.parse(JSON.stringify(learningRecords));
-    calenderItemRemove(beforelearningRecords);
-
-    var afterlearningRecords = JSON.parse(JSON.stringify(beforelearningRecords));
-    if(editFlag !== false){
-        afterlearningRecords.splice(Number(editFlag),1);
+function initCalenderHtml(){
+    if($("#record-create-content").find('.calender')){
+        $(".calender").remove();
     }
-    afterlearningRecords.push(record);
+    var calender = require('./../view/common/calender.html');
+    $("#record-create-content").append(calender);
+}
+
+function recordDataSet(record, editFlag){
+    initCalenderHtml();
+
+    var afterLearningRecords = JSON.parse(JSON.stringify(learningRecords));
+    if(editFlag !== false){
+        afterLearningRecords.splice(Number(editFlag),1);
+    }
+    afterLearningRecords.push(record);
 
     // カレンダーセット
-    calenderItemSet(afterlearningRecords);
-    learningRecords = JSON.parse(JSON.stringify(afterlearningRecords));
+    calenderItemSet(afterLearningRecords);
+    learningRecords = JSON.parse(JSON.stringify(afterLearningRecords));
 
     if(editFlag === false){
         $('.learning-record-create-modal-wrapper').removeClass('is-visible');
