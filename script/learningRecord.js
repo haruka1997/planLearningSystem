@@ -265,10 +265,6 @@ function learningRecordDetail(id){
                 editRecord.time.end = $('#detailLearningTimeEnd').val();
                 editRecord.memo = $('#detailLearningMemo').val();
                 editRecord.learningFlag = true;
-<<<<<<< HEAD
-                editRecord.id = 'R' + new Date().getTime();
-=======
->>>>>>> fix/double-booking-check
 
                 // ダブルブッキングチェック
                 var doubleBookingFlag = recordDubleBookingCheck(editRecord, id);

@@ -624,9 +624,9 @@ function planDataSet(plan, learningFlag, editFlag){
         afterLearningPlans.push(plan);
 
         displayPlans = afterLearningPlans.concat(privatePlans);
-
+        
         // カレンダーセット
-        calenderPlanSet(afterLearningPlans);
+        calenderPlanSet(displayPlans);
         learningPlans = JSON.parse(JSON.stringify(afterLearningPlans));
 
         if(editFlag === false){
