@@ -568,7 +568,7 @@ function planDataSet(plan, learningFlag, editFlag){
         displayPlans = afterPrivatePlans.concat(learningPlans);
 
         // カレンダーセット
-        calenderPlanSet.set(displayPlans);
+        calenderItemSet.set(displayPlans);
         
         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
 
