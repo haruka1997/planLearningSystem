@@ -315,10 +315,10 @@ function learningPlanAdd(){
         var doubleBookingFlag = planDubleBookingCheck(plan, plan.id);
 
         if(doubleBookingFlag){
-            $('.2000').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
             // モーダルを1秒後に閉じる
             $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible');
+                $(this).removeClass('is-visible').dequeue();
                  // モーダル初期化
                 initModalForm(plan.learningFlag);
             });
@@ -367,10 +367,10 @@ function privatePlanAdd(){
         var doubleBookingFlag = planDubleBookingCheck(plan, plan.id);
 
         if(doubleBookingFlag){
-            $('.2000').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
              // モーダルを1秒後に閉じる
              $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible');
+                $(this).removeClass('is-visible').dequeue();
                 // モーダル初期化
                 initModalForm(plan.learningFlag);
             });
@@ -449,10 +449,10 @@ function learningPlanDetail(id){
                 var doubleBookingFlag = planDubleBookingCheck(editPlan, id);
 
                 if(doubleBookingFlag){
-                    $('.2000').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
                     $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
-                        $(this).removeClass('is-visible');
+                        $(this).removeClass('is-visible').dequeue();
                         // モーダル初期化
                         initModalForm(editPlan.learningFlag);
                     });
@@ -505,10 +505,10 @@ function privatePlanDetail(id){
                 var doubleBookingFlag = planDubleBookingCheck(editPlan, id);
 
                 if(doubleBookingFlag){
-                    $('.2000').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
                     $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
-                        $(this).removeClass('is-visible');
+                        $(this).removeClass('is-visible').dequeue();
                         // モーダル初期化
                         initModalForm(editPlan.learningFlag);
                     });

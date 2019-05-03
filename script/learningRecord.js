@@ -82,7 +82,7 @@ function learningRecordAdd(){
             $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
             // モーダルを1秒後に閉じる
             $('.learning-record-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible');
+                $(this).removeClass('is-visible').dequeue();
                 // モーダル初期化
                 initModalForm(record.learningFlag);
             });
@@ -102,7 +102,7 @@ function initModalForm(){
     $('#learningTimeStart').val('');
     $('#learningTimeEnd').val('');
     $('#learningMemo').val('');
-    $('.2000').text('');
+    $('.modal-error').text('');
 }
 
 /**
@@ -143,10 +143,10 @@ function learningRecordDetail(id){
                 var doubleBookingFlag = recordDubleBookingCheck(editRecord, id);
 
                 if(doubleBookingFlag){
-                    $('.2000').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
                     $('.learning-record-detail-modal-wrapper').delay(2000).queue(function(){
-                        $(this).removeClass('is-visible');
+                        $(this).removeClass('is-visible').dequeue();
                         // モーダル初期化
                         initModalForm(editRecord.learningFlag);
                     });
