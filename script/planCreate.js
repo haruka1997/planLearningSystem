@@ -294,7 +294,7 @@ function learningPlanAdd(){
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        calenderItemSet.initModalForm(true);
+        initModalForm(true);
     });
 
     // 追加ボタン押されたら
