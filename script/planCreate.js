@@ -531,7 +531,8 @@ function planDubleBookingCheck(plan, id){
             if(learningPlans[learningIndex].date == plan.date){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
                 if((learningPlans[learningIndex].time.start < plan.time.start && learningPlans[learningIndex].time.end > plan.time.start)
-                || (learningPlans[learningIndex].time.start < plan.time.end && learningPlans[learningIndex].time.end > plan.time.end)){
+                || (learningPlans[learningIndex].time.start < plan.time.end && learningPlans[learningIndex].time.end > plan.time.end)
+                || (learningPlans[learningIndex].time.start == plan.time.start && learningPlans[learningIndex].time.end == plan.time.end)){
                     doubleBookingFlag = true;
                     break;
                 }
@@ -545,7 +546,8 @@ function planDubleBookingCheck(plan, id){
             if(privatePlans[privateIndex].date == plan.date){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
                 if((privatePlans[privateIndex].time.start < plan.time.start && privatePlans[privateIndex].time.end > plan.time.start)
-                || (privatePlans[privateIndex].time.start < plan.time.end && privatePlans[privateIndex].time.end > plan.time.end)){
+                || (privatePlans[privateIndex].time.start < plan.time.end && privatePlans[privateIndex].time.end > plan.time.end)
+                || (privatePlans[privateIndex].time.start == plan.time.start && privatePlans[privateIndex].time.end == plan.time.end)){
                     doubleBookingFlag = true;
                     break;
                 }

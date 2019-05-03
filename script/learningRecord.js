@@ -169,7 +169,8 @@ function recordDubleBookingCheck(record, id){
             if(learningRecords[learningIndex].date == record.date){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
                 if((learningRecords[learningIndex].time.start < record.time.start && learningRecords[learningIndex].time.end > record.time.start)
-                || (learningRecords[learningIndex].time.start < record.time.end && learningRecords[learningIndex].time.end > record.time.end)){
+                || (learningRecords[learningIndex].time.start < record.time.end && learningRecords[learningIndex].time.end > record.time.end)
+                || (learningRecords[learningIndex].time.start == record.time.start && learningRecords[learningIndex].time.end == record.time.end)){
                     doubleBookingFlag = true;
                     break;
                 }
