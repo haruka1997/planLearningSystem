@@ -82,6 +82,9 @@ module.exports.set = function(items){
     function initModalForm(learningFlag){
         if(learningFlag){
             $('#learningContent').val('');
+            $('#selectLearningContent').val('学習内容を選択');
+            $('.input-learning-content').css('display', 'none');
+            $('#inputLearningContent').val('');
             $('#learningDate').val('');
             $('#learningTimeStart').val('');
             $('#learningTimeEnd').val('');

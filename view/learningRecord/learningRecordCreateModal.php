@@ -12,7 +12,10 @@
             <!--学習内容 -->
             <div class="form-group pmd-textfield">       
                 <label>学習内容</label>
-                <input type="text" id="learningContent" class="form-control">
+                <select class="select-simple form-control pmd-select2 select-learning-content" id="selectLearningContent">
+                    <option>学習内容を選択</option>
+                </select>
+                <input type="text" id="inputLearningContent" class="form-control input-learning-content" style="display:none" placeholder="学習内容を入力">
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">

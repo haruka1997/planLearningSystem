@@ -23,6 +23,7 @@ var editRecord = {
     learningFlag: true
 };
 
+var learningListData = ["演習問題", "教科書", "その他"];
 var learningRecords = []; // 登録された学習記録
 
 // カレンダーセットモジュール
@@ -31,6 +32,11 @@ var calenderItemSet = require(`./module/calenderItemSet.js`);
 $(function(){
 
     initCalenderHtml();
+
+    // 学習内容リストのセット
+    for(var i=0; i<learningListData.length; i++){
+        $('<option value="' + learningListData[i] + '">' + learningListData[i] + '</option>').appendTo('#selectLearningContent');
+    }
 
     // 学習の記録追加ボタンを押されたら
     $('#add-learning-record').click(function (){
@@ -54,6 +60,7 @@ $(function(){
  * 学習の記録追加処理
  */
 function learningRecordAdd(){
+
     $('.learning-record-create-modal-wrapper').addClass('is-visible');    //学習記録作成モーダル表示
 
     // キャンセルボタン押されたら
@@ -62,11 +69,24 @@ function learningRecordAdd(){
         initModalForm(true)
     });
 
+    // 学習内容で「その他」を選択されたら
+    $('.select-learning-content').change(function() {
+        if($('#selectLearningContent').val() == "その他"){
+            $('.input-learning-content').css('display', 'inline');
+        }else{
+            $('.input-learning-content').css('display', 'none');
+        }
+    });
+
     // 追加ボタン押されたら
     $('.learning-add-button').one("click", function() {
 
         //  入力内容の取得
-        record.content = $('#learningContent').val();
+        if($('#selectLearningContent').val() !== "その他"){
+            record.content = $('#selectLearningContent').val();
+        }else{
+            record.content = $('#inputLearningContent').val();
+        }
         record.date = $('#learningDate').val();
         record.time.start = $('#learningTimeStart').val();
         record.time.end = $('#learningTimeEnd').val();
@@ -97,7 +117,9 @@ function learningRecordAdd(){
  * モーダルフォームの初期化
  */
 function initModalForm(){
-    $('#learningContent').val('');
+    $('#selectLearningContent').val('学習内容を選択');
+    $('.input-learning-content').css('display', 'none');
+    $('#inputLearningContent').val('');
     $('#learningDate').val('');
     $('#learningTimeStart').val('');
     $('#learningTimeEnd').val('');
