@@ -323,7 +323,33 @@ function learningPlanAdd(){
                 initModalForm(plan.learningFlag);
             });
         }else{
-            planDataSet(plan, plan.learningFlag, false);
+            // Ajax通信
+            $.ajax({
+                url:'./../../php/planCreate/postPlan.php',
+                type:'POST',
+                data:{
+                    'userId': window.sessionStorage.getItem(['userId']),
+                    'planId': plan.id,
+                    'content': plan.content,
+                    'planDate': plan.date,
+                    'planTime': JSON.stringify(plan.time),
+                    'memo': plan.memo,
+                    'tag': plan.tag,
+                    'learningFlag': plan.learningFlag
+                },
+                // dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                // カレンダー表示用のデータセット
+                console.log(data);
+                planDataSet(plan, plan.learningFlag, false);
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+                console.log(data);
+                alert('登録に失敗しました');
+            })
         }
 
     });
