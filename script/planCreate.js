@@ -471,7 +471,17 @@ function learningPlanDetail(id){
                     });
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
-                    planDataSet(editPlan, editPlan.learningFlag, i);
+                    // 編集後の計画を追加
+                    var insertFlag = new Promise(function(resolve){
+                        resolve(ajax.postPlan(editPlan));
+                    })
+                    // 編集された計画に編集フラグを立てる
+                    var updateFlag = new Promise(function(resolve){
+                        resolve(ajax.updatePlan(editPlan, id));
+                    })
+                    if(insertFlag && updateFlag){
+                        planDataSet(editPlan, editPlan.learningFlag, i);
+                    }
                 }
                 
             });

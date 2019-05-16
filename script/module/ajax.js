@@ -1,5 +1,5 @@
 /**
- * 計画をDBに追加
+ * 計画の追加
  */
 module.exports.postPlan = function(plan){
     // Ajax通信
@@ -25,5 +25,30 @@ module.exports.postPlan = function(plan){
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
         alert('登録に失敗しました');
+    })
+}
+
+/**
+ * 計画の編集
+ */
+module.exports.updatePlan = function(plan, id){
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/planCreate/updatePlan.php',
+        type:'POST',
+        data:{
+            'planId': id,
+            'editId': plan.id
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        return data;
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('編集に失敗しました');
+        return data;
     })
 }
