@@ -330,7 +330,7 @@ function learningPlanAdd(){
                 resolve(ajax.postPlan(plan));
             })
             if(flag){
-                planDataSet(plan, plan.learningFlag, false);
+                planDataSet(plan, plan.learningFlag, false, false);
             }
         }
 
@@ -387,7 +387,7 @@ function privatePlanAdd(){
                 resolve(ajax.postPlan(plan));
             })
             if(flag){
-                planDataSet(plan, plan.learningFlag, false);
+                planDataSet(plan, plan.learningFlag, false, false);
             }
         }
 
@@ -480,11 +480,22 @@ function learningPlanDetail(id){
                         resolve(ajax.updatePlan(editPlan, id));
                     })
                     if(insertFlag && updateFlag){
-                        planDataSet(editPlan, editPlan.learningFlag, i);
+                        planDataSet(editPlan, editPlan.learningFlag, i, false, false);
                     }
                 }
                 
             });
+
+            // 学習計画の削除ボタンを押されたら
+            $('.learning-delete-button').one("click", function () {
+                var deleteFlag = new Promise(function(resolve){
+                    resolve(ajax.deletePlan(id));
+                })
+                if(deleteFlag){
+                    planDataSet(editPlan, true, false, i);
+                }
+            });
+
             break;
         }
     }
@@ -537,9 +548,19 @@ function privatePlanDetail(id){
                     });
                 }else{
                     editPlan.id = 'P' + new Date().getTime();
-                    planDataSet(editPlan, editPlan.learningFlag, i);
+                    planDataSet(editPlan, editPlan.learningFlag, i, false);
                 }
 
+            });
+
+            // プライベートの予定の削除ボタンを押されたら
+            $('.private-delete-button').one("click", function () {
+                var deleteFlag = new Promise(function(resolve){
+                    resolve(ajax.deletePlan(id));
+                })
+                if(deleteFlag){
+                    planDataSet(editPlan, false, false, i);
+                }
             });
             break;
         }
@@ -580,7 +601,7 @@ function planDubleBookingCheck(plan, id){
     return doubleBookingFlag;
 }
 
-function planDataSet(plan, learningFlag, editFlag){
+function planDataSet(plan, learningFlag, editFlag, deleteFlag){
     if(learningFlag){
         
         initCalenderHtml();
@@ -589,7 +610,12 @@ function planDataSet(plan, learningFlag, editFlag){
         if(editFlag !== false){
             afterLearningPlans.splice(Number(editFlag),1);
         }
-        afterLearningPlans.push(plan);
+
+        if(deleteFlag !== false){
+            afterLearningPlans.splice(Number(deleteFlag),1);
+        }else{
+            afterLearningPlans.push(plan);
+        }
 
         displayPlans = afterLearningPlans.concat(privatePlans);
         
@@ -598,7 +624,7 @@ function planDataSet(plan, learningFlag, editFlag){
 
         learningPlans = JSON.parse(JSON.stringify(afterLearningPlans));
 
-        if(editFlag === false){
+        if(editFlag === false && deleteFlag === false){
             $('.learning-plan-create-modal-wrapper').removeClass('is-visible');
         }else{
             $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');
@@ -612,7 +638,12 @@ function planDataSet(plan, learningFlag, editFlag){
         if(editFlag !== false){
             afterPrivatePlans.splice(Number(editFlag),1);
         }
-        afterPrivatePlans.push(plan);
+
+        if(deleteFlag !== false){
+            afterPrivatePlans.splice(Number(deleteFlag),1);
+        }else{
+            afterPrivatePlans.push(plan);
+        }
 
         displayPlans = afterPrivatePlans.concat(learningPlans);
 
@@ -621,7 +652,7 @@ function planDataSet(plan, learningFlag, editFlag){
         
         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
 
-        if(editFlag === false){
+        if(editFlag === false && deleteFlag === false){
             $('.private-plan-create-modal-wrapper').removeClass('is-visible');
         }else{
             $('.private-plan-detail-modal-wrapper').removeClass('is-visible');

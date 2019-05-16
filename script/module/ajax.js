@@ -52,3 +52,27 @@ module.exports.updatePlan = function(plan, id){
         return data;
     })
 }
+
+/**
+ * 計画の削除
+ */
+module.exports.deletePlan = function(id){
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/planCreate/deletePlan.php',
+        type:'POST',
+        data:{
+            'planId': id
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        return data;
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('削除に失敗しました');
+        return data;
+    })
+}

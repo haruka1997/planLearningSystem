@@ -48,6 +48,7 @@
             <!-- 編集ボタン -->
             <div class="plan-modal-footer-button">
                 <button class="private-edit-button mdl-button mdl-js-button mdl-button--raised">編集</button>
+                <button class="private-delete-button mdl-button mdl-js-button mdl-button--raised">削除</button>
             </div>
         </div>
     </div>
