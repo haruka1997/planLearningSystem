@@ -1,8 +1,8 @@
 var plan = {
-    id: 0,
+    planId: 0,
     content: "",
-    date: "",
-    time: {
+    planDate: "",
+    planTime: {
         start: 0,
         end: 0
     },
@@ -11,10 +11,10 @@ var plan = {
     learningFlag: true
 };
 var editPlan = {
-    id: 0,
+    planId: 0,
     content: "",
-    date: "",
-    time: {
+    planDate: "",
+    planTime: {
         start: 0,
         end: 0
     },
@@ -85,13 +85,13 @@ $(function(){
 
     // カレンダー内を押されたら
     $(document).on("click", ".calender-content", function () {
-        var id = $(this).attr("id");
-        if(id !== undefined){   //計画詳細表示の場合
-            var category = id.slice(0,1);
+        var planId = $(this).attr("id");
+        if(planId !== undefined){   //計画詳細表示の場合
+            var category = planId.slice(0,1);
             if(category === 'L'){
-                learningPlanDetail(id);   //学習計画詳細表示
+                learningPlanDetail(planId);   //学習計画詳細表示
             }else{
-                privatePlanDetail(id);  // プライベートの予定詳細表示
+                privatePlanDetail(planId);  // プライベートの予定詳細表示
             }
         }
     });
@@ -241,6 +241,49 @@ function planCreateWindowInit(){
     flag.learningSettingWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
+
+    let today = new Date();
+    let month = today.getMonth()+1;
+    if(month<10) month = '0' + month;
+    let this_monday = today.getDate() - today.getDay() + 1;
+    let this_sunday = this_monday + 6;
+
+    // 月曜日の日時
+    let start_date = today.getFullYear() + "-"  + month + "-" + this_monday;
+    // 日曜日の日時
+    let end_date = today.getFullYear() + "-"  + month + "-" + this_sunday;
+
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/planCreate/getPlan.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'startDate': start_date,
+            'endDate': end_date
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (plans) => {
+        if(plans.length > 0){
+            for(let i in plans){
+                plans[i].planTime = JSON.parse(plans[i].planTime);
+                if(plans[i].learningFlag){
+                    learningPlans.push(plans[i]);
+                }else{
+                    privatePlans.push(plans[i]);
+                }
+            }
+            // カレンダー表示用配列に結合
+            displayPlans = learningPlans.concat(privatePlans);
+            // カレンダーセット
+            calenderItemSet.set(displayPlans);
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+    })
 }
 
 /**
@@ -304,17 +347,17 @@ function learningPlanAdd(){
 
         //  入力内容の取得
         plan.content = $('#learningContent').val();
-        plan.date = $('#learningDate').val();
-        plan.time.start = $('#learningTimeStart').val();
-        plan.time.end = $('#learningTimeEnd').val();
+        plan.planDate = $('#learningDate').val();
+        plan.planTime.start = $('#learningTimeStart').val();
+        plan.planTime.end = $('#learningTimeEnd').val();
         plan.memo = $('#learningMemo').val();
         plan.learningFlag = true;
 
         // idの設定
-        plan.id = 'L' + new Date().getTime();
+        plan.planId = 'L' + new Date().getTime();
 
         // ダブルブッキングチェック
-        var doubleBookingFlag = planDubleBookingCheck(plan, plan.id);
+        var doubleBookingFlag = planDubleBookingCheck(plan, plan.planId);
 
         if(doubleBookingFlag){
             $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -361,18 +404,18 @@ function privatePlanAdd(){
 
         //  入力内容の取得
         plan.content = "";
-        plan.date = $('#privateDate').val();
-        plan.time.start = $('#privateTimeStart').val();
-        plan.time.end = $('#privateTimeEnd').val();
+        plan.planDate = $('#privateDate').val();
+        plan.planTime.start = $('#privateTimeStart').val();
+        plan.planTime.end = $('#privateTimeEnd').val();
         plan.tag = selectTag;
         plan.memo = $('#privateMemo').val();
         plan.learningFlag = false;
 
         // idの設定
-        plan.id = 'P' + new Date().getTime();
+        plan.planId = 'P' + new Date().getTime();
 
         // ダブルブッキングチェック
-        var doubleBookingFlag = planDubleBookingCheck(plan, plan.id);
+        var doubleBookingFlag = planDubleBookingCheck(plan, plan.planId);
 
         if(doubleBookingFlag){
             $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -428,9 +471,9 @@ function initCalenderHtml(){
 /**
  * 学習計画詳細表示
  */
-function learningPlanDetail(id){
+function learningPlanDetail(planId){
     for(var i=0; i<learningPlans.length; i++){
-        if(learningPlans[i].id == id){ //選択した計画データ一致
+        if(learningPlans[i].planId == planId){ //選択した計画データ一致
             var plan = learningPlans[i];
             $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
 
@@ -441,9 +484,9 @@ function learningPlanDetail(id){
 
             // フォームの値セット
             $('#detailLearningContent').val(plan.content);
-            $('#detailLearningDate').val(plan.date);
-            $('#detailLearningTimeStart').val(plan.time.start);
-            $('#detailLearningTimeEnd').val(plan.time.end);
+            $('#detailLearningDate').val(plan.planDate);
+            $('#detailLearningTimeStart').val(plan.planTime.start);
+            $('#detailLearningTimeEnd').val(plan.planTime.end);
             $('#detailLearningMemo').val(plan.memo);
 
             // TODO: 予定編集処理
@@ -452,14 +495,14 @@ function learningPlanDetail(id){
 
                 //  入力内容の取得
                 editPlan.content = $('#detailLearningContent').val();
-                editPlan.date = $('#detailLearningDate').val();
-                editPlan.time.start = $('#detailLearningTimeStart').val();
-                editPlan.time.end = $('#detailLearningTimeEnd').val();
+                editPlan.planDate = $('#detailLearningDate').val();
+                editPlan.planTime.start = $('#detailLearningTimeStart').val();
+                editPlan.planTime.end = $('#detailLearningTimeEnd').val();
                 editPlan.memo = $('#detailLearningMemo').val();
                 editPlan.learningFlag = true;
 
                 // ダブルブッキングチェック
-                var doubleBookingFlag = planDubleBookingCheck(editPlan, id);
+                var doubleBookingFlag = planDubleBookingCheck(editPlan, planId);
 
                 if(doubleBookingFlag){
                     $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -470,14 +513,14 @@ function learningPlanDetail(id){
                         initModalForm(editPlan.learningFlag);
                     });
                 }else{
-                    editPlan.id = 'L' + new Date().getTime();
+                    editPlan.planId = 'L' + new Date().getTime();
                     // 編集後の計画を追加
                     var insertFlag = new Promise(function(resolve){
                         resolve(ajax.postPlan(editPlan));
                     })
                     // 編集された計画に編集フラグを立てる
                     var updateFlag = new Promise(function(resolve){
-                        resolve(ajax.updatePlan(editPlan, id));
+                        resolve(ajax.updatePlan(editPlan, planId));
                     })
                     if(insertFlag && updateFlag){
                         planDataSet(editPlan, editPlan.learningFlag, i, false, false);
@@ -489,7 +532,7 @@ function learningPlanDetail(id){
             // 学習計画の削除ボタンを押されたら
             $('.learning-delete-button').one("click", function () {
                 var deleteFlag = new Promise(function(resolve){
-                    resolve(ajax.deletePlan(id));
+                    resolve(ajax.deletePlan(planId));
                 })
                 if(deleteFlag){
                     planDataSet(editPlan, true, false, i);
@@ -504,9 +547,9 @@ function learningPlanDetail(id){
 /**
  * プライベートの予定詳細表示
  */
-function privatePlanDetail(id){
+function privatePlanDetail(planId){
     for(var i=0; i<privatePlans.length; i++){
-        if(privatePlans[i].id == id){ //選択した計画データ一致
+        if(privatePlans[i].planId == planId){ //選択した計画データ一致
             var plan = privatePlans[i];
             $('.private-plan-detail-modal-wrapper').addClass('is-visible');    //プライベートの予定詳細モーダル表示
 
@@ -516,9 +559,9 @@ function privatePlanDetail(id){
             });
 
             // フォームの値セット
-            $('#detailPrivateDate').val(plan.date);
-            $('#detailPrivateTimeStart').val(plan.time.start);
-            $('#detailPrivateTimeEnd').val(plan.time.end);
+            $('#detailPrivateDate').val(plan.planDate);
+            $('#detailPrivateTimeStart').val(plan.planTime.start);
+            $('#detailPrivateTimeEnd').val(plan.planTime.end);
             $('#detailPrivateMemo').val(plan.memo);
             $('#' + plan.tag).addClass('active');
 
@@ -528,15 +571,15 @@ function privatePlanDetail(id){
                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
                 //  入力内容の取得
-                editPlan.date = $('#detailPrivateDate').val();
-                editPlan.time.start = $('#detailPrivateTimeStart').val();
-                editPlan.time.end = $('#detailPrivateTimeEnd').val();
+                editPlan.planDate = $('#detailPrivateDate').val();
+                editPlan.planTime.start = $('#detailPrivateTimeStart').val();
+                editPlan.planTime.end = $('#detailPrivateTimeEnd').val();
                 editPlan.memo = $('#detailPrivateMemo').val();
                 editPlan.tag = selectTag;
                 editPlan.learningFlag = false;
 
                 // ダブルブッキングチェック
-                var doubleBookingFlag = planDubleBookingCheck(editPlan, id);
+                var doubleBookingFlag = planDubleBookingCheck(editPlan, planId);
 
                 if(doubleBookingFlag){
                     $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -547,7 +590,7 @@ function privatePlanDetail(id){
                         initModalForm(editPlan.learningFlag);
                     });
                 }else{
-                    editPlan.id = 'P' + new Date().getTime();
+                    editPlan.planId = 'P' + new Date().getTime();
                     planDataSet(editPlan, editPlan.learningFlag, i, false);
                 }
 
@@ -556,7 +599,7 @@ function privatePlanDetail(id){
             // プライベートの予定の削除ボタンを押されたら
             $('.private-delete-button').one("click", function () {
                 var deleteFlag = new Promise(function(resolve){
-                    resolve(ajax.deletePlan(id));
+                    resolve(ajax.deletePlan(planId));
                 })
                 if(deleteFlag){
                     planDataSet(editPlan, false, false, i);
@@ -567,16 +610,16 @@ function privatePlanDetail(id){
     }
 }
 
-function planDubleBookingCheck(plan, id){
+function planDubleBookingCheck(plan, planId){
     var doubleBookingFlag = false;
     // 学習計画とのダブりチェック
     for(var learningIndex = 0; learningIndex < learningPlans.length; learningIndex++){
-        if(id !== learningPlans[learningIndex].id){
-            if(learningPlans[learningIndex].date == plan.date){
+        if(planId !== learningPlans[learningIndex].planId){
+            if(learningPlans[learningIndex].planDate == plan.planDate){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                if((learningPlans[learningIndex].time.start < plan.time.start && learningPlans[learningIndex].time.end > plan.time.start)
-                || (learningPlans[learningIndex].time.start < plan.time.end && learningPlans[learningIndex].time.end > plan.time.end)
-                || (learningPlans[learningIndex].time.start == plan.time.start && learningPlans[learningIndex].time.end == plan.time.end)){
+                if((learningPlans[learningIndex].planTime.start < plan.planTime.start && learningPlans[learningIndex].planTime.end > plan.planTime.start)
+                || (learningPlans[learningIndex].planTime.start < plan.planTime.end && learningPlans[learningIndex].planTime.end > plan.planTime.end)
+                || (learningPlans[learningIndex].planTime.start == plan.planTime.start && learningPlans[learningIndex].planTime.end == plan.planTime.end)){
                     doubleBookingFlag = true;
                     break;
                 }
@@ -586,12 +629,12 @@ function planDubleBookingCheck(plan, id){
 
     // プライベートの予定とのダブりチェック
     for(var privateIndex = 0; privateIndex < privatePlans.length; privateIndex++){
-        if(id !== privatePlans[privateIndex].id){
-            if(privatePlans[privateIndex].date == plan.date){
+        if(planId !== privatePlans[privateIndex].planId){
+            if(privatePlans[privateIndex].planDate == plan.planDate){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                if((privatePlans[privateIndex].time.start < plan.time.start && privatePlans[privateIndex].time.end > plan.time.start)
-                || (privatePlans[privateIndex].time.start < plan.time.end && privatePlans[privateIndex].time.end > plan.time.end)
-                || (privatePlans[privateIndex].time.start == plan.time.start && privatePlans[privateIndex].time.end == plan.time.end)){
+                if((privatePlans[privateIndex].planTime.start < plan.planTime.start && privatePlans[privateIndex].planTime.end > plan.planTime.start)
+                || (privatePlans[privateIndex].planTime.start < plan.planTime.end && privatePlans[privateIndex].planTime.end > plan.planTime.end)
+                || (privatePlans[privateIndex].planTime.start == plan.planTime.start && privatePlans[privateIndex].planTime.end == plan.planTime.end)){
                     doubleBookingFlag = true;
                     break;
                 }

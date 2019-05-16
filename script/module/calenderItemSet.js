@@ -4,8 +4,8 @@ module.exports.set = function(items){
 
     function calenderItemSet(){
         for(var itemsIndex=0; itemsIndex<items.length; itemsIndex++){
-            var startHour = Number(items[itemsIndex].time.start.slice(0, items[itemsIndex].time.start.indexOf(":"))); //開始時
-            var startMinute = Number(items[itemsIndex].time.start.slice(items[itemsIndex].time.start.indexOf(":")+1, 5)); //開始分
+            var startHour = Number(items[itemsIndex].planTime.start.slice(0, items[itemsIndex].planTime.start.indexOf(":"))); //開始時
+            var startMinute = Number(items[itemsIndex].planTime.start.slice(items[itemsIndex].planTime.start.indexOf(":")+1, 5)); //開始分
             startMinute = Math.floor(startMinute / 15) * 15; //開始分を15分刻みで切り捨て
             var tdNthChild = ''; //どの曜日に予定を追加するかを設定 (例：nth-child(2) => 月曜日)
             var trNthChild = ''; //どの時間に予定を追加するかを設定(例：nth-child(1) => 0時)
@@ -14,7 +14,7 @@ module.exports.set = function(items){
             /**
              * どの列に予定を追加するか調整
              */
-            var nthDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
+            var nthDay = new Date(items[itemsIndex].planDate).getDay(); //曜日(0:日曜, 1:月曜...)
             if(nthDay == 0){ //日曜日の場合
                 nthDay = 7;
             }
@@ -30,8 +30,8 @@ module.exports.set = function(items){
              * rowspanの設定
              */ 
             //終了時間 - 開始時間の分を取得(例：00:30〜01:00 => 30)
-            var endHour = Number(items[itemsIndex].time.end.slice(0, items[itemsIndex].time.end.indexOf(":")));
-            var endMinute = Number(items[itemsIndex].time.end.slice(items[itemsIndex].time.end.indexOf(":")+1, 5));
+            var endHour = Number(items[itemsIndex].planTime.end.slice(0, items[itemsIndex].planTime.end.indexOf(":")));
+            var endMinute = Number(items[itemsIndex].planTime.end.slice(items[itemsIndex].planTime.end.indexOf(":")+1, 5));
             var gapMinute = (endHour * 60 + endMinute) - (startHour * 60 + startMinute);
             rowspan = gapMinute / 15; //例：30分間 => 2行分結合する
 
@@ -62,16 +62,16 @@ module.exports.set = function(items){
             }
 
             //予定を追加する対象行列に時間と予定名を追加
-            $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(items[itemsIndex].time.start + '<br>' + items[itemsIndex].content);   //学習内容を設定
+            $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).html(items[itemsIndex].planTime.start + '<br>' + items[itemsIndex].content);   //学習内容を設定
             $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
-            $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', items[itemsIndex].id); //idを付与
+            $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('id', items[itemsIndex].planId); //idを付与
             $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).attr('rowspan', rowspan);  //rowspanの設定
             //行の削除
             for(var j=0; j<deletetrNthChild.length; j++){ //削除する行分
                 $('.calender-table tbody tr:' + deletetrNthChild[j] + ' td:' + tdNthChild).remove(); //対象要素を追加
             }
 
-            if(!items[itemsIndex].learningFlag){ //プライベートの予定の追加の場合
+            if(items[itemsIndex].learningFlag == "false"){ //プライベートの予定の追加の場合
                 $('.calender-table tbody tr:' + trNthChild + ' td:' + tdNthChild).addClass(items[itemsIndex].tag); //classを付与(タグ色)
             }
 
