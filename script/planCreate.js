@@ -337,13 +337,15 @@ function learningPlanAdd(){
                     'tag': plan.tag,
                     'learningFlag': plan.learningFlag
                 },
-                // dataType: 'json'       
+                dataType: 'json'       
             })
             // Ajaxリクエストが成功した時発動
             .done( (data) => {
                 // カレンダー表示用のデータセット
                 console.log(data);
-                planDataSet(plan, plan.learningFlag, false);
+                if(data){
+                    planDataSet(plan, plan.learningFlag, false);
+                }
             })
             // Ajaxリクエストが失敗した時発動
             .fail( (data) => {
