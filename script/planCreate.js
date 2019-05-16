@@ -40,6 +40,8 @@ var selectTag = '';
 
 // カレンダーセットモジュール
 var calenderItemSet = require(`./module/calenderItemSet.js`);
+// Ajaxモジュール
+var ajax = require(`./module/ajax.js`);
 
 $(function(){
 
@@ -323,35 +325,13 @@ function learningPlanAdd(){
                 initModalForm(plan.learningFlag);
             });
         }else{
-            // Ajax通信
-            $.ajax({
-                url:'./../../php/planCreate/postPlan.php',
-                type:'POST',
-                data:{
-                    'userId': window.sessionStorage.getItem(['userId']),
-                    'planId': plan.id,
-                    'content': plan.content,
-                    'planDate': plan.date,
-                    'planTime': JSON.stringify(plan.time),
-                    'memo': plan.memo,
-                    'tag': plan.tag,
-                    'learningFlag': plan.learningFlag
-                },
-                dataType: 'json'       
+            // Ajax通信 計画情報をDBに追加
+            var flag = new Promise(function(resolve){
+                resolve(ajax.postPlan(plan));
             })
-            // Ajaxリクエストが成功した時発動
-            .done( (data) => {
-                // カレンダー表示用のデータセット
-                console.log(data);
-                if(data){
-                    planDataSet(plan, plan.learningFlag, false);
-                }
-            })
-            // Ajaxリクエストが失敗した時発動
-            .fail( (data) => {
-                console.log(data);
-                alert('登録に失敗しました');
-            })
+            if(flag){
+                planDataSet(plan, plan.learningFlag, false);
+            }
         }
 
     });
@@ -403,7 +383,12 @@ function privatePlanAdd(){
                 initModalForm(plan.learningFlag);
             });
         }else{
-            planDataSet(plan, plan.learningFlag, false);
+            var flag = new Promise(function(resolve){
+                resolve(ajax.postPlan(plan));
+            })
+            if(flag){
+                planDataSet(plan, plan.learningFlag, false);
+            }
         }
 
     });
