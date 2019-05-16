@@ -21,8 +21,8 @@
                 </select>
             </div>
             <!-- 完了ボタン -->
-            <div class="learning-satisfaction-complete-button">
-                <button class="mdl-button mdl-js-button mdl-button--raised">完了</button>
+            <div class="plan-modal-footer-button">
+                <button class="learning-satisfaction-complete-button mdl-button mdl-js-button mdl-button--raised">完了</button>
             </div>
         </div>
     </div>

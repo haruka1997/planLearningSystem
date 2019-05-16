@@ -46,8 +46,8 @@
                 <textarea class="form-control" id="privateMemo"></textarea>
             </div>
             <!-- 追加ボタン -->
-            <div class="private-add-button">
-                <button class="mdl-button mdl-js-button mdl-button--raised">追加</button>
+            <div class="plan-modal-footer-button">
+                <button class="private-add-button mdl-button mdl-js-button mdl-button--raised">追加</button>
             </div>
         </div>
     </div>

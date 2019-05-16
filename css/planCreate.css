@@ -244,11 +244,15 @@
 
 .learning-add-button,
 .private-add-button,
-.learning-edit-button,
+.plan-modal-footer-button,
 .private-edit-button,
 .learning-satisfaction-complete-button{
     text-align: center;
     margin: 10px;
+}
+
+.plan-modal-footer-button button{
+    margin: 0 10px 0 10px;
 }
 
 .form-tag{

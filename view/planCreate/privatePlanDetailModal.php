@@ -46,8 +46,8 @@
                 <textarea class="form-control" id="detailPrivateMemo"></textarea>
             </div>
             <!-- 編集ボタン -->
-            <div class="private-edit-button">
-                <button class="mdl-button mdl-js-button mdl-button--raised">編集</button>
+            <div class="plan-modal-footer-button">
+                <button class="private-edit-button mdl-button mdl-js-button mdl-button--raised">編集</button>
             </div>
         </div>
     </div>
