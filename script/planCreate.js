@@ -96,6 +96,9 @@ $(function(){
 
          // 登録ボタンを表示
          $('.learning-setting-regist-button').addClass('show');
+
+         // 計画の作成ボタンをdisable化する
+         $(".plan-create-button").prop("disabled", true);
     })
 
     // 学習の設定画面の登録ボタンが押されたら
@@ -356,6 +359,9 @@ function planCreateWindowInit(){
     flag.learningSettingWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
+
+     // 計画の作成ボタンのdisable化を解除する
+     $(".plan-create-button").prop("disabled", false);
 
     if(displayPlans.length == 0){
         // Ajax通信
