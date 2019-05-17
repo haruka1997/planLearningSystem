@@ -379,7 +379,7 @@ function planCreateWindowInit(){
             if(plans.length > 0){
                 for(let i in plans){
                     plans[i].planTime = JSON.parse(plans[i].planTime);
-                    if(plans[i].learningFlag){
+                    if(plans[i].learningFlag == "true"){
                         learningPlans.push(plans[i]);
                     }else{
                         privatePlans.push(plans[i]);
@@ -500,6 +500,7 @@ function privatePlanAdd(){
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.tag').removeClass('active');// タグ選択状態を全解除
     });
 
     // タグボタンを押されたら
@@ -666,6 +667,8 @@ function privatePlanDetail(planId){
 
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
+                 // タグ初期化
+                 $('.tag').removeClass('active');// タグ選択状態を全解除
                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
             });
 
@@ -674,7 +677,13 @@ function privatePlanDetail(planId){
             $('#detailPrivateTimeStart').val(plan.planTime.start);
             $('#detailPrivateTimeEnd').val(plan.planTime.end);
             $('#detailPrivateMemo').val(plan.memo);
-            $('#' + plan.tag).addClass('active');
+
+            // タグボタンを押されたら
+            $('.tag').click(function (){
+                selectTag =  $(this).attr("id");    //選択されたタグ色取得
+                $('.tag').removeClass('active');// タグ選択状態を全解除
+                $(this).addClass('active'); //選択したタグを選択状態にセット
+            });
 
             // TODO: 予定編集処理
             // 編集ボタン押されたら
@@ -805,6 +814,9 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
         calenderItemSet.set(displayPlans);
         
         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
+
+        // タグ初期化
+        $('.tag').removeClass('active');// タグ選択状態を全解除
 
         if(editFlag === false && deleteFlag === false){
             $('.private-plan-create-modal-wrapper').removeClass('is-visible');

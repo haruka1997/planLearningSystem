@@ -2,7 +2,7 @@
     <div class="plan-modal">
         <!-- ヘッダー -->
         <div id="modal-header">
-            <div class="header-title">プライベートの予定追加</div>
+            <div class="header-title">プライベートの予定詳細</div>
             <div class="header-cansel-button">×</div>
         </div>
         <!-- コンテンツ -->
