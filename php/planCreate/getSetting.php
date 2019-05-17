@@ -7,7 +7,7 @@
 
         $stmt = $dbh->prepare('SELECT * FROM setting WHERE userId = :userId AND insertTime > :startDate'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
-        $stmt->bindParam(':startDate', number_format($_POST['startDate']), PDO::PARAM_INT);
+        $stmt->bindParam(':startDate', $_POST['startDate'], PDO::PARAM_INT);
 
         $stmt->execute();
     

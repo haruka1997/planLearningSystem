@@ -53,19 +53,50 @@ $(function(){
     // html読み込み
     initCalenderHtml();
 
+    // 先週の学習の満足度が登録されているか確認
+    let today = new Date();
+    let month = today.getMonth();
+    let last_monday = today.getDate() - today.getDay() - 6;
+    let last_sunday = last_monday + 6;
+
+    // 先週の月曜日の日時
+    let last_monday_date = new Date(today.getFullYear(), month, last_monday, 0,0,0,0).getTime();
+    // 先週の日曜日の日時
+    let last_sunday_date = new Date(today.getFullYear(), month, last_sunday, 23,59,59,59).getTime();
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/planCreate/getSatisfaction.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'startDate': last_monday_date,
+            'endDate': last_sunday_date
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (flag) => {
+        if(flag) {
+            // 学習の振り返りモーダル表示
+            learningSatisfactionModal();
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    })
+
     // 学習の設定情報の取得
     // 今週月曜日の日時取得
-    let today = new Date();
-    let month = today.getMonth()+1;
     let this_monday = today.getDate() - today.getDay() + 1;
-    let start_date = new Date(today.getFullYear(), month, this_monday, 0,0,0,0).getTime();
+    let this_monday_date = new Date(today.getFullYear(), month, this_monday, 0,0,0,0).getTime();
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/getSetting.php',
         type:'POST',
         data:{
             'userId': window.sessionStorage.getItem(['userId']),
-            'startDate': start_date
+            'startDate': this_monday_date
         },
         dataType: 'json'       
     })
@@ -88,8 +119,6 @@ $(function(){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
-        // 学習の振り返りモーダル表示
-        learningSatisfactionModal();
 
          // 学習の設定画面を表示状態にする
         $('#learning-setting-content').addClass('show');
@@ -332,8 +361,37 @@ function learningSatisfactionModal(){
 
     // 完了ボタンが押されたら
     $('.learning-satisfaction-complete-button').click(function (){
-         // 学習満足度モーダルを閉じる
-        $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');
+        // 学習満足度の登録
+        let today = new Date();
+        let month = today.getMonth();
+        let last_monday = today.getDate() - today.getDay() - 6;
+        let last_sunday = last_monday + 6;
+
+        // 月曜日の日時
+        let start_date = new Date(today.getFullYear(), month, last_monday, 0,0,0,0).getTime();
+        // 日曜日の日時
+        let end_date = new Date(today.getFullYear(), month, last_sunday, 23,59,59,59).getTime();
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/planCreate/postSatisfaction.php',
+            type:'POST',
+            data:{
+                'userId': window.sessionStorage.getItem(['userId']),
+                'satisfaction': $('#learningSatisfaction').val(),
+                'startDate': start_date,
+                'endDate': end_date
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            // 学習満足度モーダルを閉じる
+            $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+           alert('学習満足度の登録に失敗しました');
+        });
     });    
 }
 /**

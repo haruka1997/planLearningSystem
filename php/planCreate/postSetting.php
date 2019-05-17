@@ -16,8 +16,24 @@
         $flag = $stmt->execute();
 
         if ($flag) { 
-            echo json_encode($stmt);
-            exit();  // 処理終了
+            // referenceテーブルにも格納
+            try {
+                $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+        
+                $stmt = $dbh->prepare('INSERT INTO reference (settingId, userId) VALUES(:settingId, :userId)'); 
+                $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
+                $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
+        
+                $flag = $stmt->execute();
+        
+                if ($flag) { 
+                    echo json_encode($flag);
+                    exit();  // 処理終了
+                }else{
+                    // echo $stmt->execute();
+                }
+            } catch (PDOException $e) {
+            }
         }else{
             // echo $stmt->execute();
         }
