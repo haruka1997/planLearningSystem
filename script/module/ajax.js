@@ -8,7 +8,7 @@ module.exports.postPlan = function(plan){
         type:'POST',
         data:{
             'userId': window.sessionStorage.getItem(['userId']),
-            'planId': plan.planId,
+            'planId': plan.id,
             'settingId': window.sessionStorage.getItem(['settingId']),
             'content': plan.content,
             'planDate': plan.planDate,
@@ -32,14 +32,14 @@ module.exports.postPlan = function(plan){
 /**
  * 計画の編集
  */
-module.exports.updatePlan = function(plan, planId){
+module.exports.updatePlan = function(plan, id){
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/updatePlan.php',
         type:'POST',
         data:{
-            'planId': planId,
-            'editId': plan.planId
+            'planId': id,
+            'editId': plan.id
         },
         dataType: 'json'       
     })
@@ -57,13 +57,13 @@ module.exports.updatePlan = function(plan, planId){
 /**
  * 計画の削除
  */
-module.exports.deletePlan = function(planId){
+module.exports.deletePlan = function(id){
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/deletePlan.php',
         type:'POST',
         data:{
-            'planId': planId
+            'planId': id
         },
         dataType: 'json'       
     })

@@ -43,8 +43,8 @@
                 <textarea class="form-control" id="learningMemo"></textarea>
             </div>
             <!-- 追加ボタン -->
-            <div class="learning-add-button">
-                <button class="mdl-button mdl-js-button mdl-button--raised">追加</button>
+            <div class="record-modal-footer-button">
+                <button class="learning-add-button mdl-button mdl-js-button mdl-button--raised">追加</button>
             </div>
         </div>
     </div>

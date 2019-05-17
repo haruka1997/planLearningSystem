@@ -23,7 +23,7 @@ var editRecord = {
     learningFlag: true
 };
 
-var learningListData = ["演習問題", "教科書", "その他"];
+var learningListData = [];
 var learningRecords = []; // 登録された学習記録
 
 // カレンダーセットモジュール
@@ -33,10 +33,35 @@ $(function(){
 
     initCalenderHtml();
 
-    // 学習内容リストのセット
-    for(var i=0; i<learningListData.length; i++){
-        $('<option value="' + learningListData[i] + '">' + learningListData[i] + '</option>').appendTo('#selectLearningContent');
-    }
+    // 学習内容の取得
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/learningRecord/getPlanContent.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'settingId': window.sessionStorage.getItem(['settingId'])
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            // 取得した学習内容を配列に格納
+            for(item in data){
+                learningListData.push(data[item].content);
+            }
+            // 学習内容リストのセット
+            for(var i=0; i<learningListData.length; i++){
+                $('<option value="' + learningListData[i] + '">' + learningListData[i] + '</option>').appendTo('#selectLearningContent');
+            }
+            $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    })
 
     // 学習の記録追加ボタンを押されたら
     $('#add-learning-record').click(function (){
@@ -107,7 +132,29 @@ function learningRecordAdd(){
                 initModalForm(record.learningFlag);
             });
         }else{
-            recordDataSet(record, false);
+            // Ajax通信
+            $.ajax({
+                url:'./../../php/learningRecord/postRecord.php',
+                type:'POST',
+                data:{
+                    'userId': window.sessionStorage.getItem(['userId']),
+                    'recordId': record.id,
+                    'settingId': window.sessionStorage.getItem(['settingId']),
+                    'content': record.content,
+                    'recordDate': record.date,
+                    'recordTime': JSON.stringify(record.time),
+                    'memo': record.memo
+                },
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                recordDataSet(record, false, false);
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+                alert('登録に失敗しました');
+            })
         }
 
     });
@@ -159,7 +206,6 @@ function learningRecordDetail(id){
                 editRecord.time.start = $('#detailLearningTimeStart').val();
                 editRecord.time.end = $('#detailLearningTimeEnd').val();
                 editRecord.memo = $('#detailLearningMemo').val();
-                editRecord.learningFlag = true;
 
                 // ダブルブッキングチェック
                 var doubleBookingFlag = recordDubleBookingCheck(editRecord, id);
@@ -172,10 +218,54 @@ function learningRecordDetail(id){
                         // モーダル初期化
                         initModalForm(editRecord.learningFlag);
                     });
-                }else{
-                    editRecord.id = 'R' + new Date().getTime();
-                    recordDataSet(editRecord, i);
+                }else{                    
+                    // 記録の編集
+                    // Ajax通信
+                    $.ajax({
+                        url:'./../../php/learningRecord/updateRecord.php',
+                        type:'POST',
+                        data:{
+                            'recordId': id,
+                            'content': editRecord.content,
+                            'recordDate': editRecord.date,
+                            'recordTime': JSON.stringify(editRecord.time),
+                            'memo': editRecord.memo
+                        },
+                        dataType: 'json'       
+                    })
+                    // Ajaxリクエストが成功した時発動
+                    .done( (data) => {
+                        recordDataSet(editRecord, i, false);
+                    })
+                    // Ajaxリクエストが失敗した時発動
+                    .fail( (data) => {
+                        alert('編集に失敗しました');
+                        return data;
+                    })
                 }
+            });
+
+            // 削除ボタン押されたら
+            $('.learning-delete-button').one("click", function () {
+                // 記録の削除
+                // Ajax通信
+                $.ajax({
+                    url:'./../../php/learningRecord/deleteRecord.php',
+                    type:'POST',
+                    data:{
+                        'recordId': id
+                    },
+                    dataType: 'json'       
+                })
+                // Ajaxリクエストが成功した時発動
+                .done( (data) => {
+                    recordDataSet(editRecord, false, i);
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    alert('編集に失敗しました');
+                    return data;
+                })
             });
             break;
         }
@@ -210,20 +300,24 @@ function initCalenderHtml(){
     $("#record-create-content").append(calender);
 }
 
-function recordDataSet(record, editFlag){
+function recordDataSet(record, editFlag, deleteFlag){
     initCalenderHtml();
-
+    
     var afterLearningRecords = JSON.parse(JSON.stringify(learningRecords));
     if(editFlag !== false){
         afterLearningRecords.splice(Number(editFlag),1);
     }
-    afterLearningRecords.push(record);
+    if(deleteFlag !== false){
+        afterLearningRecords.splice(Number(deleteFlag),1);
+    }else{
+        afterLearningRecords.push(record);
+    }
 
     // カレンダーセット
     calenderItemSet.set(afterLearningRecords);
     learningRecords = JSON.parse(JSON.stringify(afterLearningRecords));
 
-    if(editFlag === false){
+    if(editFlag === false && deleteFlag === false){
         $('.learning-record-create-modal-wrapper').removeClass('is-visible');
     }else{
         $('.learning-record-detail-modal-wrapper').removeClass('is-visible');

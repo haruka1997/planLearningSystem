@@ -11,3 +11,12 @@
 .input-learning-content{
     margin: 15px 0 10px 0;
 }
+
+.record-modal-footer-button{
+    text-align: center;
+    margin: 10px;
+}
+
+.record-modal-footer-button button{
+    margin: 0 10px 0 10px;
+}
