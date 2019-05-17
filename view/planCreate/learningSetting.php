@@ -44,8 +44,7 @@
         </select>
     </div>
 </div>
-<div class="regist-button">
-    <button class="mdl-button mdl-js-button mdl-button--raised learning-setting-regist-button">
-     登録
-    </button>
+<div class="footer-button">
+    <button class="mdl-button mdl-js-button mdl-button--raised learning-setting-regist-button">登録</button>
+    <button class="mdl-button mdl-js-button mdl-button--raised learning-setting-edit-button">変更</button>
 </div>

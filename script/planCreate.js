@@ -73,10 +73,14 @@ $(function(){
     .done( (data) => {
         // settingIdをsessionに保存
         window.sessionStorage.setItem(['settingId'],data[0].settingId);
+
         // 設定情報の格納
         settingData.coverage = data[0].coverage;
         settingData.understanding = data[0].understanding;
         settingData.goal = data[0].goal;
+
+        // 変更ボタンを表示
+        $('.learning-setting-edit-button').addClass('show');
 
         // 学習の計画作成画面表示
         planCreateWindowInit();
@@ -86,8 +90,12 @@ $(function(){
     .fail( (data) => {
         // 学習の振り返りモーダル表示
         learningSatisfactionModal();
+
          // 学習の設定画面を表示状態にする
         $('#learning-setting-content').addClass('show');
+
+         // 登録ボタンを表示
+         $('.learning-setting-regist-button').addClass('show');
     })
 
     // 学習の設定画面の登録ボタンが押されたら
@@ -118,6 +126,11 @@ $(function(){
             settingData.understanding = $('#understanding').val();
             settingData.goal = $('#goal').val();
 
+            // 登録ボタンを非表示
+            $('.learning-setting-regist-button').removeClass('show');
+            // 変更ボタンを表示
+            $('.learning-setting-edit-button').addClass('show');
+
             // 学習の計画作成画面表示
             planCreateWindowInit();
 
@@ -125,6 +138,39 @@ $(function(){
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
            alert('学習の設定情報の登録に失敗しました');
+        });
+    });
+
+    // 学習の設定変更ボタンが押されたら
+    $('.learning-setting-edit-button').click(function (){
+        // 学習の設定情報の変更
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/planCreate/updateSetting.php',
+            type:'POST',
+            data:{
+                'settingId': window.sessionStorage.getItem(['settingId']),
+                'coverage': $('#coverage').val(),
+                'understanding': $('#understanding').val(),
+                'goal': $('#goal').val(),
+                'insertTime': new Date().getTime()
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            // 設定情報の格納
+            settingData.coverage = $('#coverage').val();
+            settingData.understanding = $('#understanding').val();
+            settingData.goal = $('#goal').val();
+
+            // 学習の計画作成画面表示
+            planCreateWindowInit();
+
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+           alert('学習の設定情報の変更に失敗しました');
         });
     });
 

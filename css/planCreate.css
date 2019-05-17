@@ -45,9 +45,19 @@
     width: 100%;
 }
 
-.regist-button{
+.footer-button{
     text-align: center;
     padding: 5px 0px 20px 0px;
+}
+
+.footer-button .learning-setting-regist-button,
+.footer-button .learning-setting-edit-button{
+    display: none;
+}
+
+.footer-button .learning-setting-regist-button.show,
+.footer-button .learning-setting-edit-button.show{
+    display: initial !important;
 }
 
 .planProgress{
