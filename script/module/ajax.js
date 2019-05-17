@@ -11,8 +11,8 @@ module.exports.postPlan = function(plan){
             'planId': plan.id,
             'settingId': window.sessionStorage.getItem(['settingId']),
             'content': plan.content,
-            'planDate': plan.planDate,
-            'planTime': JSON.stringify(plan.planTime),
+            'planDate': plan.date,
+            'planTime': JSON.stringify(plan.time),
             'memo': plan.memo,
             'tag': plan.tag,
             'learningFlag': plan.learningFlag

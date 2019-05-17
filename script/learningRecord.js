@@ -32,6 +32,35 @@ var calenderItemSet = require(`./module/calenderItemSet.js`);
 $(function(){
 
     initCalenderHtml();
+    // 学習記録の取得
+    if(learningRecords.length == 0){
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/learningRecord/getRecord.php',
+            type:'POST',
+            data:{
+                'userId': window.sessionStorage.getItem(['userId']),
+                'settingId': window.sessionStorage.getItem(['settingId'])
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (records) => {
+            if(records.length > 0){
+                for(let i in records){
+                    records[i].id = records[i].recordId; 
+                    records[i].date = records[i].recordDate;
+                    records[i].time = JSON.parse(records[i].recordTime);
+                    learningRecords.push(records[i]);
+                }
+                // カレンダーセット
+                calenderItemSet.set(learningRecords);
+            }
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+        })
+    }
 
     // 学習内容の取得
     // Ajax通信
@@ -121,7 +150,7 @@ function learningRecordAdd(){
         record.id = 'R' + new Date().getTime();
 
         // ダブルブッキングチェック
-        var doubleBookingFlag = recordDubleBookingCheck(editRecord, record.id);
+        var doubleBookingFlag = recordDubleBookingCheck(record, record.id);
 
         if(doubleBookingFlag){
             $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -275,6 +304,7 @@ function learningRecordDetail(id){
 
 function recordDubleBookingCheck(record, id){
     var doubleBookingFlag = false;
+    console.log(record);
     // 学習計画とのダブりチェック
     for(var learningIndex = 0; learningIndex < learningRecords.length; learningIndex++){
         if(id !== learningRecords[learningIndex].id){
@@ -282,6 +312,7 @@ function recordDubleBookingCheck(record, id){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
                 if((learningRecords[learningIndex].time.start < record.time.start && learningRecords[learningIndex].time.end > record.time.start)
                 || (learningRecords[learningIndex].time.start < record.time.end && learningRecords[learningIndex].time.end > record.time.end)
+                || (learningRecords[learningIndex].time.start > record.time.start && learningRecords[learningIndex].time.end < record.time.end)
                 || (learningRecords[learningIndex].time.start == record.time.start && learningRecords[learningIndex].time.end == record.time.end)){
                     doubleBookingFlag = true;
                     break;
