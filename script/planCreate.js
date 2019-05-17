@@ -32,7 +32,12 @@ var flag = {
 
 var learningPlans = [], // 登録された学習計画
     privatePlans = [],  // 登録されたプライベート予定
-    displayPlans = []; // 表示する予定
+    displayPlans = [], // 表示する予定
+    settingData = {     // 設定情報
+        coverage: "",   // 学習範囲
+        understanding: "",  // 理解度
+        goal: ""    // 目標点数
+    }
 
 
 // 選択されたタグ色
@@ -48,19 +53,79 @@ $(function(){
     // html読み込み
     initCalenderHtml();
 
-    // 学習満足度未入力だったら
-    if(true){
-        learningSatisfactionModal();
-    }
+    // 学習の設定情報の取得
+    // 今週月曜日の日時取得
+    let today = new Date();
+    let month = today.getMonth()+1;
+    let this_monday = today.getDate() - today.getDay() + 1;
+    let start_date = new Date(today.getFullYear(), month, this_monday, 0,0,0,0).getTime();
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/planCreate/getSetting.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'startDate': start_date
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        // settingIdをsessionに保存
+        window.sessionStorage.setItem(['settingId'],data[0].settingId);
+        // 設定情報の格納
+        settingData.coverage = data[0].coverage;
+        settingData.understanding = data[0].understanding;
+        settingData.goal = data[0].goal;
 
-    $('#learning-setting-content').addClass('show');    // 学習の設定画面を表示状態にする
+        // 学習の計画作成画面表示
+        planCreateWindowInit();
+
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        // 学習の振り返りモーダル表示
+        learningSatisfactionModal();
+         // 学習の設定画面を表示状態にする
+        $('#learning-setting-content').addClass('show');
+    })
 
     // 学習の設定画面の登録ボタンが押されたら
     $('.learning-setting-regist-button').click(function (){
-        // DB登録処理
+        // 学習の設定情報の登録  
+        // settingIdの生成
+        let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/planCreate/postSetting.php',
+            type:'POST',
+            data:{
+                'settingId': settingId,
+                'userId': window.sessionStorage.getItem(['userId']),
+                'coverage': $('#coverage').val(),
+                'understanding': $('#understanding').val(),
+                'goal': $('#goal').val(),
+                'insertTime': new Date().getTime()
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            // settingIdをsessionに保存
+            window.sessionStorage.setItem(['settingId'], settingId);
+            // 設定情報の格納
+            settingData.coverage = $('#coverage').val();
+            settingData.understanding = $('#understanding').val();
+            settingData.goal = $('#goal').val();
 
-        // 学習リストの作成画面に遷移
-        planCreateWindowInit();
+            // 学習の計画作成画面表示
+            planCreateWindowInit();
+
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+           alert('学習の設定情報の登録に失敗しました');
+        });
     });
 
     // 学習の設定ボタンが押されたら
@@ -226,11 +291,15 @@ function learningSatisfactionModal(){
  * 学習の設定画面の初期化
  */
 function learningSettingWindowInit(){
-
     flag.learningSettingWindowShowFlag = true;
     flag.planCreateWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
+
+    // フォームの値設定
+    $('#coverage').val(settingData.coverage);
+    $('#understanding').val(settingData.understanding);
+    $('#goal').val(settingData.goal);
 }
 
 /**
@@ -242,48 +311,38 @@ function planCreateWindowInit(){
     referenceDataStateSet();
     headerMenuStateSet();
 
-    let today = new Date();
-    let month = today.getMonth()+1;
-    if(month<10) month = '0' + month;
-    let this_monday = today.getDate() - today.getDay() + 1;
-    let this_sunday = this_monday + 6;
-
-    // 月曜日の日時
-    let start_date = today.getFullYear() + "-"  + month + "-" + this_monday;
-    // 日曜日の日時
-    let end_date = today.getFullYear() + "-"  + month + "-" + this_sunday;
-
-    // Ajax通信
-    $.ajax({
-        url:'./../../php/planCreate/getPlan.php',
-        type:'POST',
-        data:{
-            'userId': window.sessionStorage.getItem(['userId']),
-            'startDate': start_date,
-            'endDate': end_date
-        },
-        dataType: 'json'       
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (plans) => {
-        if(plans.length > 0){
-            for(let i in plans){
-                plans[i].planTime = JSON.parse(plans[i].planTime);
-                if(plans[i].learningFlag){
-                    learningPlans.push(plans[i]);
-                }else{
-                    privatePlans.push(plans[i]);
+    if(displayPlans.length == 0){
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/planCreate/getPlan.php',
+            type:'POST',
+            data:{
+                'userId': window.sessionStorage.getItem(['userId']),
+                'settingId': window.sessionStorage.getItem(['settingId'])
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (plans) => {
+            if(plans.length > 0){
+                for(let i in plans){
+                    plans[i].planTime = JSON.parse(plans[i].planTime);
+                    if(plans[i].learningFlag){
+                        learningPlans.push(plans[i]);
+                    }else{
+                        privatePlans.push(plans[i]);
+                    }
                 }
+                // カレンダー表示用配列に結合
+                displayPlans = learningPlans.concat(privatePlans);
+                // カレンダーセット
+                calenderItemSet.set(displayPlans);
             }
-            // カレンダー表示用配列に結合
-            displayPlans = learningPlans.concat(privatePlans);
-            // カレンダーセット
-            calenderItemSet.set(displayPlans);
-        }
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-    })
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+        })
+    }
 }
 
 /**

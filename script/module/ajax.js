@@ -9,6 +9,7 @@ module.exports.postPlan = function(plan){
         data:{
             'userId': window.sessionStorage.getItem(['userId']),
             'planId': plan.planId,
+            'settingId': window.sessionStorage.getItem(['settingId']),
             'content': plan.content,
             'planDate': plan.planDate,
             'planTime': JSON.stringify(plan.planTime),

@@ -5,9 +5,9 @@
     try {
         $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
 
-        $stmt = $dbh->prepare('SELECT planId, content, planDate, planTime, memo, tag, learningFlag FROM plan WHERE userId = :userId AND editFlag = "false" AND deleteFlag = "false" AND settingId = :settingId'); 
+        $stmt = $dbh->prepare('SELECT * FROM setting WHERE userId = :userId AND insertTime > :startDate'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
-        $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
+        $stmt->bindParam(':startDate', number_format($_POST['startDate']), PDO::PARAM_INT);
 
         $stmt->execute();
     

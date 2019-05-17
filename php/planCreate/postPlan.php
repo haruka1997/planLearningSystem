@@ -5,9 +5,10 @@
     try {
         $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
 
-        $stmt = $dbh->prepare('INSERT INTO plan (planId, userId, content, planDate, planTime, memo, tag, learningFlag) VALUES(:planId, :userId, :content, :planDate, :planTime, :memo, :tag, :learningFlag)'); 
+        $stmt = $dbh->prepare('INSERT INTO plan (planId, userId, settingId, content, planDate, planTime, memo, tag, learningFlag) VALUES(:planId, :userId, :settingId, :content, :planDate, :planTime, :memo, :tag, :learningFlag)'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
         $stmt->bindParam(':planId', $_POST['planId'] , PDO::PARAM_STR);
+        $stmt->bindParam(':settingId', $_POST['settingId'] , PDO::PARAM_STR);
         $stmt->bindParam(':content', $_POST['content'] , PDO::PARAM_STR);
         $stmt->bindParam(':planDate', $_POST['planDate'] , PDO::PARAM_STR);
         $stmt->bindParam(':planTime', $_POST['planTime'] , PDO::PARAM_STR);
