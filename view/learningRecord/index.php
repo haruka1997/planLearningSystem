@@ -1,18 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" href="./../../lib/material.min.css">
-    <script src="./../../lib/material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="./../../lib/bootstrap.min.css">
-    <link rel="stylesheet" href="./../../lib/propeller.min.css">
-
-    <link rel="stylesheet" href="./../../css/main.css">
-    <link rel="stylesheet" href="./../../css/planCreate.css">
-    <link rel="stylesheet" href="./../../css/learningRecord.css">
-    <link rel="stylesheet" href="./../../css/calender.css">
-
     <script type="text/javascript" src="./../../dist/learningRecord.bundle.js"></script>
-
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">

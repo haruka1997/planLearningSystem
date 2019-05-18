@@ -65,6 +65,9 @@ var $ = modules.$; //jquery
 
 modules.header.init($);
 
+// css
+// require('./../css/planCreate.css');
+
 
 $(function(){
     // 先週の学習の満足度が登録されているか確認
