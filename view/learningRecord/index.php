@@ -1,7 +1,7 @@
 <html>
   <head>
-    <link rel="stylesheet" href="./../../node_modules/material-design-lite/material.min.css">
-    <script src="./../../node_modules/material-design-lite/material.min.js"></script>
+    <link rel="stylesheet" href="./../../lib/material.min.css">
+    <script src="./../../lib/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./../../lib/bootstrap.min.css">
     <link rel="stylesheet" href="./../../lib/propeller.min.css">

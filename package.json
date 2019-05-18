@@ -20,6 +20,8 @@
   "dependencies": {
     "chart.js": "^2.8.0",
     "jquery": "^3.4.1",
-    "material-design-lite": "^1.3.0"
+    "material-design-lite": "^1.3.0",
+    "propeller": "^0.5.8",
+    "propellerkit": "^1.3.1"
   }
 }

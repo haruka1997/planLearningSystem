@@ -2,7 +2,6 @@ module.exports.set = function(items, $){
 
     calenderItemSet();
 
-    console.log(items);
     function calenderItemSet(){
         for(var itemsIndex=0; itemsIndex<items.length; itemsIndex++){
             var startHour = Number(items[itemsIndex].time.start.slice(0, items[itemsIndex].time.start.indexOf(":"))); //開始時
