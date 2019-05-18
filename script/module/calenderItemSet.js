@@ -1,7 +1,8 @@
-module.exports.set = function(items){
+module.exports.set = function(items, $){
 
     calenderItemSet();
 
+    console.log(items);
     function calenderItemSet(){
         for(var itemsIndex=0; itemsIndex<items.length; itemsIndex++){
             var startHour = Number(items[itemsIndex].time.start.slice(0, items[itemsIndex].time.start.indexOf(":"))); //開始時
@@ -71,7 +72,7 @@ module.exports.set = function(items){
                 $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).attr('id', items[itemsIndex].id); //idを付与
             }
 
-            if(items[itemsIndex].learningFlag == "false"){ //プライベートの予定の追加の場合
+            if(!items[itemsIndex].learningFlag || items[itemsIndex].learningFlag == "false"){ //プライベートの予定の追加の場合
                 for(var j=0; j<trNthChild.length; j++){ //色を塗る行分
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass(items[itemsIndex].tag); //classを付与
                 }
@@ -82,7 +83,7 @@ module.exports.set = function(items){
     }
 
     function initModalForm(learningFlag){
-        if(learningFlag){
+        if(learningFlag || learningFlag == "true"){
             $('#learningContent').val('');
             $('#selectLearningContent').val('学習内容を選択');
             $('.input-learning-content').css('display', 'none');

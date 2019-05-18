@@ -43,13 +43,30 @@ var learningPlans = [], // 登録された学習計画
 // 選択されたタグ色
 var selectTag = '';
 
-// カレンダーセットモジュール
-var calenderItemSet = require(`./module/calenderItemSet.js`);
-// Ajaxモジュール
-var ajax = require(`./module/ajax.js`);
+// // カレンダーセットモジュール
+// var modules.calenderItemSet = require(`./module/modules.calenderItemSet.js`);
+
+// // Ajaxモジュール
+// var modules.ajax = require(`./module/modules.ajax.js`);
+
+// // jquery
+// var $ = require('jquery');
+// // chart.js
+// var modules.Chart = require('chart.js');
+
+// // header
+// var header = require('./header.js');
+
+// モジュール設定
+var modules = require('./module/moduleInit.js');
+modules = modules.moduleInit();
+
+var $ = modules.$; //jquery
+
+modules.header.init($);
+
 
 $(function(){
-
     // 先週の学習の満足度が登録されているか確認
     let today = new Date();
     let month = today.getMonth();
@@ -242,10 +259,9 @@ $(function(){
         $('.plan-reference-item').slideToggle();
         
         if(flag.planReferenceOpenFlag){   //学習リスト開
-            $('.plan-reference-button i').text('keyboard_arrow_down');
             if(!flag.planReferenceChartSetFlag){
                 var ctx = document.getElementById("planReferenceLine").getContext('2d');
-                var planReferenceLine = new Chart(ctx, {
+                var planReferenceLine = new modules.Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: ["10分", "20分", "30分", "40分", "50分", "60分"],
@@ -296,7 +312,7 @@ $(function(){
                 });
 
                 var ctx = document.getElementById("planReferenceBar").getContext('2d');
-                var planReferenceBar = new Chart(ctx, {
+                var planReferenceBar = new modules.Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ["6:00〜12:00", "12:00〜18:00", "18:00〜24:00"],
@@ -339,7 +355,6 @@ $(function(){
                 flag.planReferenceChartSetFlag = true;
             }
         }else{  //学習リスト閉
-            $('.plan-reference-button i').text('keyboard_arrow_right');
         }
 	});
 });
@@ -419,7 +434,7 @@ function planCreateWindowInit(){
      initCalenderHtml();
 
      // 計画の作成ボタンのdisable化を解除する
-     $(".plan-create-button").prop("disabled", false);
+     $(".plan-create-button").prop("disabled", false);    
 
     if(displayPlans.length == 0){
         // Ajax通信
@@ -448,7 +463,7 @@ function planCreateWindowInit(){
                 // カレンダー表示用配列に結合
                 displayPlans = learningPlans.concat(privatePlans);
                 // カレンダーセット
-                calenderItemSet.set(displayPlans);
+                modules.calenderItemSet.set(displayPlans, $);
             }
         })
         // Ajaxリクエストが失敗した時発動
@@ -541,7 +556,7 @@ function learningPlanAdd(){
         }else{
             // Ajax通信 計画情報をDBに追加
             var flag = new Promise(function(resolve){
-                resolve(ajax.postPlan(plan));
+                resolve(modules.ajax.postPlan(plan));
             })
             if(flag){
                 planDataSet(plan, plan.learningFlag, false, false);
@@ -599,7 +614,7 @@ function privatePlanAdd(){
             });
         }else{
             var flag = new Promise(function(resolve){
-                resolve(ajax.postPlan(plan));
+                resolve(modules.ajax.postPlan(plan));
             })
             if(flag){
                 planDataSet(plan, plan.learningFlag, false, false);
@@ -688,11 +703,11 @@ function learningPlanDetail(id){
                     editPlan.id = 'L' + new Date().getTime();
                     // 編集後の計画を追加
                     var insertFlag = new Promise(function(resolve){
-                        resolve(ajax.postPlan(editPlan));
+                        resolve(modules.ajax.postPlan(editPlan));
                     })
                     // 編集された計画に編集フラグを立てる
                     var updateFlag = new Promise(function(resolve){
-                        resolve(ajax.updatePlan(editPlan, id));
+                        resolve(modules.ajax.updatePlan(editPlan, id));
                     })
                     if(insertFlag && updateFlag){
                         planDataSet(editPlan, editPlan.learningFlag, i, false, false);
@@ -704,7 +719,7 @@ function learningPlanDetail(id){
             // 学習計画の削除ボタンを押されたら
             $('.learning-delete-button').one("click", function () {
                 var deleteFlag = new Promise(function(resolve){
-                    resolve(ajax.deletePlan(id));
+                    resolve(modules.ajax.deletePlan(id));
                 })
                 if(deleteFlag){
                     planDataSet(editPlan, true, false, i);
@@ -779,7 +794,7 @@ function privatePlanDetail(id){
             // プライベートの予定の削除ボタンを押されたら
             $('.private-delete-button').one("click", function () {
                 var deleteFlag = new Promise(function(resolve){
-                    resolve(ajax.deletePlan(id));
+                    resolve(modules.ajax.deletePlan(id));
                 })
                 if(deleteFlag){
                     planDataSet(editPlan, false, false, i);
@@ -815,7 +830,7 @@ function planDubleBookingCheck(plan, id){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
                 if((privatePlans[privateIndex].time.start < plan.time.start && privatePlans[privateIndex].time.end > plan.time.start)
                 || (privatePlans[privateIndex].time.start < plan.time.end && privatePlans[privateIndex].time.end > plan.time.end)
-                || (privatePlans[learningIndex].time.start > plan.time.start && privatePlans[learningIndex].time.end < plan.time.end)
+                || (privatePlans[privateIndex].time.start > plan.time.start && privatePlans[privateIndex].time.end < plan.time.end)
                 || (privatePlans[privateIndex].time.start == plan.time.start && privatePlans[privateIndex].time.end == plan.time.end)){
                     doubleBookingFlag = true;
                     break;
@@ -845,7 +860,7 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
         displayPlans = afterLearningPlans.concat(privatePlans);
         
         // カレンダーセット
-        calenderItemSet.set(displayPlans);
+        modules.calenderItemSet.set(displayPlans, $);
 
         learningPlans = JSON.parse(JSON.stringify(afterLearningPlans));
 
@@ -873,7 +888,7 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
         displayPlans = afterPrivatePlans.concat(learningPlans);
 
         // カレンダーセット
-        calenderItemSet.set(displayPlans);
+        modules.calenderItemSet.set(displayPlans, $);
         
         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
 

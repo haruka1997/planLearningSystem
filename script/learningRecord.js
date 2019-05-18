@@ -26,8 +26,13 @@ var editRecord = {
 var learningListData = [];
 var learningRecords = []; // 登録された学習記録
 
-// カレンダーセットモジュール
-var calenderItemSet = require(`./module/calenderItemSet.js`);
+// モジュール設定
+var modules = require('./module/moduleInit.js');
+modules = modules.moduleInit();
+
+var $ = modules.$; //jquery
+
+modules.header.init($);
 
 $(function(){
 
@@ -54,7 +59,7 @@ $(function(){
                     learningRecords.push(records[i]);
                 }
                 // カレンダーセット
-                calenderItemSet.set(learningRecords);
+                modules.calenderItemSet.set(learningRecords, $);
             }
         })
         // Ajaxリクエストが失敗した時発動
@@ -345,7 +350,7 @@ function recordDataSet(record, editFlag, deleteFlag){
     }
 
     // カレンダーセット
-    calenderItemSet.set(afterLearningRecords);
+    modules.calenderItemSet.set(afterLearningRecords, $);
     learningRecords = JSON.parse(JSON.stringify(afterLearningRecords));
 
     if(editFlag === false && deleteFlag === false){

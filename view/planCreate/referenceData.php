@@ -1,11 +1,8 @@
 <div class="reference-data">
     <!-- 学習リスト -->
     <div class="reference-data-title">
-        <button class="mdl-button mdl-js-button learning-list-button">
-            <i class="material-icons">keyboard_arrow_right</i> 学習リスト
-        </button>
         <button class="mdl-button mdl-js-button plan-reference-button">
-            <i class="material-icons">keyboard_arrow_right</i> 学習計画参考データ
+        学習計画参考データ
         </button> 
     </div>
     <!-- 学習計画参考データ -->

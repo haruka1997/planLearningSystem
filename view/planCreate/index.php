@@ -1,7 +1,7 @@
 <html>
   <head>
-    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="./../../node_modules/material-design-lite/material.min.css">
+    <script src="./../../node_modules/material-design-lite/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./../../lib/bootstrap.min.css">
     <link rel="stylesheet" href="./../../lib/propeller.min.css">
@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="./../../css/planCreate.css">
     <link rel="stylesheet" href="./../../css/calender.css">
 
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
-    <script type="text/javascript" src="./../../script/header.js"></script>
     <script type="text/javascript" src="./../../dist/planCreate.bundle.js"></script>
 
   </head>
@@ -31,7 +27,7 @@
                 <button class="mdl-button mdl-js-button learning-setting-button">
                 学習の設定
                 </button>
-                <i class="material-icons">keyboard_arrow_right</i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="#c9c9c9" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg>                
                 <button class="mdl-button mdl-js-button plan-create-button unselected">
                 計画の作成
                 </button>
@@ -47,8 +43,12 @@
               <!-- カレンダ -->
               <?php include ('./../common/calender.php'); ?>
               <div class="floating-action-button">
-                <button class="mdl-button mdl-js-button mdl-button--fab" id="add-learning-plan" type="button" title="学習の計画追加"><i class="material-icons pmd-sm">create</i></button>
-                <button class="mdl-button mdl-js-button mdl-button--fab" id="add-private-plan" type="button" title="プライベートの予定追加"><i class="material-icons pmd-sm">music_note</i></button>
+                <button class="mdl-button mdl-js-button mdl-button--fab" id="add-learning-plan" type="button" title="学習の計画追加">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>                
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--fab" id="add-private-plan" type="button" title="プライベートの予定追加">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>                
+                </button>
               </div>
             </div>
         </div>

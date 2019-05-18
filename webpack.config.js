@@ -1,11 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-
 module.exports = {
  
     // メインとなるJavaScriptファイル（エントリーポイント）
     entry: {
+      moduleInit: `./script/module/moduleInit.js`,
       planCreate: `./script/planCreate.js`,
       learningRecord: `./script/learningRecord.js`
     },
@@ -23,6 +23,19 @@ module.exports = {
         {
           test: /\.html$/,
           loader: "html-loader"
+        },
+        { test: /\.svg$/, 
+          loader: 'svg-url-loader'
+        },
+        {
+          test: /\.css/,
+          use: [
+            "style-loader",
+            {
+              loader: "css-loader",
+              options: { url: false }
+            }
+          ]
         }
       ]
     }
