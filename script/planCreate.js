@@ -556,7 +556,7 @@ function learningPlanAdd(){
         }else{
             // Ajax通信 計画情報をDBに追加
             var flag = new Promise(function(resolve){
-                resolve(modules.ajax.postPlan(plan));
+                resolve(modules.ajax.postPlan(plan, $));
             })
             if(flag){
                 planDataSet(plan, plan.learningFlag, false, false);
@@ -614,7 +614,7 @@ function privatePlanAdd(){
             });
         }else{
             var flag = new Promise(function(resolve){
-                resolve(modules.ajax.postPlan(plan));
+                resolve(modules.ajax.postPlan(plan, $));
             })
             if(flag){
                 planDataSet(plan, plan.learningFlag, false, false);
@@ -703,11 +703,11 @@ function learningPlanDetail(id){
                     editPlan.id = 'L' + new Date().getTime();
                     // 編集後の計画を追加
                     var insertFlag = new Promise(function(resolve){
-                        resolve(modules.ajax.postPlan(editPlan));
+                        resolve(modules.ajax.postPlan(editPlan, $));
                     })
                     // 編集された計画に編集フラグを立てる
                     var updateFlag = new Promise(function(resolve){
-                        resolve(modules.ajax.updatePlan(editPlan, id));
+                        resolve(modules.ajax.updatePlan(editPlan, id, $));
                     })
                     if(insertFlag && updateFlag){
                         planDataSet(editPlan, editPlan.learningFlag, i, false, false);
@@ -719,7 +719,7 @@ function learningPlanDetail(id){
             // 学習計画の削除ボタンを押されたら
             $('.learning-delete-button').one("click", function () {
                 var deleteFlag = new Promise(function(resolve){
-                    resolve(modules.ajax.deletePlan(id));
+                    resolve(modules.ajax.deletePlan(id, $));
                 })
                 if(deleteFlag){
                     planDataSet(editPlan, true, false, i);
@@ -794,7 +794,7 @@ function privatePlanDetail(id){
             // プライベートの予定の削除ボタンを押されたら
             $('.private-delete-button').one("click", function () {
                 var deleteFlag = new Promise(function(resolve){
-                    resolve(modules.ajax.deletePlan(id));
+                    resolve(modules.ajax.deletePlan(id, $));
                 })
                 if(deleteFlag){
                     planDataSet(editPlan, false, false, i);

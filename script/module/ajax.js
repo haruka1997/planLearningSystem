@@ -1,7 +1,7 @@
 /**
  * 計画の追加
  */
-module.exports.postPlan = function(plan){
+module.exports.postPlan = function(plan, $){
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
@@ -32,7 +32,7 @@ module.exports.postPlan = function(plan){
 /**
  * 計画の編集
  */
-module.exports.updatePlan = function(plan, id){
+module.exports.updatePlan = function(plan, id, $){
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/updatePlan.php',
@@ -57,7 +57,7 @@ module.exports.updatePlan = function(plan, id){
 /**
  * 計画の削除
  */
-module.exports.deletePlan = function(id){
+module.exports.deletePlan = function(id, $){
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/deletePlan.php',
@@ -76,39 +76,4 @@ module.exports.deletePlan = function(id){
         alert('削除に失敗しました');
         return data;
     })
-}
-
-module.exports.getPlan = function(){
-    let today = new Date();
-    let month = today.getMonth()+1;
-    if(month<10) month = '0' + month;
-    let this_monday = today.getDate() - today.getDay() + 1;
-    let this_sunday = this_monday + 6;
-
-    // 月曜日の日時
-    let start_date = today.getFullYear() + "-"  + month + "-" + this_monday;
-    // 日曜日の日時
-    let end_date = today.getFullYear() + "-"  + month + "-" + this_sunday;
-
-    // Ajax通信
-    $.ajax({
-        url:'./../../php/planCreate/getPlan.php',
-        type:'POST',
-        data:{
-            'userId': window.sessionStorage.getItem(['userId']),
-            'startDate': start_date,
-            'endDate': end_date
-        },
-        dataType: 'json'       
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (data) => {
-        return data;
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-        alert('取得に失敗しました');
-        return data;
-    })
-
 }
