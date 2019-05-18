@@ -43,20 +43,6 @@ var learningPlans = [], // 登録された学習計画
 // 選択されたタグ色
 var selectTag = '';
 
-// // カレンダーセットモジュール
-// var modules.calenderItemSet = require(`./module/modules.calenderItemSet.js`);
-
-// // Ajaxモジュール
-// var modules.ajax = require(`./module/modules.ajax.js`);
-
-// // jquery
-// var $ = require('jquery');
-// // chart.js
-// var modules.Chart = require('chart.js');
-
-// // header
-// var header = require('./header.js');
-
 // モジュール設定
 var modules = require('./module/moduleInit.js');
 modules = modules.moduleInit();
@@ -64,9 +50,6 @@ modules = modules.moduleInit();
 var $ = modules.$; //jquery
 
 modules.header.init($);
-
-// css
-// require('./../css/planCreate.css');
 
 
 $(function(){

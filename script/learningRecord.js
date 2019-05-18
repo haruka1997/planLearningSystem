@@ -235,6 +235,7 @@ function learningRecordDetail(id){
             $('.learning-edit-button').one("click", function () {
 
                 //  入力内容の取得
+                editRecord.id = id;
                 editRecord.content = $('#detailLearningContent').val();
                 editRecord.date = $('#detailLearningDate').val();
                 editRecord.time.start = $('#detailLearningTimeStart').val();
