@@ -50,9 +50,6 @@ var ajax = require(`./module/ajax.js`);
 
 $(function(){
 
-    // html読み込み
-    initCalenderHtml();
-
     // 先週の学習の満足度が登録されているか確認
     let today = new Date();
     let month = today.getMonth();
@@ -417,6 +414,9 @@ function planCreateWindowInit(){
     flag.learningSettingWindowShowFlag = false;
     referenceDataStateSet();
     headerMenuStateSet();
+
+     // html読み込み
+     initCalenderHtml();
 
      // 計画の作成ボタンのdisable化を解除する
      $(".plan-create-button").prop("disabled", false);
