@@ -641,6 +641,18 @@ function learningPlanDetail(id){
             var plan = learningPlans[i];
             $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
 
+            // 日付が過ぎた計画は編集・削除ができないようにする
+            let today = new Date().getTime();   // 現在の日時を取得
+            let planDate = plan.date.split('-');    // 選択した計画の年、月、日を取得
+            let planTime = plan.time.start.split(':');  // 時、分を取得
+            planDate = new Date(planDate[0], planDate[1]-1, planDate[2], planTime[0], planTime[1], 0,0).getTime();
+
+            if(today >= planDate){  // 選択した計画が現在の日時を過ぎている場合は編集・削除ボタンをdisabledする
+                $('.detail-modal-footer-button button').prop('disabled', true);
+            }else{
+                $('.detail-modal-footer-button button').prop('disabled', false);
+            }
+
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
                 $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる

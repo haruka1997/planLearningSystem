@@ -40,7 +40,7 @@
                 <textarea class="form-control" id="detailLearningMemo"></textarea>
             </div>
             <!-- 追加ボタン -->
-            <div class="plan-modal-footer-button">
+            <div class="plan-modal-footer-button detail-modal-footer-button">
                 <button class="learning-edit-button mdl-button mdl-js-button mdl-button--raised">編集</button>
                 <button class="learning-delete-button mdl-button mdl-js-button mdl-button--raised">削除</button>
             </div>
