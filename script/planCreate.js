@@ -541,32 +541,8 @@ function learningPlanAdd(){
             });
         }else{
             // Ajax通信 計画情報をDBに追加
-            $.ajax({
-                url:'./../../php/planCreate/postPlan.php',
-                type:'POST',
-                data:{
-                    'userId': window.sessionStorage.getItem(['userId']),
-                    'planId': plan.id,
-                    'settingId': window.sessionStorage.getItem(['settingId']),
-                    'content': plan.content,
-                    'planDate': plan.date,
-                    'planTime': JSON.stringify(plan.time),
-                    'memo': plan.memo,
-                    'tag': plan.tag,
-                    'learningFlag': plan.learningFlag
-                },
-                dataType: 'json'       
-            })
-            // Ajaxリクエストが成功した時発動
-            .done( (data) => {
-                planDataSet(plan, plan.learningFlag, false, false);
-            })
-            // Ajaxリクエストが失敗した時発動
-            .fail( (data) => {
-                alert('登録に失敗しました');
-            })
+            postPlan(plan);
         }
-
     });
 }
 
@@ -617,29 +593,7 @@ function privatePlanAdd(){
                 initModalForm(plan.learningFlag);
             });
         }else{
-            var flag = new Promise(function(resolve){
-                resolve(modules.ajax.postPlan(plan, $));
-            })
-            $.ajax({
-                url:'./../../php/planCreate/postPlan.php',
-                type:'POST',
-                data:{
-                    'userId': window.sessionStorage.getItem(['userId']),
-                    'planId': plan.id,
-                    'settingId': window.sessionStorage.getItem(['settingId']),
-                    'content': plan.content,
-                    'planDate': plan.date,
-                    'planTime': JSON.stringify(plan.time),
-                    'memo': plan.memo,
-                    'tag': plan.tag,
-                    'learningFlag': plan.learningFlag
-                },
-                dataType: 'json'       
-            })
-            // Ajaxリクエストが成功した時発動
-            .done( (data) => {
-                planDataSet(plan, plan.learningFlag, false, false);
-            })
+            postPlan(plan);
         }
 
     });
@@ -725,71 +679,13 @@ function learningPlanDetail(id){
                     });
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
-                    // Ajax通信
-                    $.ajax({
-                        url:'./../../php/planCreate/postPlan.php',
-                        type:'POST',
-                        data:{
-                            'userId': window.sessionStorage.getItem(['userId']),
-                            'planId': editPlan.id,
-                            'settingId': window.sessionStorage.getItem(['settingId']),
-                            'content': editPlan.content,
-                            'planDate': editPlan.date,
-                            'planTime': JSON.stringify(editPlan.time),
-                            'memo': editPlan.memo,
-                            'tag': editPlan.tag,
-                            'learningFlag': editPlan.learningFlag
-                        },
-                        dataType: 'json'       
-                    })
-                    // Ajaxリクエストが成功した時発動
-                    .done( (data) => {
-                        // 編集された計画に編集フラグを立てる
-                        $.ajax({
-                            url:'./../../php/planCreate/updatePlan.php',
-                            type:'POST',
-                            data:{
-                                'planId': id,
-                                'editId': editPlan.id
-                            },
-                            dataType: 'json'       
-                        })
-                        // Ajaxリクエストが成功した時発動
-                        .done( (data) => {
-                            planDataSet(editPlan, editPlan.learningFlag, i, false, false);
-                        })
-                        // Ajaxリクエストが失敗した時発動
-                        .fail( (data) => {
-                            alert('編集に失敗しました');
-                            return data;
-                        })
-                    })
-                    // Ajaxリクエストが失敗した時発動
-                    .fail( (data) => {
-                        alert('登録に失敗しました');
-                    })
+                    updatePlan(editPlan, id, i);
                 }
             });
 
             // 学習計画の削除ボタンを押されたら
             $('.learning-delete-button').one("click", function () {
-                $.ajax({
-                    url:'./../../php/planCreate/deletePlan.php',
-                    type:'POST',
-                    data:{
-                        'planId': id
-                    },
-                    dataType: 'json'       
-                })
-                // Ajaxリクエストが成功した時発動
-                .done( (data) => {
-                    planDataSet(editPlan, true, false, i);
-                })
-                // Ajaxリクエストが失敗した時発動
-                .fail( (data) => {
-                    alert('削除に失敗しました');
-                    return data;
-                })
+                deletePlan(plan, id, i);
             });
             break;
         }
@@ -851,71 +747,14 @@ function privatePlanDetail(id){
                     });
                 }else{
                     editPlan.id = 'P' + new Date().getTime();
-                    $.ajax({
-                        url:'./../../php/planCreate/postPlan.php',
-                        type:'POST',
-                        data:{
-                            'userId': window.sessionStorage.getItem(['userId']),
-                            'planId': editPlan.id,
-                            'settingId': window.sessionStorage.getItem(['settingId']),
-                            'content': editPlan.content,
-                            'planDate': editPlan.date,
-                            'planTime': JSON.stringify(editPlan.time),
-                            'memo': editPlan.memo,
-                            'tag': editPlan.tag,
-                            'learningFlag': editPlan.learningFlag
-                        },
-                        dataType: 'json'       
-                    })
-                    // Ajaxリクエストが成功した時発動
-                    .done( (data) => {
-                        // 編集された計画に編集フラグを立てる
-                        $.ajax({
-                            url:'./../../php/planCreate/updatePlan.php',
-                            type:'POST',
-                            data:{
-                                'planId': id,
-                                'editId': editPlan.id
-                            },
-                            dataType: 'json'       
-                        })
-                        // Ajaxリクエストが成功した時発動
-                        .done( (data) => {
-                            planDataSet(editPlan, editPlan.learningFlag, i, false);
-                        })
-                        // Ajaxリクエストが失敗した時発動
-                        .fail( (data) => {
-                            alert('編集に失敗しました');
-                            return data;
-                        })
-                    })
-                    // Ajaxリクエストが失敗した時発動
-                    .fail( (data) => {
-                        alert('登録に失敗しました');
-                    })
+                    updatePlan(editPlan, id, i);
                 }
 
             });
 
             // プライベートの予定の削除ボタンを押されたら
             $('.private-delete-button').one("click", function () {
-                $.ajax({
-                    url:'./../../php/planCreate/deletePlan.php',
-                    type:'POST',
-                    data:{
-                        'planId': id
-                    },
-                    dataType: 'json'       
-                })
-                // Ajaxリクエストが成功した時発動
-                .done( (data) => {
-                    planDataSet(editPlan, false, false, i);
-                })
-                // Ajaxリクエストが失敗した時発動
-                .fail( (data) => {
-                    alert('削除に失敗しました');
-                    return data;
-                })
+                deletePlan(plan, id, i);
             });
             break;
         }
@@ -1018,4 +857,108 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
             $('.private-plan-detail-modal-wrapper').removeClass('is-visible');
         }
     }
+}
+
+/**
+ * ajax postPlan
+ */
+function postPlan(plan){
+    $.ajax({
+        url:'./../../php/planCreate/postPlan.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'planId': plan.id,
+            'settingId': window.sessionStorage.getItem(['settingId']),
+            'content': plan.content,
+            'planDate': plan.date,
+            'planTime': JSON.stringify(plan.time),
+            'memo': plan.memo,
+            'tag': plan.tag,
+            'learningFlag': plan.learningFlag
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        planDataSet(plan, plan.learningFlag, false, false);
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('登録に失敗しました');
+    })
+}
+
+/**
+ * ajax updatePlan
+ * @param {*} editPlan 
+ * @param {*} id 
+ * @param {*} i 
+ */
+function updatePlan(editPlan, id, i){
+    $.ajax({
+        url:'./../../php/planCreate/postPlan.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'planId': editPlan.id,
+            'settingId': window.sessionStorage.getItem(['settingId']),
+            'content': editPlan.content,
+            'planDate': editPlan.date,
+            'planTime': JSON.stringify(editPlan.time),
+            'memo': editPlan.memo,
+            'tag': editPlan.tag,
+            'learningFlag': editPlan.learningFlag
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        // 編集された計画に編集フラグを立てる
+        $.ajax({
+            url:'./../../php/planCreate/updatePlan.php',
+            type:'POST',
+            data:{
+                'planId': id,
+                'editId': editPlan.id
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            planDataSet(editPlan, editPlan.learningFlag, i, false);
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+            alert('編集に失敗しました');
+            return data;
+        })
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('登録に失敗しました');
+    })
+}
+
+/**
+ * ajax deletePlan
+ */
+function deletePlan(editPlan, id, i){
+    $.ajax({
+        url:'./../../php/planCreate/deletePlan.php',
+        type:'POST',
+        data:{
+            'planId': id
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        planDataSet(editPlan, plan.learningFlag, false, i);
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('削除に失敗しました');
+        return data;
+    })
 }
