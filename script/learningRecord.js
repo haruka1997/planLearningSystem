@@ -34,7 +34,7 @@ var $ = modules.$; //jquery
 
 $(function(){
 
-    initCalenderHtml();
+    modules.initCalenderHtml.init($);
     // 学習記録の取得
     if(learningRecords.length == 0){
         // Ajax通信
@@ -327,16 +327,8 @@ function recordDubleBookingCheck(record, id){
     return doubleBookingFlag; 
 }
 
-function initCalenderHtml(){
-    if($("#record-create-content").find('.calender')){
-        $(".calender").remove();
-    }
-    var calender = require('./../view/common/calender.html');
-    $("#record-create-content").append(calender);
-}
-
 function recordDataSet(record, editFlag, deleteFlag){
-    initCalenderHtml();
+    modules.initCalenderHtml.init($);
     
     var afterLearningRecords = JSON.parse(JSON.stringify(learningRecords));
     if(editFlag !== false){
