@@ -451,7 +451,6 @@ function referenceDataStateSet(){
     if(flag.planReferenceOpenFlag){
         flag.planReferenceOpenFlag = false;
         flag.planReferenceChartSetFlag = false;
-        $('.plan-reference-button i').text('keyboard_arrow_right');
         $('.plan-reference-item').css('display', 'none');
     }
 
@@ -495,6 +494,7 @@ function learningPlanAdd(){
     $('.learning-add-button').one("click", function() {
 
         let plan = {};
+        plan.time = {};
 
         //  入力内容の取得
         plan.content = $('#learningContent').val();
@@ -549,6 +549,7 @@ function privatePlanAdd(){
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
         let plan = {};
+        plan.time = {};
 
         //  入力内容の取得
         plan.content = "";
