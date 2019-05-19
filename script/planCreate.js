@@ -456,6 +456,8 @@ function planCreateWindowInit(){
         .fail( (data) => {
         })
     }
+    // カレンダーセット
+    modules.calenderItemSet.set(displayPlans, $);
 }
 
 /**
@@ -529,7 +531,7 @@ function learningPlanAdd(){
         plan.id = 'L' + new Date().getTime();
 
         // ダブルブッキングチェック
-        var doubleBookingFlag = planDubleBookingCheck(plan, plan.id);
+        var doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
 
         if(doubleBookingFlag){
             $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -582,7 +584,7 @@ function privatePlanAdd(){
         plan.id = 'P' + new Date().getTime();
 
         // ダブルブッキングチェック
-        var doubleBookingFlag = planDubleBookingCheck(plan, plan.id);
+        var doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
 
         if(doubleBookingFlag){
             $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -667,7 +669,7 @@ function learningPlanDetail(id){
                 editPlan.learningFlag = true;
 
                 // ダブルブッキングチェック
-                var doubleBookingFlag = planDubleBookingCheck(editPlan, id);
+                var doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
 
                 if(doubleBookingFlag){
                     $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -735,7 +737,7 @@ function privatePlanDetail(id){
                 editPlan.learningFlag = false;
 
                 // ダブルブッキングチェック
-                var doubleBookingFlag = planDubleBookingCheck(editPlan, id);
+                var doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
 
                 if(doubleBookingFlag){
                     $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
@@ -761,17 +763,18 @@ function privatePlanDetail(id){
     }
 }
 
-function planDubleBookingCheck(plan, id){
+function planDoubleBookingCheck(plan, id){
+
     var doubleBookingFlag = false;
-    // 学習計画とのダブりチェック
-    for(var learningIndex = 0; learningIndex < learningPlans.length; learningIndex++){
-        if(id !== learningPlans[learningIndex].id){
-            if(learningPlans[learningIndex].date == plan.date){
+
+    for(var learningIndex = 0; learningIndex < displayPlans.length; learningIndex++){
+        if(id !== displayPlans[learningIndex].id){
+            if(displayPlans[learningIndex].date == plan.date){
                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                if((learningPlans[learningIndex].time.start < plan.time.start && learningPlans[learningIndex].time.end > plan.time.start)
-                || (learningPlans[learningIndex].time.start < plan.time.end && learningPlans[learningIndex].time.end > plan.time.end)
-                || (learningPlans[learningIndex].time.start > plan.time.start && learningPlans[learningIndex].time.end < plan.time.end)
-                || (learningPlans[learningIndex].time.start == plan.time.start && learningPlans[learningIndex].time.end == plan.time.end)){
+                if((displayPlans[learningIndex].time.start < plan.time.start && displayPlans[learningIndex].time.end > plan.time.start)
+                || (displayPlans[learningIndex].time.start < plan.time.end && displayPlans[learningIndex].time.end > plan.time.end)
+                || (displayPlans[learningIndex].time.start > plan.time.start && displayPlans[learningIndex].time.end < plan.time.end)
+                || (displayPlans[learningIndex].time.start == plan.time.start && displayPlans[learningIndex].time.end == plan.time.end)){
                     doubleBookingFlag = true;
                     break;
                 }
@@ -779,21 +782,6 @@ function planDubleBookingCheck(plan, id){
         }
     } 
 
-    // プライベートの予定とのダブりチェック
-    for(var privateIndex = 0; privateIndex < privatePlans.length; privateIndex++){
-        if(id !== privatePlans[privateIndex].id){
-            if(privatePlans[privateIndex].date == plan.date){
-                // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                if((privatePlans[privateIndex].time.start < plan.time.start && privatePlans[privateIndex].time.end > plan.time.start)
-                || (privatePlans[privateIndex].time.start < plan.time.end && privatePlans[privateIndex].time.end > plan.time.end)
-                || (privatePlans[privateIndex].time.start > plan.time.start && privatePlans[privateIndex].time.end < plan.time.end)
-                || (privatePlans[privateIndex].time.start == plan.time.start && privatePlans[privateIndex].time.end == plan.time.end)){
-                    doubleBookingFlag = true;
-                    break;
-                }
-            }
-        }
-    }
     return doubleBookingFlag;
 }
 
