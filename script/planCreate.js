@@ -1,28 +1,3 @@
-var plan = {
-    id: 0,
-    content: "",
-    date: "",
-    time: {
-        start: 0,
-        end: 0
-    },
-    tag: "",
-    memo: "",
-    learningFlag: true
-};
-var editPlan = {
-    id: 0,
-    content: "",
-    date: "",
-    time: {
-        start: 0,
-        end: 0
-    },
-    tag: "",
-    memo: "",
-    learningFlag: true
-};
-
 var flag = {
     planReferenceOpenFlag: false,  // 学習計画参考データ開閉フラグ
     planReferenceChartSetFlag: false,  // 学習計画参考データグラフセット
@@ -62,7 +37,7 @@ $(function(){
     let last_monday_date = new Date(today.getFullYear(), month, last_monday, 0,0,0,0).getTime();
     // 先週の日曜日の日時
     let last_sunday_date = new Date(today.getFullYear(), month, last_sunday, 23,59,59,59).getTime();
-    
+
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/getSatisfaction.php',
@@ -519,6 +494,8 @@ function learningPlanAdd(){
     // 追加ボタン押されたら
     $('.learning-add-button').one("click", function() {
 
+        let plan = {};
+
         //  入力内容の取得
         plan.content = $('#learningContent').val();
         plan.date = $('#learningDate').val();
@@ -570,6 +547,8 @@ function privatePlanAdd(){
     // 追加ボタン押されたら
     $('.private-add-button').click(function () {
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+
+        let plan = {};
 
         //  入力内容の取得
         plan.content = "";
@@ -629,13 +608,13 @@ function initModalForm(learningFlag){
 function learningPlanDetail(id){
     for(var i=0; i<learningPlans.length; i++){
         if(learningPlans[i].id == id){ //選択した計画データ一致
-            var plan = learningPlans[i];
+            let selectPlan = learningPlans[i];
             $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
 
             // 日付が過ぎた計画は編集・削除ができないようにする
             let today = new Date().getTime();   // 現在の日時を取得
-            let planDate = plan.date.split('-');    // 選択した計画の年、月、日を取得
-            let planTime = plan.time.start.split(':');  // 時、分を取得
+            let planDate = selectPlan.date.split('-');    // 選択した計画の年、月、日を取得
+            let planTime = selectPlan.time.start.split(':');  // 時、分を取得
             planDate = new Date(planDate[0], planDate[1]-1, planDate[2], planTime[0], planTime[1], 0,0).getTime();
 
             if(today >= planDate){  // 選択した計画が現在の日時を過ぎている場合は編集・削除ボタンをdisabledする
@@ -650,15 +629,18 @@ function learningPlanDetail(id){
             });
 
             // フォームの値セット
-            $('#detailLearningContent').val(plan.content);
-            $('#detailLearningDate').val(plan.date);
-            $('#detailLearningTimeStart').val(plan.time.start);
-            $('#detailLearningTimeEnd').val(plan.time.end);
-            $('#detailLearningMemo').val(plan.memo);
+            $('#detailLearningContent').val(selectPlan.content);
+            $('#detailLearningDate').val(selectPlan.date);
+            $('#detailLearningTimeStart').val(selectPlan.time.start);
+            $('#detailLearningTimeEnd').val(selectPlan.time.end);
+            $('#detailLearningMemo').val(selectPlan.memo);
 
             // TODO: 予定編集処理
             // 編集ボタン押されたら
             $('.learning-edit-button').one("click", function () {
+
+                let editPlan = {};
+                editPlan.time = {};
 
                 //  入力内容の取得
                 editPlan.content = $('#detailLearningContent').val();
@@ -687,7 +669,7 @@ function learningPlanDetail(id){
 
             // 学習計画の削除ボタンを押されたら
             $('.learning-delete-button').one("click", function () {
-                deletePlan(plan, id, i);
+                deletePlan(selectPlan, id, i);
             });
             break;
         }
@@ -700,7 +682,7 @@ function learningPlanDetail(id){
 function privatePlanDetail(id){
     for(var i=0; i<privatePlans.length; i++){
         if(privatePlans[i].id == id){ //選択した計画データ一致
-            var plan = privatePlans[i];
+            let selectPlan = privatePlans[i];
             $('.private-plan-detail-modal-wrapper').addClass('is-visible');    //プライベートの予定詳細モーダル表示
 
             // キャンセルボタン押されたら
@@ -711,10 +693,10 @@ function privatePlanDetail(id){
             });
 
             // フォームの値セット
-            $('#detailPrivateDate').val(plan.date);
-            $('#detailPrivateTimeStart').val(plan.time.start);
-            $('#detailPrivateTimeEnd').val(plan.time.end);
-            $('#detailPrivateMemo').val(plan.memo);
+            $('#detailPrivateDate').val(selectPlan.date);
+            $('#detailPrivateTimeStart').val(selectPlan.time.start);
+            $('#detailPrivateTimeEnd').val(selectPlan.time.end);
+            $('#detailPrivateMemo').val(selectPlan.memo);
 
             // タグボタンを押されたら
             $('.tag').click(function (){
@@ -727,6 +709,9 @@ function privatePlanDetail(id){
             // 編集ボタン押されたら
             $('.private-edit-button').one("click", function () {
                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+
+                let editPlan = {};
+                editPlan.time = {};
 
                 //  入力内容の取得
                 editPlan.date = $('#detailPrivateDate').val();
@@ -756,7 +741,7 @@ function privatePlanDetail(id){
 
             // プライベートの予定の削除ボタンを押されたら
             $('.private-delete-button').one("click", function () {
-                deletePlan(plan, id, i);
+                deletePlan(selectPlan, id, i);
             });
             break;
         }
@@ -931,7 +916,7 @@ function updatePlan(editPlan, id, i){
 /**
  * ajax deletePlan
  */
-function deletePlan(editPlan, id, i){
+function deletePlan(deletePlan, id, i){
     $.ajax({
         url:'./../../php/planCreate/deletePlan.php',
         type:'POST',
@@ -942,7 +927,7 @@ function deletePlan(editPlan, id, i){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        planDataSet(editPlan, plan.learningFlag, false, i);
+        planDataSet(deletePlan, deletePlan.learningFlag, false, i);
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
