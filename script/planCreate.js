@@ -417,7 +417,7 @@ function planCreateWindowInit(){
     headerMenuStateSet();
 
      // html読み込み
-     initCalenderHtml();
+     modules.initCalenderHtml.init($);
 
      // 計画の作成ボタンのdisable化を解除する
      $(".plan-create-button").prop("disabled", false);    
@@ -632,15 +632,6 @@ function initModalForm(learningFlag){
     $('.modal-error').text('');
 }
 
-function initCalenderHtml(){
-    if($("#plan-create-content").find('.calender')){
-        $(".calender").remove();
-    }
-    var calender = require('./../view/common/calender.html');
-    $("#plan-create-content").append(calender);
-}
-
-
 /**
  * 学習計画詳細表示
  */
@@ -830,7 +821,7 @@ function planDubleBookingCheck(plan, id){
 function planDataSet(plan, learningFlag, editFlag, deleteFlag){
     if(learningFlag){
         
-        initCalenderHtml();
+        modules.initCalenderHtml.init($);
 
         var afterLearningPlans = JSON.parse(JSON.stringify(learningPlans));
         if(editFlag !== false){
@@ -858,7 +849,7 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
 
     }else{
 
-        initCalenderHtml();
+        modules.initCalenderHtml.init($);
 
         var afterPrivatePlans = JSON.parse(JSON.stringify(privatePlans));
         if(editFlag !== false){

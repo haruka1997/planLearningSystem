@@ -35,6 +35,8 @@ module.exports.moduleInit = function(){
     let header = require('./header.js');
     header.init(modules.$);
 
+    // initCalenderHtml
+    modules.initCalenderHtml = require('./initCalenderHtml.js');
 
     return modules;
 
