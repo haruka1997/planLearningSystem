@@ -63,7 +63,7 @@ module.exports.set = function(items, $){
 
             //予定を追加する対象行列に時間と予定名を追加
             // 学習内容7文字だけ抽出
-            $('.calender-table tbody tr:' + trNthChild[0] + ' td:' + tdNthChild).html(items[itemsIndex].time.start + ' ' + items[itemsIndex].content.slice(0,7));   //学習内容を設定
+            $('.calender-table tbody tr:' + trNthChild[0] + ' td:' + tdNthChild).html(items[itemsIndex].time.start + ' ' + items[itemsIndex].content);   //学習内容を設定
            
             //行の削除
             for(var j=0; j<trNthChild.length; j++){ //色を塗る行分

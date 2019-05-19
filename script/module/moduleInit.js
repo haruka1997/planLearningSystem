@@ -19,9 +19,6 @@ module.exports.moduleInit = function(){
     // カレンダーセットモジュール
     modules.calenderItemSet = require(`./calenderItemSet.js`);
 
-    // Ajaxモジュール
-    modules.ajax = require(`./ajax.js`);
-
     // jquery
     modules.$ = require('jquery');
     // chart.js
