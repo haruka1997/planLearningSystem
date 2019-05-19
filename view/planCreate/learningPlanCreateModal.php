@@ -12,14 +12,14 @@
             <!--学習内容 -->
             <div class="form-group pmd-textfield">       
                 <label>学習内容</label>
-                <input type="text" id="learningContent" class="form-control">
+                <input type="text" id="learningContent" class="form-control" required>
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">
                 <label for="learningDate" class="control-label">
                     学習日
                 </label>
-                <input type="date" id="learningDate" class="form-control">
+                <input type="date" id="learningDate" class="form-control" required>
             </div>
              <!-- 学習時間 -->
              <div class="form-group pmd-textfield">
@@ -27,11 +27,11 @@
                     学習時間
                 </label>
                 <div style="display:flex;">
-                    <input type="time" id="learningTimeStart" class="form-control">
+                    <input type="time" id="learningTimeStart" class="form-control" required>
                     <p style="margin:20px;">〜</p>
                     <label for="learningTimeEnd" class="control-label">
                     </label>
-                    <input type="time" id="learningTimeEnd" class="form-control">
+                    <input type="time" id="learningTimeEnd" class="form-control" required>
                 </div>
             </div>
             <!-- メモ -->

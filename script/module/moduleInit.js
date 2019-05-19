@@ -35,6 +35,9 @@ module.exports.moduleInit = function(){
     // initCalenderHtml
     modules.initCalenderHtml = require('./initCalenderHtml.js');
 
+    // formValueCheck
+    modules.formValueCheck = require('./formValueCheck.js');
+
     return modules;
 
 }

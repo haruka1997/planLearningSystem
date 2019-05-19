@@ -1,28 +1,3 @@
-// var record = {
-//     id: 0,
-//     content: "",
-//     date: "",
-//     time: {
-//         start: 0,
-//         end: 0
-//     },
-//     tag: "",
-//     memo: "",
-//     learningFlag: true
-// };
-var editRecord = {
-    id: 0,
-    content: "",
-    date: "",
-    time: {
-        start: 0,
-        end: 0
-    },
-    tag: "",
-    memo: "",
-    learningFlag: true
-};
-
 var learningListData = [];
 var learningRecords = []; // 登録された学習記録
 
@@ -155,16 +130,25 @@ function learningRecordAdd(){
         // idの設定
         record.id = 'R' + new Date().getTime();
 
-        // ダブルブッキングチェック
-        var doubleBookingFlag = recordDubleBookingCheck(record, record.id);
+        // フォームの値チェック
+        let errorMessage = modules.formValueCheck.check(record);
 
+        // ダブルブッキングチェック
+        let doubleBookingFlag = recordDubleBookingCheck(record, record.id);
+        console.log(doubleBookingFlag);
         if(doubleBookingFlag){
-            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+            errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+        }
+
+        // エラーがあれば表示、なければ登録処理
+        if(errorMessage.length !== 0){
+            for(let i in errorMessage){
+                $('.modal-error').append(errorMessage[i] + '<br>');
+            }
             // モーダルを1秒後に閉じる
             $('.learning-record-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
-                // モーダル初期化
-                initModalForm();
+                $('.modal-error').text('');
             });
         }else{
             // Ajax通信
@@ -246,16 +230,24 @@ function learningRecordDetail(id){
                 editRecord.time.end = $('#detailLearningTimeEnd').val();
                 editRecord.memo = $('#detailLearningMemo').val();
 
-                // ダブルブッキングチェック
-                var doubleBookingFlag = recordDubleBookingCheck(editRecord, id);
+                // フォームの値チェック
+                let errorMessage = modules.formValueCheck.check(editRecord);
 
+                // ダブルブッキングチェック
+                let doubleBookingFlag = recordDubleBookingCheck(editRecord, id);
                 if(doubleBookingFlag){
-                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }
+
+                // エラーがあれば表示、なければ登録処理
+                if(errorMessage.length !== 0){
+                    for(let i in errorMessage){
+                        $('.modal-error').append(errorMessage[i] + '<br>');
+                    }
                     // モーダルを1秒後に閉じる
                     $('.learning-record-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
-                        // モーダル初期化
-                        initModalForm();
+                        $('.modal-error').text('');
                     });
                 }else{                    
                     // 記録の編集

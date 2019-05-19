@@ -507,16 +507,24 @@ function learningPlanAdd(){
         // idの設定
         plan.id = 'L' + new Date().getTime();
 
-        // ダブルブッキングチェック
-        var doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
+        // フォームの値チェック
+        let errorMessage = modules.formValueCheck.check(plan);
 
+        // ダブルブッキングチェック
+        let doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
         if(doubleBookingFlag){
-            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+            errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+        }
+
+        // エラーがあれば表示、なければ登録処理
+        if(errorMessage.length !== 0){
+            for(let i in errorMessage){
+                $('.modal-error').append(errorMessage[i] + '<br>');
+            }
             // モーダルを1秒後に閉じる
             $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
-                 // モーダル初期化
-                initModalForm();
+                $('.modal-error').text('');
             });
         }else{
             // Ajax通信 計画情報をDBに追加
@@ -561,23 +569,31 @@ function privatePlanAdd(){
         plan.learningFlag = false;
 
         // idの設定
-        plan.id = 'P' + new Date().getTime();
+        plan.id = 'P' + new Date().getTime();  
+
+        // フォームの値チェック
+        let errorMessage = modules.formValueCheck.check(plan);
 
         // ダブルブッキングチェック
-        var doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
-
+        let doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
         if(doubleBookingFlag){
-            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-             // モーダルを1秒後に閉じる
-             $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible').dequeue();
-                // モーダル初期化
-                initModalForm();
-            });
-        }else{
-            postPlan(plan);
+            errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
         }
 
+        // エラーがあれば表示、なければ登録処理
+        if(errorMessage.length !== 0){
+            for(let i in errorMessage){
+                $('.modal-error').append(errorMessage[i] + '<br>');
+            }
+            // モーダルを1秒後に閉じる
+            $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
+                $(this).removeClass('is-visible').dequeue();
+                $('.modal-error').text('');
+            });
+        }else{
+            // Ajax通信 計画情報をDBに追加
+            postPlan(plan);
+        }      
     });
 }
 
@@ -648,21 +664,29 @@ function learningPlanDetail(id){
                 editPlan.memo = $('#detailLearningMemo').val();
                 editPlan.learningFlag = true;
 
-                // ダブルブッキングチェック
-                var doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
+                // フォームの値チェック
+                let errorMessage = modules.formValueCheck.check(editPlan);
 
+                // ダブルブッキングチェック
+                let doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
                 if(doubleBookingFlag){
-                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }
+
+                // エラーがあれば表示、なければ登録処理
+                if(errorMessage.length !== 0){
+                    for(let i in errorMessage){
+                        $('.modal-error').append(errorMessage[i] + '<br>');
+                    }
                     // モーダルを1秒後に閉じる
-                    $('.learning-plan-detail-modal-wrapper').delay(1000).queue(function(){
+                    $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
-                        // モーダル初期化
-                        initModalForm();
+                        $('.modal-error').text('');
                     });
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
                     updatePlan(editPlan, id, i);
-                }
+                }      
             });
 
             // 学習計画の削除ボタンを押されたら
@@ -719,22 +743,29 @@ function privatePlanDetail(id){
                 editPlan.tag = selectTag;
                 editPlan.learningFlag = false;
 
-                // ダブルブッキングチェック
-                var doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
+                // フォームの値チェック
+                let errorMessage = modules.formValueCheck.check(editPlan);
 
+                // ダブルブッキングチェック
+                let doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
                 if(doubleBookingFlag){
-                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }
+
+                // エラーがあれば表示、なければ登録処理
+                if(errorMessage.length !== 0){
+                    for(let i in errorMessage){
+                        $('.modal-error').append(errorMessage[i] + '<br>');
+                    }
                     // モーダルを1秒後に閉じる
-                    $('.private-plan-detail-modal-wrapper').delay(1000).queue(function(){
+                    $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
-                        // モーダル初期化
-                        initModalForm();
+                        $('.modal-error').text('');
                     });
                 }else{
                     editPlan.id = 'P' + new Date().getTime();
                     updatePlan(editPlan, id, i);
-                }
-
+                }     
             });
 
             // プライベートの予定の削除ボタンを押されたら
