@@ -53,13 +53,16 @@ $(function(){
     // 先週の学習の満足度が登録されているか確認
     let today = new Date();
     let month = today.getMonth();
-    let last_monday = today.getDate() - today.getDay() - 6;
+    let this_date = today.getDay();  // 今日の曜日
+    if(this_date == 0) this_date =  7;  // 日曜日なら
+    let last_monday = today.getDate() - this_date - 6;
     let last_sunday = last_monday + 6;
 
     // 先週の月曜日の日時
     let last_monday_date = new Date(today.getFullYear(), month, last_monday, 0,0,0,0).getTime();
     // 先週の日曜日の日時
     let last_sunday_date = new Date(today.getFullYear(), month, last_sunday, 23,59,59,59).getTime();
+    
     // Ajax通信
     $.ajax({
         url:'./../../php/planCreate/getSatisfaction.php',
@@ -85,9 +88,6 @@ $(function(){
 
     // 学習の設定情報の取得
     // 今週月曜日の日時取得
-    let this_date = today.getDay();  // 今日の曜日
-
-    if(this_date == 0) this_date =  7;  // 日曜日なら
     let this_monday = today.getDate() - this_date + 1;
     let this_monday_date = new Date(today.getFullYear(), month, this_monday, 0,0,0,0).getTime();
     // Ajax通信

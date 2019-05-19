@@ -22,7 +22,7 @@
                 $stmt->bindParam(':settingId', $settingId, PDO::PARAM_STR);
         
                 $stmt->execute();
-                $flag = $stmt->fetch(PDO::FETCH_ASSOC);
+                $flag = $stmt->execute();
                 echo json_encode($flag);
                 exit();
             } catch (PDOException $e) {
