@@ -49,9 +49,6 @@ modules = modules.moduleInit();
 
 var $ = modules.$; //jquery
 
-modules.header.init($);
-
-
 $(function(){
     // 先週の学習の満足度が登録されているか確認
     let today = new Date();

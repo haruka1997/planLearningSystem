@@ -27,8 +27,13 @@ module.exports.moduleInit = function(){
     // chart.js
     modules.Chart = require('chart.js');
 
+    // loginConfirm
+    let loginConfirm = require('./loginConfirm.js');
+    loginConfirm.confirm();
+
     // header
-    modules.header = require('../header.js');
+    let header = require('./header.js');
+    header.init(modules.$);
 
 
     return modules;

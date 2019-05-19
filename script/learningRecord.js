@@ -32,8 +32,6 @@ modules = modules.moduleInit();
 
 var $ = modules.$; //jquery
 
-modules.header.init($);
-
 $(function(){
 
     initCalenderHtml();
