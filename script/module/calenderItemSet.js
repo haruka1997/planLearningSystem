@@ -77,12 +77,11 @@ module.exports.set = function(items, $){
                 }
             }
 
-            initModalForm(items[itemsIndex].learningFlag);
+            initModalForm();
         }
     }
 
-    function initModalForm(learningFlag){
-        if(learningFlag || learningFlag == "true"){
+    function initModalForm(){
             $('#learningContent').val('');
             $('#selectLearningContent').val('学習内容を選択');
             $('.input-learning-content').css('display', 'none');
@@ -91,15 +90,13 @@ module.exports.set = function(items, $){
             $('#learningTimeStart').val('');
             $('#learningTimeEnd').val('');
             $('#learningMemo').val('');
-        }else{
             $('#privateDate').val('');
             $('#privateTimeStart').val('');
             $('#privateTimeEnd').val('');
             $('#privateTimeEnd').val('');
             $('.tag').removeClass('active');
             $('#privateMemo').val('');
-        }
-        $('.modal-error').text('');
+            $('.modal-error').text('');
     }
 }
 

@@ -487,7 +487,7 @@ function learningPlanAdd(){
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        initModalForm(true);
+        initModalForm();
     });
 
     // 追加ボタン押されたら
@@ -516,7 +516,7 @@ function learningPlanAdd(){
             $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
                  // モーダル初期化
-                initModalForm(plan.learningFlag);
+                initModalForm();
             });
         }else{
             // Ajax通信 計画情報をDBに追加
@@ -572,7 +572,7 @@ function privatePlanAdd(){
              $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
                 // モーダル初期化
-                initModalForm(plan.learningFlag);
+                initModalForm();
             });
         }else{
             postPlan(plan);
@@ -585,21 +585,18 @@ function privatePlanAdd(){
  * モーダルフォームの初期化
  * @param {array} plan 
  */
-function initModalForm(learningFlag){
-    if(learningFlag){
-        $('#learningContent').val('');
-        $('#learningDate').val('');
-        $('#learningTimeStart').val('');
-        $('#learningTimeEnd').val('');
-        $('#learningMemo').val('');
-    }else{
-        $('#privateDate').val('');
-        $('#privateTimeStart').val('');
-        $('#privateTimeEnd').val('');
-        $('#privateTimeEnd').val('');
-        $('.tag').removeClass('active');
-        $('#privateMemo').val('');
-    }
+function initModalForm(){
+    $('#learningContent').val('');
+    $('#learningDate').val('');
+    $('#learningTimeStart').val('');
+    $('#learningTimeEnd').val('');
+    $('#learningMemo').val('');
+    $('#privateDate').val('');
+    $('#privateTimeStart').val('');
+    $('#privateTimeEnd').val('');
+    $('#privateTimeEnd').val('');
+    $('.tag').removeClass('active');
+    $('#privateMemo').val('');
     $('.modal-error').text('');
 }
 
@@ -657,10 +654,10 @@ function learningPlanDetail(id){
                 if(doubleBookingFlag){
                     $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
-                    $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
+                    $('.learning-plan-detail-modal-wrapper').delay(1000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
                         // モーダル初期化
-                        initModalForm(editPlan.learningFlag);
+                        initModalForm();
                     });
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
@@ -728,10 +725,10 @@ function privatePlanDetail(id){
                 if(doubleBookingFlag){
                     $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
-                    $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
+                    $('.private-plan-detail-modal-wrapper').delay(1000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
                         // モーダル初期化
-                        initModalForm(editPlan.learningFlag);
+                        initModalForm();
                     });
                 }else{
                     editPlan.id = 'P' + new Date().getTime();
@@ -837,6 +834,7 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
  * ajax postPlan
  */
 function postPlan(plan){
+    console.log(plan);
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',

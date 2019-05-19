@@ -1,15 +1,15 @@
-var record = {
-    id: 0,
-    content: "",
-    date: "",
-    time: {
-        start: 0,
-        end: 0
-    },
-    tag: "",
-    memo: "",
-    learningFlag: true
-};
+// var record = {
+//     id: 0,
+//     content: "",
+//     date: "",
+//     time: {
+//         start: 0,
+//         end: 0
+//     },
+//     tag: "",
+//     memo: "",
+//     learningFlag: true
+// };
 var editRecord = {
     id: 0,
     content: "",
@@ -123,7 +123,7 @@ function learningRecordAdd(){
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.learning-record-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        initModalForm(true)
+        initModalForm();
     });
 
     // 学習内容で「その他」を選択されたら
@@ -137,6 +137,9 @@ function learningRecordAdd(){
 
     // 追加ボタン押されたら
     $('.learning-add-button').one("click", function() {
+
+        let record = {};
+        record.time = {};
 
         //  入力内容の取得
         if($('#selectLearningContent').val() !== "その他"){
@@ -161,7 +164,7 @@ function learningRecordAdd(){
             $('.learning-record-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
                 // モーダル初期化
-                initModalForm(record.learningFlag);
+                initModalForm();
             });
         }else{
             // Ajax通信
@@ -212,7 +215,7 @@ function initModalForm(){
 function learningRecordDetail(id){
     for(var i=0; i<learningRecords.length; i++){
         if(learningRecords[i].id == id){ //選択した計画データ一致
-            var record = learningRecords[i];
+            let selectRecord = learningRecords[i];
 
             $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習記録詳細モーダル表示
 
@@ -222,15 +225,18 @@ function learningRecordDetail(id){
             });
 
             // フォームの値セット
-            $('#detailLearningContent').val(record.content);
-            $('#detailLearningDate').val(record.date);
-            $('#detailLearningTimeStart').val(record.time.start);
-            $('#detailLearningTimeEnd').val(record.time.end);
-            $('#detailLearningMemo').val(record.memo);
+            $('#detailLearningContent').val(selectRecord.content);
+            $('#detailLearningDate').val(selectRecord.date);
+            $('#detailLearningTimeStart').val(selectRecord.time.start);
+            $('#detailLearningTimeEnd').val(selectRecord.time.end);
+            $('#detailLearningMemo').val(selectRecord.memo);
 
             // TODO: 予定編集処理
             // 編集ボタン押されたら
             $('.learning-edit-button').one("click", function () {
+
+                let editRecord = {};
+                editRecord.time = {};
 
                 //  入力内容の取得
                 editRecord.id = id;
@@ -249,7 +255,7 @@ function learningRecordDetail(id){
                     $('.learning-record-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
                         // モーダル初期化
-                        initModalForm(editRecord.learningFlag);
+                        initModalForm();
                     });
                 }else{                    
                     // 記録の編集
@@ -273,7 +279,6 @@ function learningRecordDetail(id){
                     // Ajaxリクエストが失敗した時発動
                     .fail( (data) => {
                         alert('編集に失敗しました');
-                        return data;
                     })
                 }
             });
@@ -292,12 +297,11 @@ function learningRecordDetail(id){
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( (data) => {
-                    recordDataSet(editRecord, false, i);
+                    recordDataSet(selectRecord, false, i);
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
-                    alert('編集に失敗しました');
-                    return data;
+                    alert('削除に失敗しました');
                 })
             });
             break;
@@ -308,7 +312,7 @@ function learningRecordDetail(id){
 
 function recordDubleBookingCheck(record, id){
     var doubleBookingFlag = false;
-    console.log(record);
+
     // 学習計画とのダブりチェック
     for(var learningIndex = 0; learningIndex < learningRecords.length; learningIndex++){
         if(id !== learningRecords[learningIndex].id){
