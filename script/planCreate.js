@@ -50,8 +50,8 @@ $(function(){
         dataType: 'json'       
     })
     // Ajaxリクエストが成功した時発動
-    .done( (flag) => {
-        if(flag) {
+    .done( (data) => {
+        if(data.length !== 0) {
             // 学習の振り返りモーダル表示
             learningSatisfactionModal();
         }

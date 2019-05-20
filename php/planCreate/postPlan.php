@@ -3,7 +3,8 @@
 
     //エラー処理
     try {
-        $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+        // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+        $dbh = new PDO('mysql:host=153.126.193.128; dbname=g031o008', 'g031o008', 'GRwd44v7');
 
         $stmt = $dbh->prepare('INSERT INTO plan (planId, userId, settingId, content, planDate, planTime, memo, tag, learningFlag) VALUES(:planId, :userId, :settingId, :content, :planDate, :planTime, :memo, :tag, :learningFlag)'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);

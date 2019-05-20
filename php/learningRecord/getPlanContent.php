@@ -3,7 +3,8 @@
 
     //エラー処理
     try {
-        $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+        // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+        $dbh = new PDO('mysql:host=153.126.193.128; dbname=g031o008', 'g031o008', 'GRwd44v7');
 
         $stmt = $dbh->prepare('SELECT content FROM plan WHERE userId = :userId AND editFlag = "false" AND deleteFlag = "false" AND settingId = :settingId AND learningFlag = "true"'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
