@@ -7,6 +7,7 @@ module.exports.moduleInit = function(){
     require('./../../lib/materialIcons.css');
     require('./../../lib/bootstrap.min.css');
     require('./../../lib/propeller.min.css');
+    require('./../../css/login.css');
     require('./../../css/planCreate.css');
     require('./../../css/learningRecord.css');
     require('./../../css/main.css');
@@ -25,9 +26,11 @@ module.exports.moduleInit = function(){
     modules.Chart = require('chart.js');
 
     // loginConfirm
-    let loginConfirm = require('./loginConfirm.js');
-    loginConfirm.confirm();
-
+    if(window.location.href.split('/').pop() !== 'login.html'){
+        let loginConfirm = require('./loginConfirm.js');
+        loginConfirm.confirm();
+    }
+    
     // header
     let header = require('./header.js');
     header.init(modules.$);

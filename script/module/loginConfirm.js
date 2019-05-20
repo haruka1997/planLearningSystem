@@ -3,6 +3,6 @@ module.exports.confirm = function(){
 
     // session切れなら
     if(userId == undefined){
-        window.location.href = './../../view/login.html';
+        window.location.href = '../login.html';
     }
 }

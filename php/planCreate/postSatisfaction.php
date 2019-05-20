@@ -3,8 +3,8 @@
 
     //エラー処理
     try {
-        // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
-        $dbh = new PDO('mysql:host=153.126.193.128; dbname=g031o008', 'g031o008', 'GRwd44v7');
+        $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+        // $dbh = new PDO('mysql:host=153.126.193.128; dbname=g031o008', 'g031o008', 'GRwd44v7');
 
         $stmt = $dbh->prepare('SELECT settingId FROM setting WHERE userId = :userId AND insertTime BETWEEN :startDate AND :endDate'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
@@ -18,7 +18,7 @@
 
             // UPDATE処理
             try {
-                // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
+                $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
         
                 $stmt = $dbh->prepare('UPDATE reference SET satisfaction = :satisfaction WHERE settingId = :settingId'); 
                 $stmt->bindParam(':settingId', $settingId, PDO::PARAM_STR);
