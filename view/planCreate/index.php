@@ -1,6 +1,6 @@
 <html>
   <head>
-    <script type="text/javascript" src="./../../dist/planCreate.bundle.js"></script>
+    <script type="text/javascript" src="./../../application/dist/planCreate.bundle.js"></script>
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">
@@ -23,6 +23,8 @@
             </div>
             <!-- 参考データ -->
             <?php include ('./referenceData.php') ?>
+            <!-- 合計学習時間 -->
+            <div class="totalLearningTime"></div>
             <!-- 学習の設定 -->
             <div id="learning-setting-content">
               <?php include ('./learningSetting.php'); ?>

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <script type="text/javascript" src="./../../dist/learningRecord.bundle.js"></script>
+    <script type="text/javascript" src="./../../application/dist/learningRecord.bundle.js"></script>
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">

@@ -306,3 +306,8 @@
     margin-bottom: 10px;
     font-size: 15px;
 }
+
+.totalLearningTime{
+    float: right;
+    margin: 0 50px 20px 0;
+}

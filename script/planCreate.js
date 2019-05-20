@@ -12,7 +12,8 @@ var learningPlans = [], // 登録された学習計画
         coverage: "",   // 学習範囲
         understanding: "",  // 理解度
         goal: ""    // 目標点数
-    }
+    },
+    totalTime = 0;  // 合計学習時間
 
 
 // 選択されたタグ色
@@ -425,6 +426,8 @@ function planCreateWindowInit(){
                 displayPlans = learningPlans.concat(privatePlans);
                 // カレンダーセット
                 modules.calenderItemSet.set(displayPlans, $);
+                // 合計学習時間の算出
+                calcTotalLearningTime();
             }
         })
         // Ajaxリクエストが失敗した時発動
@@ -821,6 +824,7 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
         modules.calenderItemSet.set(displayPlans, $);
 
         learningPlans = JSON.parse(JSON.stringify(afterLearningPlans));
+        calcTotalLearningTime();    // 合計学習時間の算出
 
         if(editFlag === false && deleteFlag === false){
             $('.learning-plan-create-modal-wrapper').removeClass('is-visible');
@@ -964,4 +968,15 @@ function deletePlan(deletePlan, id, i){
         alert('削除に失敗しました');
         return data;
     })
+}
+
+
+function calcTotalLearningTime(){
+    totalTime = 0;
+    for(let i in learningPlans){
+        let start = learningPlans[i].time.start.split(':') // 開始時の取得
+        let end = learningPlans[i].time.end.split(':') // 最後時の取得
+        totalTime += (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+    }
+    $('.totalLearningTime').text('学習時間: ' + totalTime + '分');
 }
