@@ -52,7 +52,8 @@ $(function(){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        if(data.length !== 0) {
+        console.log(data);
+        if(data.length !== 0 && data !== false) {
             // 学習の振り返りモーダル表示
             learningSatisfactionModal();
         }

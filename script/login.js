@@ -27,7 +27,6 @@ $(function(){
         // Ajaxリクエストが成功した時発動
         .done( (data) => {
             // ユーザ情報セッション保存
-            console.log(data);
             window.sessionStorage.setItem(['userId'], data.userId);
             // 学習記録の作成ページに遷移
             window.location.href = './../view/planCreate/index.php';
