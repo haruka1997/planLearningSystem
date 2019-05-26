@@ -27,5 +27,15 @@
 
 .learning-history-table table tr:nth-child(odd){
     background-color: #eee
-  }
+}
+
+.learning-history-content{
+    position: relative;
+    width: 98%;
+    margin-top: 10px;
+    background-color: #ffffff;
+    margin-left: 1%;
+    height: auto;
+    padding: 10px;
+}
 

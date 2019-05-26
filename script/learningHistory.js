@@ -5,4 +5,6 @@ modules = modules.moduleInit();
 var $ = modules.$; //jquery
 
 $(function(){
+    // カレンダー表示
+    modules.initCalenderHtml.init($);
 });
