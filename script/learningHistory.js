@@ -88,6 +88,19 @@ $(function(){
         }
         calenderDisplay();
     });
+
+    // カレンダー内を押されたら
+    $(document).on("click", ".calender-content", function () {
+        var id = $(this).attr("id");
+        if(id !== undefined){   //計画詳細表示の場合
+            var category = id.slice(0,1);
+            if(category === 'L'){
+                planDetail(id);   //学習計画詳細表示
+            }else{
+                recordDetail(id);   // 学習記録詳細表示
+            }
+        }
+    });
 });
 
 function calenderDisplay(){
@@ -97,4 +110,32 @@ function calenderDisplay(){
    }else{
         modules.calenderItemSet.set(records, $); // 記録をカレンダーにセット
    }
+   // スクロール位置をカレンダーの位置にセット
+//    $('.mdl-layout').animate({scrollTop: $('.mdl-layout')[0].scrollHeight}, 'normal');
+}
+
+function planDetail(id){
+    for(var i=0; i<plans.length; i++){
+        if(plans[i].id == id){ //選択した計画データ一致
+            let selectPlan = plans[i];
+            $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
+
+            // フッターボタン非表示
+            $('.detail-modal-footer-button button').css('display', 'none');
+            $('.plan-modal input').attr('disabled', true);
+            $('.plan-modal textarea').attr('disabled', true);
+
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの値セット
+            $('#detailLearningContent').val(selectPlan.content);
+            $('#detailLearningDate').val(selectPlan.date);
+            $('#detailLearningTimeStart').val(selectPlan.time.start);
+            $('#detailLearningTimeEnd').val(selectPlan.time.end);
+            $('#detailLearningMemo').val(selectPlan.memo);
+        }
+    }
 }

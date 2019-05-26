@@ -40,10 +40,10 @@
           </div>
         </div>
       </main>
-      <!-- 学習記録追加モーダル -->
-      <?php include ('./learningRecordCreateModal.php'); ?>
+      <!-- 学習計画詳細モーダル -->
+      <?php include ('./../planCreate/learningPlanDetailModal.php'); ?>
       <!-- 学習記録詳細モーダル -->
-      <?php include ('./learningRecordDetailModal.php'); ?>
+      <?php include ('./../learningRecord/learningRecordDetailModal.php'); ?>
     </div>
   </body>
 </html>
