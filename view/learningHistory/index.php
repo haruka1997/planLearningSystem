@@ -13,7 +13,7 @@
         <div class="learning-history-content">
           <!-- 学習履歴テーブル -->
           <div class="learning-history-table">
-              <table>
+              <table class="table table-hover">
                   <tr id="table-header">
                       <th>授業回</th>
                       <th>計画実施率</th>
