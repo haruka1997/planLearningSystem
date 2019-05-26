@@ -6,9 +6,8 @@
         $dbh = new PDO('mysql:host=localhost; dbname=g031o008', 'g031o008', 'GRwd44v7');
         
 
-        $stmt = $dbh->prepare('SELECT content FROM plan WHERE userId = :userId AND editFlag = "false" AND deleteFlag = "false" AND settingId = :settingId AND learningFlag = "true"'); 
+        $stmt = $dbh->prepare('SELECT * FROM reference WHERE userId = :userId'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
-        $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
 
         $stmt->execute();
     

@@ -3,8 +3,8 @@
 
     //エラー処理
     try {
-        // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
-        $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
+        $dbh = new PDO('mysql:host=localhost; dbname=g031o008', 'g031o008', 'GRwd44v7');
+        
 
         $stmt = $dbh->prepare('UPDATE plan SET deleteFlag = "true" WHERE planId = :planId'); 
         $stmt->bindParam(':planId', $_POST['planId'] , PDO::PARAM_STR);
