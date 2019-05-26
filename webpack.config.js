@@ -8,7 +8,8 @@ module.exports = {
       login: './script/login.js',
       moduleInit: `./script/module/moduleInit.js`,
       planCreate: `./script/planCreate.js`,
-      learningRecord: `./script/learningRecord.js`
+      learningRecord: `./script/learningRecord.js`,
+      learningHistory: `./script/learningHistory.js`
     },
     mode: 'development',
    

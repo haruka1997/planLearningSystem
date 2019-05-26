@@ -1,20 +1,6 @@
 <html>
   <head>
-    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="./../../lib/bootstrap.min.css">
-    <link rel="stylesheet" href="./../../lib/propeller.min.css">
-
-    <link rel="stylesheet" href="./../../css/main.css">
-    <link rel="stylesheet" href="./../../css/planCreate.css">
-    <link rel="stylesheet" href="./../../css/learningHistory.css">
-    <link rel="stylesheet" href="./../../css/calender.css">
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./../../script/header.js"></script>
-    <script type="text/javascript" src="./../../application/dist/learningHistory.bundle.js"></script>
-
+  <script type="text/javascript" src="./../../application/dist/learningHistory.bundle.js"></script>
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">
