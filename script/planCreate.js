@@ -59,7 +59,6 @@ $(function(){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
-       
     })
 
     // 学習の設定情報の取得
@@ -405,9 +404,9 @@ function learningSatisfactionModal(data){
     $('.learning-satisfaction-complete-button').click(function (){
 
         // 目標達成の算出
-        let achievement = '達成';
+        let achievement = 100;
         if($('#testScore').val() < goal){
-            achievement = '未達成';
+            achievement = 0;
         }
         // Ajax通信
         $.ajax({

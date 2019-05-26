@@ -13,11 +13,11 @@
             <div class="form-group pmd-textfield">
                 <label>今回の学習の満足度</label>
                 <select class="select-simple form-control pmd-select2 learning-content" id="learningSatisfaction">
-                    <option value="まったく満足していない">まったく満足していない</option>
-                    <option value="あまり満足していない">あまり満足していない</option>
-                    <option value="どちらともいえない">どちらともいえない</option>
-                    <option value="まあ満足している">まあ満足している</option>
-                    <option value="非常に満足している">非常に満足している</option>
+                    <option value="0">まったく満足していない</option>
+                    <option value="25">あまり満足していない</option>
+                    <option value="50">どちらともいえない</option>
+                    <option value="75">まあ満足している</option>
+                    <option value="100">非常に満足している</option>
                 </select>
             </div>
             <!--事前テストの結果 -->

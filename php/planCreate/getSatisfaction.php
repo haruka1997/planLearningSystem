@@ -15,6 +15,7 @@
         $stmt->execute();
     
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
             $settingId = $row['settingId'];
             $goal = $row['goal'];
 
