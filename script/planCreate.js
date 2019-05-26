@@ -52,10 +52,9 @@ $(function(){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        console.log(data);
-        if(data.length !== 0 && data !== false) {
+        if(data) {
             // 学習の振り返りモーダル表示
-            learningSatisfactionModal();
+            learningSatisfactionModal(data);
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -325,27 +324,55 @@ $(function(){
 /**
  * 学習満足度の登録
  */
-function learningSatisfactionModal(){
+function learningSatisfactionModal(data){
+    let settingId = data.settingId;
+    let goal = data.goal;
+    let executing = 0;
 
     $('.learning-satisfaction-modal-wrapper').addClass('is-visible');    // 学習満足度モーダルの表示
-
-    // キャンセルボタン押されたら
-    $('.header-cansel-button').click(function () {
-        $('.learning-satisfaction-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+    
+    // 計画進捗率を算出するために計画と記録を取得
+    $.ajax({
+        url:'./../../php/learningHistory/getPlanAndRecord.php',
+        type:'POST',
+        data:{
+            'settingId': settingId
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            // 計画と記録に配列分け
+            let plans = data.plan;
+            let records = data.record;
+            for(let plan in plans){
+                plans[plan].id = plans[plan].planId;
+                plans[plan].date = plans[plan].planDate;
+                plans[plan].time = JSON.parse(plans[plan].planTime);
+            }
+            for(let record in records){
+                records[record].id = records[record].recordId;
+                records[record].date = records[record].recordDate;
+                records[record].time = JSON.parse(records[record].recordTime);
+            }
+           
+            executing = calcExecuting(plans, records);
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
     });
 
     // 完了ボタンが押されたら
     $('.learning-satisfaction-complete-button').click(function (){
-        // 学習満足度の登録
-        let today = new Date();
-        let month = today.getMonth();
-        let last_monday = today.getDate() - today.getDay() - 6;
-        let last_sunday = last_monday + 6;
 
-        // 月曜日の日時
-        let start_date = new Date(today.getFullYear(), month, last_monday, 0,0,0,0).getTime();
-        // 日曜日の日時
-        let end_date = new Date(today.getFullYear(), month, last_sunday, 23,59,59,59).getTime();
+        // 目標達成の算出
+        let achievement = '達成';
+        if($('#testScore').val() < goal){
+            achievement = '未達成';
+        }
         // Ajax通信
         $.ajax({
             url:'./../../php/planCreate/postSatisfaction.php',
@@ -353,8 +380,9 @@ function learningSatisfactionModal(){
             data:{
                 'userId': window.sessionStorage.getItem(['userId']),
                 'satisfaction': $('#learningSatisfaction').val(),
-                'startDate': start_date,
-                'endDate': end_date
+                'achievement': achievement,
+                'executing': executing,
+                'settingId': settingId
             },
             dataType: 'json'       
         })
@@ -980,4 +1008,31 @@ function calcTotalLearningTime(){
         totalTime += (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
     }
     $('.totalLearningTime').text('学習時間: ' + totalTime + '分');
+}
+
+
+function calcExecuting(plans, records){
+    let sum = 0;
+    let matchCount = 0;
+    console.log(plans);
+    records.push({content: "スライド作成", recordDate: "2019-05-21", recordTime: '{\"start\":\"13:00\",\"end\":\"18:00\"}'});
+    records.push({content: "スライド作成", recordDate: "2019-05-24", recordTime: "{\"start\":\"09:00\",\"end\":\"12:00\"}"});
+    // 計画進捗率の計算
+    for(let plan in plans){
+        sum++;
+        let matchFlag = false;
+        for(let record in records){
+            if(plans[plan].content == records[record].content && plans[plan].planDate == records[record].recordDate && plans[plan].planTime == records[record].recordTime){
+                matchFlag = true;
+                break;
+            }
+        }
+        if(matchFlag){
+            console.log('マッチ！');
+            matchCount++;
+        }
+    }
+
+    return Math.round(matchCount / sum * 100);
+
 }

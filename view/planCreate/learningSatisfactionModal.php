@@ -20,6 +20,23 @@
                     <option value="非常に満足している">非常に満足している</option>
                 </select>
             </div>
+            <!--事前テストの結果 -->
+            <div class="form-group pmd-textfield">
+                <label>事前テストの点数</label>
+                <select class="select-simple form-control pmd-select2 learning-content" id="testScore">
+                    <option value="0">0点</option>
+                    <option value="1">1点</option>
+                    <option value="2">2点</option>
+                    <option value="3">3点</option>
+                    <option value="4">4点</option>
+                    <option value="5">5点</option>
+                    <option value="6">6点</option>
+                    <option value="7">7点</option>
+                    <option value="8">8点</option>
+                    <option value="9">9点</option>
+                    <option value="10">10点</option>
+                </select>
+            </div>
             <!-- 完了ボタン -->
             <div class="plan-modal-footer-button">
                 <button class="learning-satisfaction-complete-button mdl-button mdl-js-button mdl-button--raised">完了</button>
