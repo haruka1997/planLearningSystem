@@ -131,11 +131,38 @@ function planDetail(id){
             });
 
             // フォームの値セット
-            $('#detailLearningContent').val(selectPlan.content);
-            $('#detailLearningDate').val(selectPlan.date);
-            $('#detailLearningTimeStart').val(selectPlan.time.start);
-            $('#detailLearningTimeEnd').val(selectPlan.time.end);
-            $('#detailLearningMemo').val(selectPlan.memo);
+            $('.learning-plan-detail-modal-wrapper #detailLearningContent').val(selectPlan.content);
+            $('.learning-plan-detail-modal-wrapper #detailLearningDate').val(selectPlan.date);
+            $('.learning-plan-detail-modal-wrapper #detailLearningTimeStart').val(selectPlan.time.start);
+            $('.learning-plan-detail-modal-wrapper #detailLearningTimeEnd').val(selectPlan.time.end);
+            $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val(selectPlan.memo);
+        }
+    }
+}
+
+function recordDetail(id){
+    for(var i=0; i<records.length; i++){
+        if(records[i].id == id){ //選択した計画データ一致
+            let selectRecord = records[i];
+            $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習記録詳細モーダル表示
+
+            // フッターボタン非表示
+            $('.detail-modal-footer-button button').css('display', 'none');
+            $('.plan-modal input').attr('disabled', true);
+            $('.plan-modal textarea').attr('disabled', true);
+
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                $('.learning-record-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの値セット
+            $('.learning-record-detail-modal-wrapper #detailLearningContent').val(selectRecord.content);
+            $('.learning-record-detail-modal-wrapper #detailLearningDate').val(selectRecord.date);
+            $('.learning-record-detail-modal-wrapper #detailLearningTimeStart').val(selectRecord.time.start);
+            $('.learning-record-detail-modal-wrapper #detailLearningTimeEnd').val(selectRecord.time.end);
+            $('.learning-record-detail-modal-wrapper #detailLearningMemo').val(selectRecord.memo);
+
         }
     }
 }
