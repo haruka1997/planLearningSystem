@@ -10,6 +10,7 @@ module.exports.moduleInit = function(){
     require('./../../css/login.css');
     require('./../../css/planCreate.css');
     require('./../../css/learningRecord.css');
+    require('./../../css/learningHistory.css');
     require('./../../css/main.css');
     require('./../../css/calender.css');
 
