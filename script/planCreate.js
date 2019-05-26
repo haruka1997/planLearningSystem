@@ -234,122 +234,123 @@ $(function(){
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( (data) => {
-                   let timeChartData = calcReferenceData(data); 
-                   let chartLabels = [];
-                   let chartData = {
-                       'executing': [],
-                       'achievement': [],
-                       'satisfaction': []
-                   };
-                   for(let label of Object.keys(timeChartData)){
-                        chartLabels.push(label);
-                        chartData['executing'].push(timeChartData[label][0]);
-                        chartData['achievement'].push(timeChartData[label][1]);
-                        chartData['satisfaction'].push(timeChartData[label][2]);
-                   }
-                   console.log('chartLabels:', chartLabels);
-                   console.log('chartData', chartData);
+                   if(data !== null){
+                    let timeChartData = calcReferenceData(data); 
+                    let chartLabels = [];
+                    let chartData = {
+                        'executing': [],
+                        'achievement': [],
+                        'satisfaction': []
+                    };
+                    for(let label of Object.keys(timeChartData)){
+                            chartLabels.push(label);
+                            chartData['executing'].push(timeChartData[label][0]);
+                            chartData['achievement'].push(timeChartData[label][1]);
+                            chartData['satisfaction'].push(timeChartData[label][2]);
+                    }
 
-                   // グラフの描画
-                    var ctx = document.getElementById("planReferenceLine").getContext('2d');
-                    var planReferenceLine = new modules.Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: chartLabels,
-                            datasets: [
-                                {
-                                    label: '計画実施率',
-                                    data: chartData['executing'],
-                                    backgroundColor: "#1E88E5",
-                                    borderColor: '#64B5F6',
-                                    fill: false,
-                                    lineTension: 0
-                                },
-                                {
-                                    label: '目標達成率',
-                                    data: chartData['achievement'],
-                                    backgroundColor: "#D81B60",
-                                    borderColor: '#F06292',
-                                    fill: false,
-                                    lineTension: 0
-                                },
-                                {
-                                    label: '学習満足率',
-                                    data: chartData['satisfaction'],
-                                    backgroundColor: "#C0CA33",
-                                    borderColor: '#DCE775',
-                                    fill: false,
-                                    lineTension: 0
-                                }
-                            ],
-                        },
-                        options:{
-                            scales: {
-                                xAxes: [{
-                                    scaleLabel: {                 // 軸ラベル
-                                        display: true,                // 表示設定
-                                        labelString: '1週間あたりの合計学習時間(分)',    // ラベル
+                    // グラフの描画
+                        var ctx = document.getElementById("planReferenceLine").getContext('2d');
+                        var planReferenceLine = new modules.Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: chartLabels,
+                                datasets: [
+                                    {
+                                        label: '計画実施率',
+                                        data: chartData['executing'],
+                                        backgroundColor: "#1E88E5",
+                                        borderColor: '#64B5F6',
+                                        fill: false,
+                                        lineTension: 0
                                     },
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        callback: function(value){
-                                            return value+'%';
-                                        }
+                                    {
+                                        label: '目標達成率',
+                                        data: chartData['achievement'],
+                                        backgroundColor: "#D81B60",
+                                        borderColor: '#F06292',
+                                        fill: false,
+                                        lineTension: 0
+                                    },
+                                    {
+                                        label: '学習満足率',
+                                        data: chartData['satisfaction'],
+                                        backgroundColor: "#C0CA33",
+                                        borderColor: '#DCE775',
+                                        fill: false,
+                                        lineTension: 0
                                     }
-                                    }]
-                            }                            
-                        }
-                    });
+                                ],
+                            },
+                            options:{
+                                scales: {
+                                    xAxes: [{
+                                        scaleLabel: {                 // 軸ラベル
+                                            display: true,                // 表示設定
+                                            labelString: '1週間あたりの合計学習時間(分)',    // ラベル
+                                        },
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            callback: function(value){
+                                                return value+'%';
+                                            }
+                                        }
+                                        }]
+                                }                            
+                            }
+                        });
 
-                    var ctx = document.getElementById("planReferenceBar").getContext('2d');
-                    var planReferenceBar = new modules.Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ["6:00〜12:00", "12:00〜18:00", "18:00〜24:00"],
-                            datasets: [
-                                {
-                                    label: '計画実施率',
-                                    data: [90, 100, 30],
-                                    backgroundColor: "#64B5F6"
-                                },
-                                {
-                                    label: '目標達成率',
-                                    data: [80, 90, 100],
-                                    backgroundColor: "#F06292"
-                                },
-                                {
-                                    label: '学習満足率',
-                                    data: [30, 40, 100],
-                                    backgroundColor: "#DCE775"
-                                }
-                            ],
-                        },
-                        options:{
-                            scales: {
-                                xAxes: [{
-                                    scaleLabel: {                 // 軸ラベル
-                                        display: true,                // 表示設定
-                                        labelString: '学習時間帯',    // ラベル
+                        var ctx = document.getElementById("planReferenceBar").getContext('2d');
+                        var planReferenceBar = new modules.Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ["6:00〜12:00", "12:00〜18:00", "18:00〜24:00"],
+                                datasets: [
+                                    {
+                                        label: '計画実施率',
+                                        data: [90, 100, 30],
+                                        backgroundColor: "#64B5F6"
                                     },
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        callback: function(value){
-                                            return value+'%';
-                                        }
+                                    {
+                                        label: '目標達成率',
+                                        data: [80, 90, 100],
+                                        backgroundColor: "#F06292"
+                                    },
+                                    {
+                                        label: '学習満足率',
+                                        data: [30, 40, 100],
+                                        backgroundColor: "#DCE775"
                                     }
-                                    }]
-                            }                            
-                        }
-                    });
+                                ],
+                            },
+                            options:{
+                                scales: {
+                                    xAxes: [{
+                                        scaleLabel: {                 // 軸ラベル
+                                            display: true,                // 表示設定
+                                            labelString: '学習時間帯',    // ラベル
+                                        },
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            callback: function(value){
+                                                return value+'%';
+                                            }
+                                        }
+                                        }]
+                                }                            
+                            }
+                        });
+                        flag.planReferenceChartSetFlag = true;
+                    }else{
+                        alert('参考データが不足しているため表示できません');
+                    }
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
-                   alert('参考データが不足しているため表示できません');
+                   alert('参考データの取得に失敗しました');
                 });
-
-                flag.planReferenceChartSetFlag = true;
             }
         }else{  //学習リスト閉
         }
@@ -933,7 +934,6 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
  * ajax postPlan
  */
 function postPlan(plan){
-    console.log(plan);
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',
