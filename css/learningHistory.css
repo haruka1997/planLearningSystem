@@ -44,3 +44,15 @@
     padding: 10px;
 }
 
+.calender-switch{
+    float: right;
+    padding: 0 30px 10px 0;
+}
+
+.calender-switch .mdl-radio__label{
+    font-weight: initial !important;
+}
+
+.calender-switch .mdl-radio{
+    margin: 0 10px 0 0;
+}

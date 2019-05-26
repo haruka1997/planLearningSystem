@@ -4,6 +4,10 @@ modules = modules.moduleInit();
 
 var $ = modules.$; //jquery
 
+let planDisplayFlag = true;
+let plans = [],
+    records = [];
+
 
 $(function(){
     // カレンダー表示
@@ -51,14 +55,46 @@ $(function(){
         // Ajaxリクエストが成功した時発動
         .done( (data) => {
             if(data) {
+                // 計画と記録に配列分け
+                plans = data.plan;
+                records = data.record;
+                for(let plan in plans){
+                    plans[plan].id = plans[plan].planId;
+                    plans[plan].date = plans[plan].planDate;
+                    plans[plan].time = JSON.parse(plans[plan].planTime);
+                }
+                for(let record in records){
+                    records[record].id = records[record].recordId;
+                    records[record].date = records[record].recordDate;
+                    records[record].time = JSON.parse(records[record].recordTime);
+                }
                 // カレンダー表示
-                console.log(data);
+                calenderDisplay();
             }
         })
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
            
         });
-    
+    });
+
+    // ラジオボタン切り替え
+    $( 'input[name="options"]:radio' ).change( function() {
+        let radioval = $(this).val();
+        if(radioval == '計画'){
+            planDisplayFlag = true;
+        }else{
+            planDisplayFlag = false;
+        }
+        calenderDisplay();
     });
 });
+
+function calenderDisplay(){
+    modules.initCalenderHtml.init($); // カレンダーの内容初期化   
+   if(planDisplayFlag){ //計画のラジオボタンが押されていたら
+        modules.calenderItemSet.set(plans, $);  // 計画をカレンダーにセット
+   }else{
+        modules.calenderItemSet.set(records, $); // 記録をカレンダーにセット
+   }
+}

@@ -21,7 +21,8 @@
                 $stmt->execute();
             
                 if ($record = $stmt->fetchAll(PDO::FETCH_ASSOC)) { 
-                    $data = array_merge($plan, $record);
+                    $data['plan'] = $plan;
+                    $data['record'] = $record;
                     echo json_encode($data);
                     exit();  // 処理終了
                 }else{
