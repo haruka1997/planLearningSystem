@@ -3,7 +3,7 @@
 
     //エラー処理
     try {
-        $dbh = new PDO('mysql:host=localhost; dbname=g031o008', 'g031o008', 'GRwd44v7');
+        $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
         
 
         $stmt = $dbh->prepare('UPDATE setting SET coverage = :coverage, understanding = :understanding, goal = :goal, insertTime = :insertTime WHERE settingId = :settingId'); 

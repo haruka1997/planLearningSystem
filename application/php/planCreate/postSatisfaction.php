@@ -4,7 +4,7 @@
     //エラー処理
     // UPDATE処理
     try {
-        $dbh = new PDO('mysql:host=localhost; dbname=g031o008', 'g031o008', 'GRwd44v7');
+        $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
         $stmt = $dbh->prepare('UPDATE reference SET satisfaction = :satisfaction, executing = :executing, achievement = :achievement WHERE settingId = :settingId'); 
         $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
