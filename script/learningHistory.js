@@ -4,29 +4,61 @@ modules = modules.moduleInit();
 
 var $ = modules.$; //jquery
 
-// テーブルの仮データ
-let tableDate = [
-    {'settingId': 'a', 'coverage': 1, 'executing': 50, 'goal': '達成', 'satisfaction': '満足している'},
-    {'settingId': 'b','coverage': 2, 'executing': 20, 'goal': '未達成', 'satisfaction': 'あまり満足していない'},
-    {'settingId': 'c','coverage': 3, 'executing': 30, 'goal': '達成', 'satisfaction': '満足している'},
-    {'settingId': 'd','coverage': 4, 'executing': 50, 'goal': '未達成', 'satisfaction': '満足していない'},
-    {'settingId': 'e','coverage': 5, 'executing': 10, 'goal': '達成', 'satisfaction': '満足している'},
-    {'settingId': 'f','coverage': 6, 'executing': 30, 'goal': '達成', 'satisfaction': '満足していない'},
-    {'settingId': 'g','coverage': 7, 'executing': 40, 'goal': '達成', 'satisfaction': '満足している'}
-];
 
 $(function(){
     // カレンダー表示
-    modules.initCalenderHtml.init($);
+    modules.initCalenderHtml.init($);    
 
-    // 仮データ表示
-    for(let i in tableDate){
-        $('.learning-history-tbody').append('<tr id=' + tableDate[i].settingId + '><td>' + tableDate[i].coverage + '回</td><td>' + tableDate[i].executing + '%</td><td>' + tableDate[i].goal + '</td><td>' + tableDate[i].satisfaction + '</td></tr>');
-    }
+    // テーブルに表示するデータの取得
+    $.ajax({
+        url:'./../../php/learningHistory/getHistoryData.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId'])
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            let currentSettingId = window.sessionStorage.getItem(['settingId']);
+            // 取得した学習履歴をにテーブルに表示
+            for(let i in data){
+                if(data[i].settingId !== currentSettingId){
+                    $('.learning-history-tbody').append('<tr id=' + data[i].settingId + '><td>' + data[i].coverage + '回</td><td>' + data[i].executing + '%</td><td>' + data[i].achievement + '</td><td>' + data[i].satisfaction + '</td></tr>');
+                }
+            }
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    });
 
     // テーブル内を選択されたら
-    $('.learning-history-tbody tr').click(function (){
-        
-    });
+    $(document).on("click", ".learning-history-tbody tr", function () {
+        let selectSettingId = $(this).attr('id');
+
+        // 学習計画と学習記録の取得
+        $.ajax({
+            url:'./../../php/learningHistory/getPlanAndRecord.php',
+            type:'POST',
+            data:{
+                'settingId': selectSettingId
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            if(data) {
+                // カレンダー表示
+                console.log(data);
+            }
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+           
+        });
     
+    });
 });

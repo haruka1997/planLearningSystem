@@ -21,9 +21,10 @@
             // referenceテーブルにも格納
             try {
         
-                $stmt = $dbh->prepare('INSERT INTO reference (settingId, userId) VALUES(:settingId, :userId)'); 
+                $stmt = $dbh->prepare('INSERT INTO reference (settingId, userId, coverage) VALUES(:settingId, :userId, :coverage)'); 
                 $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
                 $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
+                $stmt->bindParam(':coverage', $_POST['coverage'], PDO::PARAM_STR);
         
                 $flag = $stmt->execute();
         
