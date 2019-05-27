@@ -867,7 +867,7 @@ function planDoubleBookingCheck(plan, id){
 }
 
 function planDataSet(plan, learningFlag, editFlag, deleteFlag){
-    if(learningFlag){
+    if(learningFlag && learningFlag == 'true'){
         
         modules.initCalenderHtml.init($);
 
@@ -897,6 +897,7 @@ function planDataSet(plan, learningFlag, editFlag, deleteFlag){
         }
 
     }else{
+
 
         modules.initCalenderHtml.init($);
 
