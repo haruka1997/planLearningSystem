@@ -19,7 +19,6 @@ module.exports.check = function(item){
     if(item.date == "") errorMessage.push('学習日が未入力です');
     if(this_monday_date > itemDate ||  itemDate > this_sunday_date) errorMessage.push('今週の日付を入力してください');
     if(item.time.start == "" || item.time.end == "") errorMessage.push('時間が未入力です');
-    if(itemTimeStart[0] < 6 || itemStartDate >= itemEndDate) errorMessage.push('日時の値がおかしいです');
 
     // 学習計画なら
     if(item.learningFlag || item.learningFlag == "true" || item.learningFlag == undefined){

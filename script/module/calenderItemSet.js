@@ -22,7 +22,7 @@ module.exports.set = function(items, $){
             /**
              * どの行に予定を追加するか調整 
              */
-            var nthHour = (startHour-6) * 4 + 1; //例6時 => 1行目
+            var nthHour = (startHour) * 4 + 1; //例6時 => 1行目
             nthHour += startMinute / 15; //例：30分 => +2行目
             trNthChild.push('nth-child(' + nthHour + ')'); //例：0時30分 => 4行目 から予定を追加する
 
