@@ -620,7 +620,7 @@ function privatePlanAdd(){
     });
 
     // 追加ボタン押されたら
-    $('.private-add-button').click(function () {
+    $('.private-add-button').one('click', function () {
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
         let plan = {};

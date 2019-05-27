@@ -135,7 +135,6 @@ function learningRecordAdd(){
 
         // ダブルブッキングチェック
         let doubleBookingFlag = recordDubleBookingCheck(record, record.id);
-        console.log(doubleBookingFlag);
         if(doubleBookingFlag){
             errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
         }
