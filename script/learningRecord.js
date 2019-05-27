@@ -67,7 +67,7 @@ $(function(){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
-       
+        $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
     })
 
     // 学習の記録追加ボタンを押されたら
