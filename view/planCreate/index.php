@@ -14,7 +14,7 @@
         <div class="planCreate-content">
             <div class="header-menu">
                 <button class="mdl-button mdl-js-button learning-setting-button">
-                学習の設定
+                目標の設定
                 </button>
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="#c9c9c9" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg>                
                 <button class="mdl-button mdl-js-button plan-create-button unselected">
