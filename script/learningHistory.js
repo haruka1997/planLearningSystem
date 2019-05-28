@@ -389,6 +389,53 @@ function planDetail(id){
             $('.learning-plan-detail-modal-wrapper #detailLearningTimeStart').val(selectPlan.time.start);
             $('.learning-plan-detail-modal-wrapper #detailLearningTimeEnd').val(selectPlan.time.end);
             $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val(selectPlan.memo);
+
+            // 編集ボタン押されたら
+            $('.learning-edit-button').one("click", function () {
+
+                let editPlan = {};
+                editPlan.time = {};
+
+                //  入力内容の取得
+                editPlan.content = $('#detailLearningContent').val();
+                editPlan.date = $('#detailLearningDate').val();
+                editPlan.time.start = $('#detailLearningTimeStart').val();
+                editPlan.time.end = $('#detailLearningTimeEnd').val();
+                editPlan.memo = $('#detailLearningMemo').val();
+                editPlan.learningFlag = true;
+                editPlan.settingId = selectPlan.settingId;
+
+                // フォームの値チェック
+                let errorMessage = modules.formValueCheck.check(editPlan);
+
+                // ダブルブッキングチェック
+                let doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
+                if(doubleBookingFlag){
+                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }
+
+                // エラーがあれば表示、なければ登録処理
+                if(errorMessage.length !== 0){
+                    for(let i in errorMessage){
+                        $('.modal-error').append(errorMessage[i] + '<br>');
+                    }
+                    // モーダルを1秒後に閉じる
+                    $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
+                        $(this).removeClass('is-visible').dequeue();
+                        $('.modal-error').text('');
+                    });
+                }else{
+                    editPlan.id = 'L' + new Date().getTime();
+                    updatePlan(editPlan, id, i);
+                }      
+            });
+
+            // 学習計画の削除ボタンを押されたら
+            $('.learning-delete-button').one("click", function () {
+                deletePlan(selectPlan, id, i);
+            });
+
+            break;
         }
     }
 }
@@ -432,4 +479,165 @@ function initModalForm(){
     $('.tag').removeClass('active');
     $('#privateMemo').val('');
     $('.modal-error').text('');
+}
+
+function planDataSet(plan, learningFlag, editFlag, deleteFlag){
+    if(learningFlag && learningFlag == 'true'){
+        
+        modules.initCalenderHtml.init($);
+
+        var afterLearningPlans = JSON.parse(JSON.stringify(plans));
+        if(editFlag !== false){
+            afterLearningPlans.splice(Number(editFlag),1);
+        }
+
+        if(deleteFlag !== false){
+            afterLearningPlans.splice(Number(deleteFlag),1);
+        }else{
+            afterLearningPlans.push(plan);
+        }
+
+        // displayPlans = afterLearningPlans.concat(privatePlans);
+        
+        // カレンダーセット
+        modules.calenderItemSet.set(afterLearningPlans, $);
+
+        plans = JSON.parse(JSON.stringify(afterLearningPlans));
+        // calcTotalLearningTime();    // 合計学習時間の算出
+
+        if(editFlag === false && deleteFlag === false){
+            $('.learning-plan-create-modal-wrapper').removeClass('is-visible');
+        }else{
+            $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');
+        }
+
+    }else{
+
+        modules.initCalenderHtml.init($);
+
+        var afterPrivatePlans = JSON.parse(JSON.stringify(privatePlans));
+        if(editFlag !== false){
+            afterPrivatePlans.splice(Number(editFlag),1);
+        }
+
+        if(deleteFlag !== false){
+            afterPrivatePlans.splice(Number(deleteFlag),1);
+        }else{
+            afterPrivatePlans.push(plan);
+        }
+
+        displayPlans = afterPrivatePlans.concat(plans);
+
+        // カレンダーセット
+        modules.calenderItemSet.set(displayPlans, $);
+        
+        privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
+
+        // タグ初期化
+        $('.tag').removeClass('active');// タグ選択状態を全解除
+
+        if(editFlag === false && deleteFlag === false){
+            $('.private-plan-create-modal-wrapper').removeClass('is-visible');
+        }else{
+            $('.private-plan-detail-modal-wrapper').removeClass('is-visible');
+        }
+    }
+}
+
+
+/**
+ * ajax updatePlan
+ * @param {*} editPlan 
+ * @param {*} id 
+ * @param {*} i 
+ */
+function updatePlan(editPlan, id, i){
+    console.log(editPlan);
+    $.ajax({
+        url:'./../../php/planCreate/postPlan.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'planId': editPlan.id,
+            'settingId': editPlan.settingId,
+            'content': editPlan.content,
+            'planDate': editPlan.date,
+            'planTime': JSON.stringify(editPlan.time),
+            'memo': editPlan.memo,
+            'tag': editPlan.tag,
+            'learningFlag': editPlan.learningFlag
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        // 編集された計画に編集フラグを立てる
+        $.ajax({
+            url:'./../../php/planCreate/updatePlan.php',
+            type:'POST',
+            data:{
+                'planId': id,
+                'editId': editPlan.id
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            planDataSet(editPlan, editPlan.learningFlag, i, false);
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+            alert('編集に失敗しました');
+            return data;
+        })
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('登録に失敗しました');
+    })
+}
+
+/**
+ * ajax deletePlan
+ */
+function deletePlan(deletePlan, id, i){
+    $.ajax({
+        url:'./../../php/planCreate/deletePlan.php',
+        type:'POST',
+        data:{
+            'planId': id
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        planDataSet(deletePlan, deletePlan.learningFlag, false, i);
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('削除に失敗しました');
+        return data;
+    })
+}
+
+function planDoubleBookingCheck(plan, id){
+
+    var doubleBookingFlag = false;
+
+    for(var learningIndex = 0; learningIndex < plans.length; learningIndex++){
+        if(id !== plans[learningIndex].id){
+            if(plans[learningIndex].date == plan.date){
+                // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                if((plans[learningIndex].time.start < plan.time.start && plans[learningIndex].time.end > plan.time.start)
+                || (plans[learningIndex].time.start < plan.time.end && plans[learningIndex].time.end > plan.time.end)
+                || (plans[learningIndex].time.start > plan.time.start && plans[learningIndex].time.end < plan.time.end)
+                || (plans[learningIndex].time.start == plan.time.start && plans[learningIndex].time.end == plan.time.end)){
+                    doubleBookingFlag = true;
+                    break;
+                }
+            }
+        }
+    } 
+
+    return doubleBookingFlag;
 }
