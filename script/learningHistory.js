@@ -144,11 +144,6 @@ function planDetail(id){
             let selectPlan = plans[i];
             $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
 
-            // フッターボタン非表示
-            $('.detail-modal-footer-button button').css('display', 'none');
-            $('.plan-modal input').attr('disabled', true);
-            $('.plan-modal textarea').attr('disabled', true);
-
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
                 $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
@@ -169,11 +164,6 @@ function recordDetail(id){
         if(records[i].id == id){ //選択した計画データ一致
             let selectRecord = records[i];
             $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習記録詳細モーダル表示
-
-            // フッターボタン非表示
-            $('.detail-modal-footer-button button').css('display', 'none');
-            $('.plan-modal input').attr('disabled', true);
-            $('.plan-modal textarea').attr('disabled', true);
 
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
