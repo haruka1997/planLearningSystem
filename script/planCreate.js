@@ -256,7 +256,7 @@ $(function(){
                                 labels: chartLabels,
                                 datasets: [
                                     {
-                                        label: '計画実施率',
+                                        label: '計画実施率の平均',
                                         data: chartData['executing'],
                                         backgroundColor: "#1E88E5",
                                         borderColor: '#64B5F6',
@@ -272,7 +272,7 @@ $(function(){
                                         lineTension: 0
                                     },
                                     {
-                                        label: '学習満足率',
+                                        label: '学習満足率の平均',
                                         data: chartData['satisfaction'],
                                         backgroundColor: "#C0CA33",
                                         borderColor: '#DCE775',
@@ -307,7 +307,7 @@ $(function(){
                                 labels: ["6:00〜12:00", "12:00〜18:00", "18:00〜24:00"],
                                 datasets: [
                                     {
-                                        label: '計画実施率',
+                                        label: '計画実施率の平均',
                                         data: [90, 100, 30],
                                         backgroundColor: "#64B5F6"
                                     },
@@ -317,7 +317,7 @@ $(function(){
                                         backgroundColor: "#F06292"
                                     },
                                     {
-                                        label: '学習満足率',
+                                        label: '学習満足率の平均',
                                         data: [30, 40, 100],
                                         backgroundColor: "#DCE775"
                                     }
