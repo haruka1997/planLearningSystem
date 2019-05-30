@@ -139,10 +139,13 @@ $(function(){
         var id = $(this).attr("id");
         if(id !== undefined){   //計画詳細表示の場合
             var category = id.slice(0,1);
-            if(category === 'L'){
-                planDetail(id);   //学習計画詳細表示
+            console.log(category);
+            if(category === 'L'){   // 学習記録詳細表示
+                learningPlanDetail(id);
+            }else if(category === 'P'){
+                privatePlanDetail(id);   // プライベート予定詳細表示
             }else{
-                recordDetail(id);   // 学習記録詳細表示
+                learningRecordDetail(id);   // 学習記録詳細表示
             }
         }
     });
@@ -187,7 +190,7 @@ function getCalenderItem(settingId){
     // 表示アイテムの初期化
     displayItems.plans = [];
     displayItems.records = [];
-    
+
     $.ajax({
         url:'./../../php/learningHistory/getCalenderItem.php',
         type:'POST',
@@ -437,10 +440,10 @@ function learningRecordAdd(){
  * 計画の詳細表示
  * @param {String} id 
  */
-function planDetail(id){
-    for(var i=0; i<plans.length; i++){
-        if(plans[i].id == id){ //選択した計画データ一致
-            let selectPlan = plans[i];
+function learningPlanDetail(id){
+    for(var i=0; i<displayItems.plans.length; i++){
+        if(displayItems.plans[i].id == id){ //選択した計画データ一致
+            let selectPlan = displayItems.plans[i];
             $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
 
             // キャンセルボタン押されたら
@@ -505,10 +508,90 @@ function planDetail(id){
     }
 }
 
-function recordDetail(id){
-    for(var i=0; i<records.length; i++){
-        if(records[i].id == id){ //選択した計画データ一致
-            let selectRecord = records[i];
+/**
+ * プライベートの予定詳細表示
+ * @param {String} id 
+ */
+function privatePlanDetail(id){
+    for(var i=0; i<displayItems.plans.length; i++){
+        if(displayItems.plans[i].id == id){ //選択した計画データ一致
+            let selectPlan = displayItems.plans[i];
+            $('.private-plan-detail-modal-wrapper').addClass('is-visible');    //プライベートの予定詳細モーダル表示
+
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                 // タグ初期化
+                 $('.tag').removeClass('active');// タグ選択状態を全解除
+                $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの値セット
+            $('#detailPrivateDate').val(selectPlan.date);
+            $('#detailPrivateTimeStart').val(selectPlan.time.start);
+            $('#detailPrivateTimeEnd').val(selectPlan.time.end);
+            $('#detailPrivateMemo').val(selectPlan.memo);
+
+            // タグボタンを押されたら
+            $('.tag').click(function (){
+                selectTag =  $(this).attr("id");    //選択されたタグ色取得
+                $('.tag').removeClass('active');// タグ選択状態を全解除
+                $(this).addClass('active'); //選択したタグを選択状態にセット
+            });
+
+            // TODO: 予定編集処理
+            // 編集ボタン押されたら
+            $('.private-edit-button').one("click", function () {
+                $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+
+                let editPlan = {};
+                editPlan.time = {};
+
+                //  入力内容の取得
+                editPlan.date = $('#detailPrivateDate').val();
+                editPlan.time.start = $('#detailPrivateTimeStart').val();
+                editPlan.time.end = $('#detailPrivateTimeEnd').val();
+                editPlan.memo = $('#detailPrivateMemo').val();
+                editPlan.tag = selectTag;
+                editPlan.learningFlag = false;
+
+                // フォームの値チェック
+                let errorMessage = modules.formValueCheck.check(editPlan);
+
+                // ダブルブッキングチェック
+                let doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
+                if(doubleBookingFlag){
+                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }
+
+                // エラーがあれば表示、なければ登録処理
+                if(errorMessage.length !== 0){
+                    for(let i in errorMessage){
+                        $('.modal-error').append(errorMessage[i] + '<br>');
+                    }
+                    // モーダルを1秒後に閉じる
+                    $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
+                        $(this).removeClass('is-visible').dequeue();
+                        $('.modal-error').text('');
+                    });
+                }else{
+                    editPlan.id = 'P' + new Date().getTime();
+                    updatePlan(editPlan, id, i);
+                }     
+            });
+
+            // プライベートの予定の削除ボタンを押されたら
+            $('.private-delete-button').one("click", function () {
+                deletePlan(selectPlan, id, i);
+            });
+            break;
+        }
+    }
+}
+
+function learningRecordDetail(id){
+    for(var i=0; i<displayItems.records.length; i++){
+        if(displayItems.records[i].id == id){ //選択した計画データ一致
+            let selectRecord = displayItems.records[i];
             $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習記録詳細モーダル表示
 
             // キャンセルボタン押されたら

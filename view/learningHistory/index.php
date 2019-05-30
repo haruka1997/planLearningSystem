@@ -60,6 +60,8 @@
       <?php include ('./../learningRecord/learningRecordCreateModal.php'); ?>
       <!-- 学習計画詳細モーダル -->
       <?php include ('./../planCreate/learningPlanDetailModal.php'); ?>
+       <!-- プライベート予定詳細モーダル -->
+       <?php include ('./../planCreate/privatePlanDetailModal.php'); ?>
       <!-- 学習記録詳細モーダル -->
       <?php include ('./../learningRecord/learningRecordDetailModal.php'); ?>
     </div>
