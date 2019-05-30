@@ -184,6 +184,10 @@ function calenderDisplay(){
  * カレンダーに表示する計画と記録のデータを取得(Ajax)
  */
 function getCalenderItem(settingId){
+    // 表示アイテムの初期化
+    displayItems.plans = [];
+    displayItems.records = [];
+    
     $.ajax({
         url:'./../../php/learningHistory/getCalenderItem.php',
         type:'POST',
