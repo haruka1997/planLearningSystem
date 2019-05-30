@@ -30,36 +30,46 @@ $(function(){
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
         if(data) {
-            let currentSettingId = window.sessionStorage.getItem(['settingId']);
+            // let currentSettingId = window.sessionStorage.getItem(['settingId']);
             // 取得した学習履歴をにテーブルに表示
             for(let i in data){
-                if(data[i].settingId !== currentSettingId){
-                    if(data[i].achievement ==100){
-                        data[i].achievement = '達成';
-                    }else{
-                        data[i].achievement = '未達成';
-                    }
-
-                    switch(data[i].satisfaction){
-                        case '0':
-                            data[i].satisfaction = '満足していない';
-                            break;
-                        case '25':
-                            data[i].satisfaction = 'あまり満足していない';
-                            break;
-                        case '50':
-                            data[i].satisfaction = 'どちらともいえない';
-                            break;
-                        case '75':
-                            data[i].satisfaction = 'まあ満足している';
-                            break;
-                        case '100':
-                            data[i].satisfaction = '満足している';
-                            break;                         
-                    }
-
-                    $('.learning-history-tbody').append('<tr id=' + data[i].settingId + '><td>' + data[i].coverage + '回</td><td>' + data[i].executing + '%</td><td>' + data[i].achievement + '</td><td>' + data[i].satisfaction + '</td></tr>');
+                // if(data[i].settingId !== currentSettingId){
+                if(data[i].executing == null){
+                    data[i].executing = '未計算';
+                }else{
+                    data[i].executing = data[i].executing + '%';
                 }
+
+                if(data[i].achievement == 100){
+                    data[i].achievement = '達成';
+                }else if(data[i].achievement == 0){
+                    data[i].achievement = '未達成';
+                }else{
+                    data[i].achievement = '未登録';
+                }
+
+                switch(data[i].satisfaction){
+                    case '0':
+                        data[i].satisfaction = '満足していない';
+                        break;
+                    case '25':
+                        data[i].satisfaction = 'あまり満足していない';
+                        break;
+                    case '50':
+                        data[i].satisfaction = 'どちらともいえない';
+                        break;
+                    case '75':
+                        data[i].satisfaction = 'まあ満足している';
+                        break;
+                    case '100':
+                        data[i].satisfaction = '満足している';
+                        break;
+                    default:
+                        data[i].satisfaction = '未登録';                         
+                }
+
+                $('.learning-history-tbody').append('<tr id=' + data[i].settingId + '><td>' + data[i].coverage + '回</td><td>' + data[i].executing + '</td><td>' + data[i].achievement + '</td><td>' + data[i].satisfaction + '</td></tr>');
+                // }
             }
         }
     })
