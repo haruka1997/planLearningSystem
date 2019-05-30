@@ -5,8 +5,13 @@ modules = modules.moduleInit();
 var $ = modules.$; //jquery
 
 let planDisplayFlag = true;
-let plans = [],
-    records = [];
+let displayItems = {
+    plans: [],
+    records: []
+};
+
+// let plans = [],
+//     records = [];
 
 
 $(function(){
@@ -63,43 +68,49 @@ $(function(){
        
     });
 
+    // 今週分の予定と記録を取得する
+    let thisWeekSettingId = window.sessionStorage.getItem(['settingId']);
+    getCalenderItem(thisWeekSettingId);
+
+
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
         let selectSettingId = $(this).attr('id');
+        getCalenderItem(selectSettingId);
 
         // 学習計画と学習記録の取得
-        $.ajax({
-            url:'./../../php/learningHistory/getPlanAndRecord.php',
-            type:'POST',
-            data:{
-                'settingId': selectSettingId
-            },
-            dataType: 'json'       
-        })
-        // Ajaxリクエストが成功した時発動
-        .done( (data) => {
-            if(data) {
-                // 計画と記録に配列分け
-                plans = data.plan;
-                records = data.record;
-                for(let plan in plans){
-                    plans[plan].id = plans[plan].planId;
-                    plans[plan].date = plans[plan].planDate;
-                    plans[plan].time = JSON.parse(plans[plan].planTime);
-                }
-                for(let record in records){
-                    records[record].id = records[record].recordId;
-                    records[record].date = records[record].recordDate;
-                    records[record].time = JSON.parse(records[record].recordTime);
-                }
-                // カレンダー表示
-                calenderDisplay();
-            }
-        })
-        // Ajaxリクエストが失敗した時発動
-        .fail( (data) => {
+        // $.ajax({
+        //     url:'./../../php/learningHistory/getPlanAndRecord.php',
+        //     type:'POST',
+        //     data:{
+        //         'settingId': selectSettingId
+        //     },
+        //     dataType: 'json'       
+        // })
+        // // Ajaxリクエストが成功した時発動
+        // .done( (data) => {
+        //     if(data) {
+        //         // 計画と記録に配列分け
+        //         plans = data.plan;
+        //         records = data.record;
+        //         for(let plan in plans){
+        //             plans[plan].id = plans[plan].planId;
+        //             plans[plan].date = plans[plan].planDate;
+        //             plans[plan].time = JSON.parse(plans[plan].planTime);
+        //         }
+        //         for(let record in records){
+        //             records[record].id = records[record].recordId;
+        //             records[record].date = records[record].recordDate;
+        //             records[record].time = JSON.parse(records[record].recordTime);
+        //         }
+        //         // カレンダー表示
+        //         calenderDisplay();
+        //     }
+        // })
+        // // Ajaxリクエストが失敗した時発動
+        // .fail( (data) => {
            
-        });
+        // });
     });
 
     // ラジオボタン切り替え
@@ -145,18 +156,58 @@ $(function(){
 function calenderDisplay(){
     modules.initCalenderHtml.init($); // カレンダーの内容初期化   
    if(planDisplayFlag){ //計画のラジオボタンが押されていたら
-        modules.calenderItemSet.set(plans, $);  // 計画をカレンダーにセット
+        modules.calenderItemSet.set(displayItems.plans, $);  // 計画をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', 'none');
    }else{
-        modules.calenderItemSet.set(records, $); // 記録をカレンダーにセット
+        modules.calenderItemSet.set(displayItems.records, $); // 記録をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', 'none');
         $('.add-record-button').css('display', '');
    }
    // スクロール位置をカレンダーの位置にセット
 //    $('.mdl-layout').animate({scrollTop: $('.mdl-layout')[0].scrollHeight}, 'normal');
+}
+
+/**
+ * カレンダーに表示する計画と記録のデータを取得(Ajax)
+ */
+function getCalenderItem(settingId){
+    $.ajax({
+        url:'./../../php/learningHistory/getCalenderItem.php',
+        type:'POST',
+        data:{
+            'settingId': settingId
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            // 計画と記録に配列分け
+            plans = data.plan;
+            records = data.record;
+            for(let plan in plans){
+                plans[plan].id = plans[plan].planId;
+                plans[plan].date = plans[plan].planDate;
+                plans[plan].time = JSON.parse(plans[plan].planTime);
+                displayItems.plans.push(plans[plan]);
+            }
+            for(let record in records){
+                records[record].id = records[record].recordId;
+                records[record].date = records[record].recordDate;
+                records[record].time = JSON.parse(records[record].recordTime);
+                displayItems.records.push(records[record]);
+            }
+            // カレンダー表示
+            calenderDisplay();
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    });
 }
 
 /**
