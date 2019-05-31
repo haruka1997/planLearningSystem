@@ -9,7 +9,7 @@ let displayItems = {
     plans: [],
     records: []
 };
-let selectSettingId = undefined;
+let selectSettingId = window.sessionStorage.getItem(['settingId']);
 
 $(function(){
     // カレンダー表示
@@ -220,7 +220,7 @@ function learningPlanAdd(){
         let errorMessage = modules.formValueCheck.check(plan);
 
         // ダブルブッキングチェック
-        let doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
+        let doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
         if(doubleBookingFlag){
             errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
         }
@@ -284,7 +284,7 @@ function privatePlanAdd(){
         let errorMessage = modules.formValueCheck.check(plan);
 
         // ダブルブッキングチェック
-        let doubleBookingFlag = planDoubleBookingCheck(plan, plan.id);
+        let doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
         if(doubleBookingFlag){
             errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
         }
@@ -352,7 +352,7 @@ function learningRecordAdd(){
         let errorMessage = modules.formValueCheck.check(record);
 
         // ダブルブッキングチェック
-        let doubleBookingFlag = recordDubleBookingCheck(record, record.id);
+        let doubleBookingFlag = calenderDoubleBookingCheck(record, record.id);
         if(doubleBookingFlag){
             errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
         }
@@ -437,7 +437,7 @@ function learningPlanDetail(id){
                 let errorMessage = modules.formValueCheck.check(editPlan);
 
                 // ダブルブッキングチェック
-                let doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
+                let doubleBookingFlag = calenderDoubleBookingCheck(editPlan, id);
                 if(doubleBookingFlag){
                     errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
                 }
@@ -519,7 +519,7 @@ function privatePlanDetail(id){
                 let errorMessage = modules.formValueCheck.check(editPlan);
 
                 // ダブルブッキングチェック
-                let doubleBookingFlag = planDoubleBookingCheck(editPlan, id);
+                let doubleBookingFlag = calenderDoubleBookingCheck(editPlan, id);
                 if(doubleBookingFlag){
                     errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
                 }
@@ -585,7 +585,7 @@ function learningRecordDetail(id){
                 let errorMessage = modules.formValueCheck.check(editRecord);
 
                 // ダブルブッキングチェック
-                let doubleBookingFlag = recordDubleBookingCheck(editRecord, id);
+                let doubleBookingFlag = calenderDoubleBookingCheck(editRecord, id);
                 if(doubleBookingFlag){
                     errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
                 }
@@ -736,94 +736,8 @@ function calenderDataSet(item, editFlag, deleteFlag){
     }
 }
 
-// function planDataSet(plan, learningFlag, editFlag, deleteFlag){
-//     if(learningFlag && learningFlag == 'true'){
-        
-//         modules.initCalenderHtml.init($);
-
-//         var afterLearningPlans = JSON.parse(JSON.stringify(displayItems.plans));
-//         if(editFlag !== false){
-//             afterLearningPlans.splice(Number(editFlag),1);
-//         }
-
-//         if(deleteFlag !== false){
-//             afterLearningPlans.splice(Number(deleteFlag),1);
-//         }else{
-//             afterLearningPlans.push(plan);
-//         }
-
-//         // displayPlans = afterLearningPlans.concat(displayItems.);
-        
-//         // カレンダーセット
-//         modules.calenderItemSet.set(afterLearningPlans, $);
-
-//         displayItems.plans = JSON.parse(JSON.stringify(afterLearningPlans));
-//         // calcTotalLearningTime();    // 合計学習時間の算出
-
-//         if(editFlag === false && deleteFlag === false){
-//             $('.learning-plan-create-modal-wrapper').removeClass('is-visible');
-//         }else{
-//             $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');
-//         }
-
-//     }else{
-
-//         modules.initCalenderHtml.init($);
-
-//         var afterPrivatePlans = JSON.parse(JSON.stringify(privatePlans));
-//         if(editFlag !== false){
-//             afterPrivatePlans.splice(Number(editFlag),1);
-//         }
-
-//         if(deleteFlag !== false){
-//             afterPrivatePlans.splice(Number(deleteFlag),1);
-//         }else{
-//             afterPrivatePlans.push(plan);
-//         }
-
-//         displayPlans = afterPrivatePlans.concat(plans);
-
-//         // カレンダーセット
-//         modules.calenderItemSet.set(displayPlans, $);
-        
-//         privatePlans = JSON.parse(JSON.stringify(afterPrivatePlans));
-
-//         // タグ初期化
-//         $('.tag').removeClass('active');// タグ選択状態を全解除
-
-//         if(editFlag === false && deleteFlag === false){
-//             $('.private-plan-create-modal-wrapper').removeClass('is-visible');
-//         }else{
-//             $('.private-plan-detail-modal-wrapper').removeClass('is-visible');
-//         }
-//     }
-// }
-
-// function recordDataSet(record, editFlag, deleteFlag){
-//     modules.initCalenderHtml.init($);
-    
-//     var afterLearningRecords = JSON.parse(JSON.stringify(learningRecords));
-//     if(editFlag !== false){
-//         afterLearningRecords.splice(Number(editFlag),1);
-//     }
-//     if(deleteFlag !== false){
-//         afterLearningRecords.splice(Number(deleteFlag),1);
-//     }else{
-//         afterLearningRecords.push(record);
-//     }
-
-//     // カレンダーセット
-//     modules.calenderItemSet.set(afterLearningRecords, $);
-//     learningRecords = JSON.parse(JSON.stringify(afterLearningRecords));
-
-//     if(editFlag === false && deleteFlag === false){
-//         $('.learning-record-create-modal-wrapper').removeClass('is-visible');
-//     }else{
-//         $('.learning-record-detail-modal-wrapper').removeClass('is-visible');
-//     }
-// }
-
 function postPlan(plan){
+    console.log(plan);
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',
@@ -927,24 +841,64 @@ function deletePlan(deletePlan, id, i){
     })
 }
 
-function planDoubleBookingCheck(plan, id){
+function calenderDoubleBookingCheck(item, id){
+    let checkId = id.slice(0,1);
+    let doubleBookingFlag = false;
 
-    var doubleBookingFlag = false;
+    if(checkId == 'L' || checkId == 'P'){
 
-    for(var learningIndex = 0; learningIndex < plans.length; learningIndex++){
-        if(id !== plans[learningIndex].id){
-            if(plans[learningIndex].date == plan.date){
-                // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                if((plans[learningIndex].time.start < plan.time.start && plans[learningIndex].time.end > plan.time.start)
-                || (plans[learningIndex].time.start < plan.time.end && plans[learningIndex].time.end > plan.time.end)
-                || (plans[learningIndex].time.start > plan.time.start && plans[learningIndex].time.end < plan.time.end)
-                || (plans[learningIndex].time.start == plan.time.start && plans[learningIndex].time.end == plan.time.end)){
-                    doubleBookingFlag = true;
-                    break;
+        for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
+            if(id !== displayItems.plans[learningIndex].id){
+                if(displayItems.plans[learningIndex].date == item.date){
+                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                    if((displayItems.plans[learningIndex].time.start < item.time.start && displayItems.plans[learningIndex].time.end > item.time.start)
+                    || (displayItems.plans[learningIndex].time.start < item.time.end && displayItems.plans[learningIndex].time.end > item.time.end)
+                    || (displayItems.plans[learningIndex].time.start > item.time.start && displayItems.plans[learningIndex].time.end < item.time.end)
+                    || (displayItems.plans[learningIndex].time.start == item.time.start && displayItems.plans[learningIndex].time.end == item.time.end)){
+                        doubleBookingFlag = true;
+                        break;
+                    }
                 }
             }
-        }
-    } 
+        } 
+    }else{
 
+        for(var learningIndex = 0; learningIndex < displayItems.records.length; learningIndex++){
+            if(id !== displayItems.records[learningIndex].id){
+                if(displayItems.records[learningIndex].date == item.date){
+                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                    if((displayItems.records[learningIndex].time.start < item.time.start && displayItems.records[learningIndex].time.end > item.time.start)
+                    || (displayItems.records[learningIndex].time.start < item.time.end && displayItems.records[learningIndex].time.end > item.time.end)
+                    || (displayItems.records[learningIndex].time.start > item.time.start && displayItems.records[learningIndex].time.end < item.time.end)
+                    || (displayItems.records[learningIndex].time.start == item.time.start && displayItems.records[learningIndex].time.end == item.time.end)){
+                        doubleBookingFlag = true;
+                        break;
+                    }
+                }
+            }
+        } 
+    }
     return doubleBookingFlag;
 }
+
+// function calenderDoubleBookingCheck(plan, id){
+
+//     var doubleBookingFlag = false;
+
+//     for(var learningIndex = 0; learningIndex < plans.length; learningIndex++){
+//         if(id !== plans[learningIndex].id){
+//             if(plans[learningIndex].date == plan.date){
+//                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+//                 if((plans[learningIndex].time.start < plan.time.start && plans[learningIndex].time.end > plan.time.start)
+//                 || (plans[learningIndex].time.start < plan.time.end && plans[learningIndex].time.end > plan.time.end)
+//                 || (plans[learningIndex].time.start > plan.time.start && plans[learningIndex].time.end < plan.time.end)
+//                 || (plans[learningIndex].time.start == plan.time.start && plans[learningIndex].time.end == plan.time.end)){
+//                     doubleBookingFlag = true;
+//                     break;
+//                 }
+//             }
+//         }
+//     } 
+
+//     return doubleBookingFlag;
+// }
