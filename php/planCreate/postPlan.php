@@ -23,8 +23,9 @@
             echo json_encode($flag);
             exit();  // 処理終了
         }else{
-            // echo $stmt->execute();
+            echo json_encode($flag);
         }
     } catch (PDOException $e) {
+        echo json_encode($e); 
     }
 ?>
