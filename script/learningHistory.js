@@ -889,25 +889,3 @@ function calenderDoubleBookingCheck(item, id){
     }
     return doubleBookingFlag;
 }
-
-// function calenderDoubleBookingCheck(plan, id){
-
-//     var doubleBookingFlag = false;
-
-//     for(var learningIndex = 0; learningIndex < plans.length; learningIndex++){
-//         if(id !== plans[learningIndex].id){
-//             if(plans[learningIndex].date == plan.date){
-//                 // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-//                 if((plans[learningIndex].time.start < plan.time.start && plans[learningIndex].time.end > plan.time.start)
-//                 || (plans[learningIndex].time.start < plan.time.end && plans[learningIndex].time.end > plan.time.end)
-//                 || (plans[learningIndex].time.start > plan.time.start && plans[learningIndex].time.end < plan.time.end)
-//                 || (plans[learningIndex].time.start == plan.time.start && plans[learningIndex].time.end == plan.time.end)){
-//                     doubleBookingFlag = true;
-//                     break;
-//                 }
-//             }
-//         }
-//     } 
-
-//     return doubleBookingFlag;
-// }
