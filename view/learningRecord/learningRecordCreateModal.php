@@ -11,29 +11,29 @@
             <div class="modal-error"></div>
             <!--学習内容 -->
             <div class="form-group pmd-textfield">       
-                <label>学習内容</label>
-                <select class="select-simple form-control pmd-select2 select-learning-content" id="selectLearningContent">
+                <label class="required">学習内容</label>
+                <select class="select-simple form-control pmd-select2 select-learning-content required" id="selectLearningContent">
                 </select>
-                <input type="text" id="inputLearningContent" class="form-control input-learning-content" style="display:none" placeholder="学習内容を入力">
+                <input type="text" id="inputLearningContent" class="form-control input-learning-content required" style="display:none" placeholder="学習内容を入力">
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">
-                <label for="learningDate" class="control-label">
+                <label for="learningDate" class="control-label required">
                     学習日
                 </label>
-                <input type="date" id="learningDate" class="form-control">
+                <input type="date" id="learningDate" class="form-control required">
             </div>
              <!-- 学習時間 -->
              <div class="form-group pmd-textfield">
-                <label for="learningTimeStart" class="control-label">
+                <label for="learningTimeStart" class="control-label required">
                     学習時間
                 </label>
                 <div style="display:flex;">
-                    <input type="time" id="learningTimeStart" class="form-control">
+                    <input type="time" id="learningTimeStart" class="form-control required">
                     <p style="margin:20px;">〜</p>
                     <label for="learningTimeEnd" class="control-label">
                     </label>
-                    <input type="time" id="learningTimeEnd" class="form-control">
+                    <input type="time" id="learningTimeEnd" class="form-control required">
                 </div>
             </div>
             <!-- メモ -->
@@ -43,7 +43,7 @@
             </div>
             <!-- 追加ボタン -->
             <div class="record-modal-footer-button">
-                <button class="learning-add-button mdl-button mdl-js-button mdl-button--raised">追加</button>
+                <button class="learning-add-button mdl-button mdl-js-button mdl-button--raised" disabled>追加</button>
             </div>
         </div>
     </div>

@@ -214,7 +214,24 @@ function learningPlanAdd(){
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', true);
         initModalForm();
+    });
+
+    // フォームの必須項目が入力されたら
+    $('.learning-plan-create-modal-wrapper input.required').on('change', function(){
+        $('.learning-plan-create-modal-wrapper input.required').each(function() {
+            let error = false;
+            if($(this).val() === ''){
+                error = true;
+            }
+            
+            if(!error){
+                $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', false);
+            }else{
+                $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', true);
+            }
+        });
     });
 
     // 追加ボタン押されたら
@@ -270,14 +287,33 @@ function privatePlanAdd(){
     $('.header-cansel-button').click(function () {
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         $('.tag').removeClass('active');// タグ選択状態を全解除
+        $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', true);
     });
 
     // タグボタンを押されたら
     $('.tag').click(function (){
         selectTag =  $(this).attr("id");    //選択されたタグ色取得
-        $('.tag').removeClass('active');// タグ選択状態を全解除
+        $('.tag').removeClass('active'); //タグ選択状態を全解除
         $(this).addClass('active'); //選択したタグを選択状態にセット
     });
+
+    // フォームの必須項目が入力されたら
+    $('.private-plan-create-modal-wrapper input.required').on('change', function(){
+        let error = false;
+        $('.private-plan-create-modal-wrapper input.required').each(function() {
+            if($(this).val() === ''){
+                error = true;
+            }
+        });
+
+        if(!error){
+            $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', false);
+        }else{
+            $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', true);
+        }
+
+    });
+
 
     // 追加ボタン押されたら
     $('.private-add-button').one('click', function () {
@@ -334,6 +370,7 @@ function learningRecordAdd(){
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         $('.learning-record-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', true);
         initModalForm();
     });
 
@@ -344,6 +381,34 @@ function learningRecordAdd(){
         }else{
             $('.input-learning-content').css('display', 'none');
         }
+    });
+
+    let formErrorCheck = function(value){
+        let error = false;
+        let selectContent = $('.learning-record-create-modal-wrapper select.required').val();
+        let inputContent = $('.learning-record-create-modal-wrapper #inputLearningContent').val();
+        if(value === '' || selectContent == '学習内容を選択' || (selectContent == 'その他' && inputContent == '')){
+            error = true;
+        }
+
+        if(!error){
+            $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', false);
+        }else{
+            $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', true);
+        }
+    };
+
+    // フォームの必須項目が入力されたら
+    $('.learning-record-create-modal-wrapper input.required').on('change', function(){
+        $('.learning-record-create-modal-wrapper input.required').each(function() {
+           formErrorCheck($(this).val());
+        });
+    });
+
+    $('.learning-record-create-modal-wrapper select.required').on('change', function(){
+        $('.learning-record-create-modal-wrapper input.required').each(function() {
+            formErrorCheck($(this).val());
+        });
     });
 
     // 追加ボタン押されたら
@@ -427,6 +492,23 @@ function learningPlanDetail(id){
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
                 $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
+            });
+
+            // フォームの必須項目が入力されたら
+            $('.learning-plan-detail-modal-wrapper input.required').on('change', function(){
+                let error = false;
+                $('.learning-plan-detail-modal-wrapper input.required').each(function() {
+                    if($(this).val() === ''){
+                        error = true;
+                    }
+                    
+                    if(!error){
+                        $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
+                    }else{
+                        $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', true);
+                    }
+                });
             });
 
             // フォームの値セット
@@ -498,8 +580,26 @@ function privatePlanDetail(id){
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
                  // タグ初期化
-                 $('.tag').removeClass('active');// タグ選択状態を全解除
+                $('.tag').removeClass('active');// タグ選択状態を全解除
                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
+                initModalForm();
+            });
+
+            // フォームの必須項目が入力されたら
+            $('.private-plan-detail-modal-wrapper input.required').on('change', function(){
+                let error = false;
+                $('.private-plan-detail-modal-wrapper input.required').each(function() {
+                    if($(this).val() === ''){
+                        error = true;
+                    }
+                    
+                    if(!error){
+                        $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
+                    }else{
+                        $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', true);
+                    }
+                });
             });
 
             // フォームの値セット
@@ -575,7 +675,23 @@ function learningRecordDetail(id){
 
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
+                $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
                 $('.learning-record-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            });
+
+            // フォームの必須項目が入力されたら
+            $('.learning-record-detail-modal-wrapper input.required').on('change', function(){
+                let error = false;
+                $('.learning-record-detail-modal-wrapper input.required').each(function() {
+                    if($(this).val() === ''){
+                        error = true;
+                    }                    
+                    if(!error){
+                        $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
+                    }else{
+                        $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', true);
+                    }
+                });
             });
 
             // フォームの値セット

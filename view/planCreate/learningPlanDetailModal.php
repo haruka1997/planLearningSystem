@@ -11,27 +11,27 @@
              <div class="modal-error"></div>
             <!--学習内容 -->
             <div class="form-group pmd-textfield">       
-                <label>学習内容</label>
-                <input type="text" id="detailLearningContent" class="form-control">
+                <label class="required">学習内容</label>
+                <input type="text" id="detailLearningContent" class="form-control required">
             </div>
             <!-- 学習日 -->
             <div class="form-group pmd-textfield">
-                <label for="learningDate" class="control-label">
+                <label for="learningDate" class="control-label required">
                     学習日
                 </label>
-                <input type="date" id="detailLearningDate" class="form-control">
+                <input type="date" id="detailLearningDate" class="form-control required">
             </div>
              <!-- 学習時間 -->
              <div class="form-group pmd-textfield">
-                <label for="learningTimeStart" class="control-label">
+                <label for="learningTimeStart" class="control-label required">
                     学習時間
                 </label>
                 <div style="display:flex;">
-                    <input type="time" id="detailLearningTimeStart" class="form-control">
+                    <input type="time" id="detailLearningTimeStart" class="form-control required">
                     <p style="margin:20px;">〜</p>
                     <label for="learningTimeEnd" class="control-label">
                     </label>
-                    <input type="time" id="detailLearningTimeEnd" class="form-control">
+                    <input type="time" id="detailLearningTimeEnd" class="form-control required">
                 </div>
             </div>
             <!-- メモ -->

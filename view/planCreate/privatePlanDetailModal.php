@@ -11,27 +11,27 @@
             <div class="modal-error"></div>
             <!-- 予定日 -->
             <div class="form-group pmd-textfield">
-                <label for="privateDate" class="control-label">
+                <label for="privateDate" class="control-label required">
                     予定日
                 </label>
-                <input type="date" id="detailPrivateDate" class="form-control">
+                <input type="date" id="detailPrivateDate" class="form-control required">
             </div>
              <!-- 予定時間 -->
              <div class="form-group pmd-textfield">
-                <label for="privateTimeStart" class="control-label">
+                <label for="privateTimeStart" class="control-label required">
                     予定時間
                 </label>
                 <div style="display:flex;">
-                    <input type="time" id="detailPrivateTimeStart" class="form-control">
+                    <input type="time" id="detailPrivateTimeStart" class="form-control required">
                     <p style="margin:20px;">〜</p>
                     <label for="privateTimeEnd" class="control-label">
                     </label>
-                    <input type="time" id="detailPrivateTimeEnd" class="form-control">
+                    <input type="time" id="detailPrivateTimeEnd" class="form-control required">
                 </div>
             </div>
             <!-- タグ -->
             <div class="form-group pmd-textfield">
-                <label class="control-label">
+                <label class="control-label required">
                     タグ
                 </label>
                 <div class="form-tag">

@@ -252,6 +252,11 @@
     width: 100%;
 }
 
+#modal-content label.required::after{
+    color: red;
+    content: " *";
+}
+
 .learning-add-button,
 .private-add-button,
 .plan-modal-footer-button,

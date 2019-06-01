@@ -13,8 +13,6 @@ module.exports.check = function(item){
     let itemDate = item.date.split('-');
     let itemTimeStart = item.time.start.split(':');
     let itemTimeEnd = item.time.end.split(':');
-    let itemStartDate = new Date(itemDate[0], itemDate[1]-1, itemDate[2], itemTimeStart[0], itemTimeStart[1], 0,0).getTime();
-    let itemEndDate = new Date(itemDate[0], itemDate[1]-1, itemDate[2], itemTimeEnd[0], itemTimeEnd[1], 0,0).getTime();
 
     if(item.date == "") errorMessage.push('学習日が未入力です');
     if(this_monday_date > itemDate ||  itemDate > this_sunday_date) errorMessage.push('今週の日付を入力してください');
