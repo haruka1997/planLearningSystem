@@ -1,4 +1,4 @@
-module.exports.init = function($, this_monday){
+module.exports.init = function($, calenderDateArray){
     if($(".calender-display-content").find('.calender')){
         $(".calender").remove();
     }
@@ -12,8 +12,7 @@ module.exports.init = function($, this_monday){
 
     let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     $('.calender-table tr .calender-date').each(function(i){
-        $(this).text(this_monday + '日' + day[i]);
-        this_monday++;
+        $(this).text(calenderDateArray[i] + '日' + day[i]);
     });
 
 }

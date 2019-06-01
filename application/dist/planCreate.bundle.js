@@ -1843,7 +1843,7 @@ eval("module.exports.init = function($){\n    $(function(){\n        $(window).o
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports.init = function($, this_monday){\n    if($(\".calender-display-content\").find('.calender')){\n        $(\".calender\").remove();\n    }\n    var calender = __webpack_require__(/*! ./../../view/common/calender.html */ \"./view/common/calender.html\");\n\n    $(\".calender-display-content\").append(calender);\n\n    // カレンダーの縦幅設定\n    var wH = $(window).height() - 50;  // 現在の画面の縦幅を取得\n    $('.calender-table tbody').css('height', wH);\n\n    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];\n    $('.calender-table tr .calender-date').each(function(i){\n        $(this).text(this_monday + '日' + day[i]);\n        this_monday++;\n    });\n\n}\n\n//# sourceURL=webpack:///./script/module/initCalenderHtml.js?");
+eval("module.exports.init = function($, calenderDateArray){\n    if($(\".calender-display-content\").find('.calender')){\n        $(\".calender\").remove();\n    }\n    var calender = __webpack_require__(/*! ./../../view/common/calender.html */ \"./view/common/calender.html\");\n\n    $(\".calender-display-content\").append(calender);\n\n    // カレンダーの縦幅設定\n    var wH = $(window).height() - 50;  // 現在の画面の縦幅を取得\n    $('.calender-table tbody').css('height', wH);\n\n    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];\n    $('.calender-table tr .calender-date').each(function(i){\n        $(this).text(calenderDateArray[i] + '日' + day[i]);\n    });\n\n}\n\n//# sourceURL=webpack:///./script/module/initCalenderHtml.js?");
 
 /***/ }),
 

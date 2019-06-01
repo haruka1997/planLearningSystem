@@ -92,8 +92,8 @@ $(function(){
             planDisplayFlag = false;
         }
         // カレンダーの日付計算
-        let this_monday = calcCalenderDate(selectSettingId);
-        calenderDisplay(this_monday);
+        let calenderDateArray = calcCalenderDate(selectSettingId);
+        calenderDisplay(calenderDateArray);
     });
 
     // カレンダー内を押されたら
@@ -198,9 +198,9 @@ function getCalenderItem(settingId){
             }
 
             // カレンダーの日付計算
-            let this_monday = calcCalenderDate(settingId);
+            let calenderDateArray = calcCalenderDate(settingId);
             // カレンダー表示
-            calenderDisplay(this_monday);
+            calenderDisplay(calenderDateArray);
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -882,7 +882,6 @@ function calenderDataSet(item, editFlag, deleteFlag){
  * @param {} settingId 
  */
 function calcCalenderDate(settingId){
-    console.log(settingId);
     for(data in historyData){
         if(historyData[data].settingId == settingId){
             let date = historyData[data].insertTime;
@@ -891,7 +890,26 @@ function calcCalenderDate(settingId){
             let this_date = today.getDay();  // 今日の曜日
             if(this_date == 0) this_date =  7;  // 日曜日なら
             let this_monday = today.getDate() - this_date + 1;
-            return this_monday;
+
+            let calenderDateArray = [];
+            let lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            let diffForLastDate = lastDate - this_monday;
+            if(diffForLastDate < 7){    // 月をまたぎそう
+                for(let i=1; i<=(diffForLastDate+1); i++){
+                    calenderDateArray.push(this_monday);
+                    this_monday++;
+                }
+                for(let j=1; j<=(7-(diffForLastDate+1)); j++){
+                    calenderDateArray.push(j);
+                }  
+            }else{
+                for(let i=0; i<7; i++){
+                    calenderDateArray.push(this_monday);
+                    this_monday++;
+                }
+            }
+
+            return calenderDateArray;
         }
     }
 }
