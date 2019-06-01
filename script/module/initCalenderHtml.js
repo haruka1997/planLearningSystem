@@ -1,4 +1,4 @@
-module.exports.init = function($){
+module.exports.init = function($, this_monday){
     if($(".calender-display-content").find('.calender')){
         $(".calender").remove();
     }
@@ -9,4 +9,11 @@ module.exports.init = function($){
     // カレンダーの縦幅設定
     var wH = $(window).height() - 50;  // 現在の画面の縦幅を取得
     $('.calender-table tbody').css('height', wH);
+
+    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
+    $('.calender-table tr .calender-date').each(function(i){
+        $(this).text(this_monday + '日' + day[i]);
+        this_monday++;
+    });
+
 }

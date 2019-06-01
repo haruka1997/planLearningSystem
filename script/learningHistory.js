@@ -9,11 +9,11 @@ let displayItems = {
     plans: [],
     records: []
 };
-let selectSettingId = window.sessionStorage.getItem(['settingId']);
+let historyData = [];
+let settingData = {};
+let selectSettingId = undefined;
 
 $(function(){
-    // カレンダー表示
-    modules.initCalenderHtml.init($);    
 
     // テーブルに表示するデータの取得
     $.ajax({
@@ -27,8 +27,9 @@ $(function(){
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
         if(data) {
+            historyData = data;
             // 取得した学習履歴をにテーブルに表示
-            for(let i in data){
+            for(var i in data){
                 if(data[i].executing == null){
                     data[i].executing = '未計算';
                 }else{
@@ -65,17 +66,15 @@ $(function(){
 
                 $('.learning-history-tbody').append('<tr id=' + data[i].settingId + '><td>' + data[i].coverage + '回</td><td>' + data[i].executing + '</td><td>' + data[i].achievement + '</td><td>' + data[i].satisfaction + '</td></tr>');
             }
+            
+            selectSettingId = data[i].settingId;
+            getCalenderItem(selectSettingId);
         }
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
        
     });
-
-    // 今週分の予定と記録を取得する
-    let thisWeekSettingId = window.sessionStorage.getItem(['settingId']);
-    getCalenderItem(thisWeekSettingId);
-
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
@@ -92,6 +91,8 @@ $(function(){
         }else{
             planDisplayFlag = false;
         }
+        // カレンダーの日付計算
+        let this_monday = calcCalenderDate(settingId);
         calenderDisplay();
     });
 
@@ -126,8 +127,8 @@ $(function(){
     });
 });
 
-function calenderDisplay(){
-    modules.initCalenderHtml.init($); // カレンダーの内容初期化   
+function calenderDisplay(this_monday){
+    modules.initCalenderHtml.init($, this_monday); // カレンダーの内容初期化   
    if(planDisplayFlag){ //計画のラジオボタンが押されていたら
         modules.calenderItemSet.set(displayItems.plans, $);  // 計画をカレンダーにセット
         // ボタンの表示切り替え
@@ -195,8 +196,11 @@ function getCalenderItem(settingId){
                 displayItems.records[record].date = displayItems.records[record].recordDate;
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
+
+            // カレンダーの日付計算
+            let this_monday = calcCalenderDate(settingId);
             // カレンダー表示
-            calenderDisplay();
+            calenderDisplay(this_monday);
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -870,6 +874,24 @@ function calenderDataSet(item, editFlag, deleteFlag){
             $('.learning-record-detail-modal-wrapper').removeClass('is-visible');
         }
 
+    }
+}
+
+/**
+ * カレンダーの日付計算
+ * @param {} settingId 
+ */
+function calcCalenderDate(settingId){
+    for(data in historyData){
+        if(historyData[data].settingId == settingId){
+            let date = historyData[data].insertTime;
+            // 指定した週の月曜日の日時取得
+            let today = new Date(Number(date));
+            let this_date = today.getDay();  // 今日の曜日
+            if(this_date == 0) this_date =  7;  // 日曜日なら
+            let this_monday = today.getDate() - this_date + 1;
+            return this_monday;
+        }
     }
 }
 
