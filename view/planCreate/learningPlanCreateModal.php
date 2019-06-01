@@ -19,7 +19,9 @@
                 <label for="learningDate" class="control-label required">
                     学習日
                 </label>
-                <input type="date" id="learningDate" class="form-control required">
+                <select class="select-simple form-control pmd-select2 select-learning-date required" id="learningDate">
+                </select>
+                <!-- <input type="date" id="learningDate" class="form-control required"> -->
             </div>
              <!-- 学習時間 -->
              <div class="form-group pmd-textfield">

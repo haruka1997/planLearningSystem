@@ -14,7 +14,9 @@
                 <label for="privateDate" class="control-label required">
                     予定日
                 </label>
-                <input type="date" id="privateDate" class="form-control required">
+                <select class="select-simple form-control pmd-select2 select-learning-date required" id="privateDate">
+                </select>
+                <!-- <input type="date" id="privateDate" class="form-control required"> -->
             </div>
              <!-- 予定時間 -->
              <div class="form-group pmd-textfield">

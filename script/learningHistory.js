@@ -12,6 +12,7 @@ let displayItems = {
 let historyData = [];
 let settingData = {};
 let selectSettingId = undefined;
+let calenderDate = [];
 
 $(function(){
 
@@ -68,6 +69,7 @@ $(function(){
             }
             
             selectSettingId = data[i].settingId;
+            calenderDate = calcCalenderDate(selectSettingId);
             getCalenderItem(selectSettingId);
         }
     })
@@ -79,6 +81,7 @@ $(function(){
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
         selectSettingId = $(this).attr('id');
+        calenderDate = calcCalenderDate(selectSettingId);
         getCalenderItem(selectSettingId);
 
     });
@@ -92,8 +95,8 @@ $(function(){
             planDisplayFlag = false;
         }
         // カレンダーの日付計算
-        let calenderDateArray = calcCalenderDate(selectSettingId);
-        calenderDisplay(calenderDateArray);
+        // let calenderDateArray = calcCalenderDate(selectSettingId);
+        calenderDisplay(calenderDate);
     });
 
     // カレンダー内を押されたら
@@ -128,7 +131,7 @@ $(function(){
 });
 
 function calenderDisplay(this_monday){
-    modules.initCalenderHtml.init($, this_monday); // カレンダーの内容初期化   
+    modules.initCalenderHtml.init($, calenderDate); // カレンダーの内容初期化   
    if(planDisplayFlag){ //計画のラジオボタンが押されていたら
         modules.calenderItemSet.set(displayItems.plans, $);  // 計画をカレンダーにセット
         // ボタンの表示切り替え
@@ -198,9 +201,9 @@ function getCalenderItem(settingId){
             }
 
             // カレンダーの日付計算
-            let calenderDateArray = calcCalenderDate(settingId);
+            // let calenderDateArray = calcCalenderDate(settingId);
             // カレンダー表示
-            calenderDisplay(calenderDateArray);
+            calenderDisplay(calenderDate);
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -221,6 +224,13 @@ function learningPlanAdd(){
         $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', true);
         initModalForm();
     });
+
+    // 学習日のリスト表示
+    $('#learningDate').html('');
+    for(let i in calenderDate){
+        let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
+        $('<option value="' + value + '">' + value + '</option>').appendTo('#learningDate');
+    }
 
     // フォームの必須項目が入力されたら
     $('.learning-plan-create-modal-wrapper input.required').on('change', function(){
@@ -300,6 +310,13 @@ function privatePlanAdd(){
         $('.tag').removeClass('active'); //タグ選択状態を全解除
         $(this).addClass('active'); //選択したタグを選択状態にセット
     });
+
+    // 学習日のリスト表示
+    $('#privateDate').html('');
+    for(let i in calenderDate){
+        let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
+        $('<option value="' + value + '">' + value + '</option>').appendTo('#privateDate');
+    }
 
     // フォームの必須項目が入力されたら
     $('.private-plan-create-modal-wrapper input.required').on('change', function(){
@@ -386,6 +403,13 @@ function learningRecordAdd(){
             $('.input-learning-content').css('display', 'none');
         }
     });
+
+    // 学習日のリスト表示
+    $('#learningDate').html('');
+    for(let i in calenderDate){
+        let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
+        $('<option value="' + value + '">' + value + '</option>').appendTo('#learningDate');
+    }
 
     let formErrorCheck = function(value){
         let error = false;
@@ -499,6 +523,13 @@ function learningPlanDetail(id){
                 $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
             });
 
+            // 学習日のリスト表示
+            $('#detailLearningDate').html('');
+            for(let i in calenderDate){
+                let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
+                $('<option value="' + value + '">' + value + '</option>').appendTo('#detailLearningDate');
+            }
+
             // フォームの必須項目が入力されたら
             $('.learning-plan-detail-modal-wrapper input.required').on('change', function(){
                 let error = false;
@@ -589,6 +620,13 @@ function privatePlanDetail(id){
                 $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
                 initModalForm();
             });
+
+            // 学習日のリスト表示
+            $('#detailPrivateDate').html('');
+            for(let i in calenderDate){
+                let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
+                $('<option value="' + value + '">' + value + '</option>').appendTo('#detailPrivateDate');
+            }
 
             // フォームの必須項目が入力されたら
             $('.private-plan-detail-modal-wrapper input.required').on('change', function(){
@@ -682,6 +720,13 @@ function learningRecordDetail(id){
                 $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
                 $('.learning-record-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
             });
+
+             // 学習日のリスト表示
+             $('#detailLearningDate').html('');
+             for(let i in calenderDate){
+                 let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
+                 $('<option value="' + value + '">' + value + '</option>').appendTo('#detailLearningDate');
+             }
 
             // フォームの必須項目が入力されたら
             $('.learning-record-detail-modal-wrapper input.required').on('change', function(){
@@ -816,7 +861,7 @@ function initModalForm(){
 
 function calenderDataSet(item, editFlag, deleteFlag){
     let id = item.id.slice(0,1);
-    modules.initCalenderHtml.init($);
+    modules.initCalenderHtml.init($, calenderDate);
 
     if(id == 'L' || id == 'P'){  // 計画データ
 
@@ -887,6 +932,8 @@ function calcCalenderDate(settingId){
             let date = historyData[data].insertTime;
             // 指定した週の月曜日の日時取得
             let today = new Date(Number(date));
+            let this_year = today.getFullYear();
+            let this_month = today.getMonth()+1;
             let this_date = today.getDay();  // 今日の曜日
             if(this_date == 0) this_date =  7;  // 日曜日なら
             let this_monday = today.getDate() - this_date + 1;
@@ -896,15 +943,27 @@ function calcCalenderDate(settingId){
             let diffForLastDate = lastDate - this_monday;
             if(diffForLastDate < 7){    // 月をまたぎそう
                 for(let i=1; i<=(diffForLastDate+1); i++){
-                    calenderDateArray.push(this_monday);
+                    calenderDateArray.push({
+                        year: this_year,
+                        month: this_month,
+                        date: this_monday
+                    });
                     this_monday++;
                 }
                 for(let j=1; j<=(7-(diffForLastDate+1)); j++){
-                    calenderDateArray.push(j);
+                    calenderDateArray.push({
+                        year: this_year,
+                        month: this_month+1,
+                        date: j
+                    });
                 }  
             }else{
                 for(let i=0; i<7; i++){
-                    calenderDateArray.push(this_monday);
+                    calenderDateArray.push({
+                        year: this_year,
+                        month: this_month,
+                        date: this_monday
+                    });
                     this_monday++;
                 }
             }

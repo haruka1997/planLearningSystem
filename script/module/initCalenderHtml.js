@@ -12,7 +12,7 @@ module.exports.init = function($, calenderDateArray){
 
     let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     $('.calender-table tr .calender-date').each(function(i){
-        $(this).text(calenderDateArray[i] + '日' + day[i]);
+        $(this).text(calenderDateArray[i].date + '日' + day[i]);
     });
 
 }
