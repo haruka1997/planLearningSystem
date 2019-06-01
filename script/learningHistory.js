@@ -92,8 +92,8 @@ $(function(){
             planDisplayFlag = false;
         }
         // カレンダーの日付計算
-        let this_monday = calcCalenderDate(settingId);
-        calenderDisplay();
+        let this_monday = calcCalenderDate(selectSettingId);
+        calenderDisplay(this_monday);
     });
 
     // カレンダー内を押されたら
@@ -882,6 +882,7 @@ function calenderDataSet(item, editFlag, deleteFlag){
  * @param {} settingId 
  */
 function calcCalenderDate(settingId){
+    console.log(settingId);
     for(data in historyData){
         if(historyData[data].settingId == settingId){
             let date = historyData[data].insertTime;
