@@ -794,6 +794,9 @@ function learningRecordDetail(id){
  */
 function initModalForm(){
     $('#learningContent').val('');
+    $('#selectLearningContent').val('学習内容を選択');
+    $('.input-learning-content').css('display', 'none');
+    $('#inputLearningContent').val('');
     $('#learningDate').val('');
     $('#learningTimeStart').val('');
     $('#learningTimeEnd').val('');
