@@ -150,6 +150,7 @@ function getCalenderItem(settingId){
     // 表示アイテムの初期化
     displayItems.plans = [];
     displayItems.records = [];
+    $('#selectLearningContent').html('<option>学習内容を選択</option>');
 
     $.ajax({
         url:'./../../php/learningHistory/getCalenderItem.php',
@@ -178,12 +179,17 @@ function getCalenderItem(settingId){
                 }) === i1);
             });
 
-            // id, date, timeに変換
             for(let plan in displayItems.plans){
+                // id, date, timeに変換
                 displayItems.plans[plan].id = displayItems.plans[plan].planId;
                 displayItems.plans[plan].date = displayItems.plans[plan].planDate;
                 displayItems.plans[plan].time = JSON.parse(displayItems.plans[plan].planTime);
+                // 学習内容リストのセット
+                if(displayItems.plans[plan].learningFlag == "true"){
+                    $('<option value="' + displayItems.plans[plan].content + '">' + displayItems.plans[plan].content + '</option>').appendTo('#selectLearningContent');
+                }
             }
+            $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
             for(let record in displayItems.records){
                 displayItems.records[record].id = displayItems.records[record].recordId;
                 displayItems.records[record].date = displayItems.records[record].recordDate;
