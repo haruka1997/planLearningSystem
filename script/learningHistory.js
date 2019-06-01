@@ -218,11 +218,11 @@ function learningPlanAdd(){
         plan.time = {};
 
         //  入力内容の取得
-        plan.content = $('#learningContent').val();
-        plan.date = $('#learningDate').val();
-        plan.time.start = $('#learningTimeStart').val();
-        plan.time.end = $('#learningTimeEnd').val();
-        plan.memo = $('#learningMemo').val();
+        plan.content = $('.learning-plan-create-modal-wrapper #learningContent').val();
+        plan.date = $('.learning-plan-create-modal-wrapper #learningDate').val();
+        plan.time.start = $('.learning-plan-create-modal-wrapper #learningTimeStart').val();
+        plan.time.end = $('.learning-plan-create-modal-wrapper #learningTimeEnd').val();
+        plan.memo = $('.learning-plan-create-modal-wrapper #learningMemo').val();
         plan.learningFlag = true;
 
         // idの設定
@@ -282,11 +282,11 @@ function privatePlanAdd(){
 
         //  入力内容の取得
         plan.content = "";
-        plan.date = $('#privateDate').val();
-        plan.time.start = $('#privateTimeStart').val();
-        plan.time.end = $('#privateTimeEnd').val();
+        plan.date = $('.private-plan-create-modal-wrapper #privateDate').val();
+        plan.time.start = $('.private-plan-create-modal-wrapper #privateTimeStart').val();
+        plan.time.end = $('.private-plan-create-modal-wrapper #privateTimeEnd').val();
         plan.tag = selectTag;
-        plan.memo = $('#privateMemo').val();
+        plan.memo = $('.private-plan-create-modal-wrapper #privateMemo').val();
         plan.learningFlag = false;
 
         // idの設定
@@ -347,15 +347,15 @@ function learningRecordAdd(){
         record.time = {};
 
         //  入力内容の取得
-        if($('#selectLearningContent').val() !== "その他"){
-            record.content = $('#selectLearningContent').val();
+        if($('.learning-record-create-modal-wrapper #selectLearningContent').val() !== "その他"){
+            record.content = $('.learning-record-create-modal-wrapper #selectLearningContent').val();
         }else{
-            record.content = $('#inputLearningContent').val();
+            record.content = $('.learning-record-create-modal-wrapper #inputLearningContent').val();
         }
-        record.date = $('#learningDate').val();
-        record.time.start = $('#learningTimeStart').val();
-        record.time.end = $('#learningTimeEnd').val();
-        record.memo = $('#learningMemo').val();
+        record.date = $('.learning-record-create-modal-wrapper #learningDate').val();
+        record.time.start = $('.learning-record-create-modal-wrapper #learningTimeStart').val();
+        record.time.end = $('.learning-record-create-modal-wrapper #learningTimeEnd').val();
+        record.memo = $('.learning-record-create-modal-wrapper #learningMemo').val();
 
         // idの設定
         record.id = 'R' + new Date().getTime();
@@ -431,7 +431,7 @@ function learningPlanDetail(id){
             $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val(selectPlan.memo);
 
             // 編集ボタン押されたら
-            $('.learning-edit-button').one("click", function () {
+            $('.learning-plan-detail-modal-wrapper .learning-edit-button').one("click", function () {
 
                 let editPlan = {};
                 editPlan.time = {};
@@ -443,7 +443,6 @@ function learningPlanDetail(id){
                 editPlan.time.end = $('.learning-plan-detail-modal-wrapper #detailLearningTimeEnd').val();
                 editPlan.memo = $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val();
                 editPlan.learningFlag = true;
-                editPlan.settingId = selectPlan.settingId;
 
                 // フォームの値チェック
                 let errorMessage = modules.formValueCheck.check(editPlan);
@@ -471,7 +470,7 @@ function learningPlanDetail(id){
             });
 
             // 学習計画の削除ボタンを押されたら
-            $('.learning-delete-button').one("click", function () {
+            $('.learning-plan-detail-modal-wrapper .learning-delete-button').one("click", function () {
                 deletePlan(selectPlan, id, i);
             });
 
@@ -512,7 +511,7 @@ function privatePlanDetail(id){
 
             // TODO: 予定編集処理
             // 編集ボタン押されたら
-            $('.private-edit-button').one("click", function () {
+            $('.private-plan-detail-modal-wrapper .private-edit-button').one("click", function () {
                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
                 let editPlan = {};
@@ -554,7 +553,7 @@ function privatePlanDetail(id){
             });
 
             // プライベートの予定の削除ボタンを押されたら
-            $('.private-delete-button').one("click", function () {
+            $('.private-plan-detail-modal-wrapper .private-delete-button').one("click", function () {
                 deletePlan(selectPlan, id, i);
             });
             break;
@@ -581,7 +580,7 @@ function learningRecordDetail(id){
             $('.learning-record-detail-modal-wrapper #detailLearningMemo').val(selectRecord.memo);
 
             // 編集ボタン押されたら
-            $('.learning-edit-button').one("click", function () {
+            $('.learning-record-detail-modal-wrapper .learning-edit-button').one("click", function () {
 
                 let editRecord = {};
                 editRecord.time = {};
@@ -640,7 +639,7 @@ function learningRecordDetail(id){
             });
 
             // 削除ボタン押されたら
-            $('.learning-delete-button').one("click", function () {
+            $('.learning-record-detail-modal-wrapper .learning-delete-button').one("click", function () {
                 // 記録の削除
                 // Ajax通信
                 $.ajax({
@@ -790,7 +789,7 @@ function updatePlan(editPlan, id, i){
         data:{
             'userId': window.sessionStorage.getItem(['userId']),
             'planId': editPlan.id,
-            'settingId': editPlan.settingId,
+            'settingId': selectSettingId,
             'content': editPlan.content,
             'planDate': editPlan.date,
             'planTime': JSON.stringify(editPlan.time),
