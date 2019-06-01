@@ -25,6 +25,7 @@
         }else{
             echo json_encode($flag);
         }
+        $dbh = null;
     } catch (PDOException $e) {
         echo json_encode($e); 
     }

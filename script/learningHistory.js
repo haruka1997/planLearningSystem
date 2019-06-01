@@ -165,17 +165,29 @@ function getCalenderItem(settingId){
             // 計画と記録に配列分け
             plans = data.plan;
             records = data.record;
-            for(let plan in plans){
-                plans[plan].id = plans[plan].planId;
-                plans[plan].date = plans[plan].planDate;
-                plans[plan].time = JSON.parse(plans[plan].planTime);
-                displayItems.plans.push(plans[plan]);
+            
+            // 二重登録されたものを除外
+            displayItems.plans = plans.filter(function(v1,i1,a1){ 
+                return (a1.findIndex(function(v2){ 
+                    return (v1.insertTime===v2.insertTime) 
+                }) === i1);
+            });
+            displayItems.records = records.filter(function(v1,i1,a1){ 
+                return (a1.findIndex(function(v2){ 
+                    return (v1.insertTime===v2.insertTime) 
+                }) === i1);
+            });
+
+            // id, date, timeに変換
+            for(let plan in displayItems.plans){
+                displayItems.plans[plan].id = displayItems.plans[plan].planId;
+                displayItems.plans[plan].date = displayItems.plans[plan].planDate;
+                displayItems.plans[plan].time = JSON.parse(displayItems.plans[plan].planTime);
             }
-            for(let record in records){
-                records[record].id = records[record].recordId;
-                records[record].date = records[record].recordDate;
-                records[record].time = JSON.parse(records[record].recordTime);
-                displayItems.records.push(records[record]);
+            for(let record in displayItems.records){
+                displayItems.records[record].id = displayItems.records[record].recordId;
+                displayItems.records[record].date = displayItems.records[record].recordDate;
+                displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
             // カレンダー表示
             calenderDisplay();
@@ -507,6 +519,7 @@ function privatePlanDetail(id){
                 editPlan.time = {};
 
                 //  入力内容の取得
+                editPlan.content = "";
                 editPlan.date = $('.private-plan-detail-modal-wrapper #detailPrivateDate').val();
                 editPlan.time.start = $('.private-plan-detail-modal-wrapper #detailPrivateTimeStart').val();
                 editPlan.time.end = $('.private-plan-detail-modal-wrapper #detailPrivateTimeEnd').val();
@@ -737,7 +750,6 @@ function calenderDataSet(item, editFlag, deleteFlag){
 }
 
 function postPlan(plan){
-    console.log(plan);
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',
@@ -772,7 +784,6 @@ function postPlan(plan){
  * @param {*} i 
  */
 function updatePlan(editPlan, id, i){
-    console.log(editPlan);
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',
@@ -813,7 +824,6 @@ function updatePlan(editPlan, id, i){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
-        console.log(data);
         alert('登録に失敗しました');
     })
 }
