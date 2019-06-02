@@ -65,3 +65,8 @@
     width: 100%;
     text-align: center;
 }
+
+.history-detail-button.mdl-button{
+    height: auto;
+    line-height: 1;
+}

@@ -20,6 +20,7 @@
                       <th>計画実施率</th>
                       <th>目標達成率</th>
                       <th>学習満足度</th>
+                      <th></th>
                   </tr>
                 </thead>
                 <tbody class="learning-history-tbody">
@@ -70,6 +71,8 @@
       <?php include ('./../learningRecord/learningRecordDetailModal.php'); ?>
       <!-- 目標の設定モーダル -->
       <?php include ('./../learningHistory/learningSettingModal.php'); ?>
+      <!-- 学習履歴の詳細モーダル -->
+      <?php include ('./../learningHistory/historyDetailModal.php'); ?>
     </div>
   </body>
 </html>

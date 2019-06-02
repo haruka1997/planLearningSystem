@@ -49,7 +49,11 @@ $(function(){
         selectSettingId = $(this).attr('id');
         calenderDate = calcCalenderDate(selectSettingId);
         getCalenderItem(selectSettingId);
+    });
 
+    // 詳細ボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
+        historyDetail($(this).attr('id'));
     });
 
     // ラジオボタン切り替え
@@ -139,7 +143,7 @@ function historyTableDisplay(){
                 historyData[i].satisfactionText = '未登録';                         
         }
 
-        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td>' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td></tr>');
+        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td id=' + historyData[i].settingId + '"class="coverage">' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td><td><button id="' + historyData[i].settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>');
     }
 }
 
@@ -234,6 +238,7 @@ function newPlanCreate(){
     $('.header-cansel-button').click(function () {
         $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
+        $('.learning-setting-modal-wrapper').find('input').val("");
     });
 
     // フォームの必須項目が入力されたら
@@ -289,8 +294,57 @@ function newPlanCreate(){
            alert('学習の設定情報の登録に失敗しました');
         });
     });
+}
 
+/**
+ * 学習履歴の詳細
+ */
+function historyDetail(settingId){
+    $('.history-detail-modal-wrapper').addClass('is-visible');    //学習履歴詳細モーダル表示
 
+    // キャンセルボタンが押されたら
+    $('.header-cansel-button').click(function () {
+        $('.history-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', true);
+        $('.history-detail-modal-wrapper').find('input').val("");
+    });
+
+    // フォームの必須項目が入力されたら
+    $('.history-detail-modal-wrapper input.required').on('change', function(){
+        $('.history-detail-modal-wrapper input.required').each(function() {
+            let error = false;
+            if($(this).val() === ''){
+                error = true;
+            }
+            
+            if(!error){
+                $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
+            }else{
+                $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', true);
+            }
+        });
+    });
+
+    let selectData = {};
+    for(let data of historyData){
+        if(data.settingId == settingId){
+            selectData = data;
+
+            let today = new Date(Number(selectData.prepareDate));
+            let month = today.getMonth()+1;
+            month = (month < 10) ? '0'+month : month;
+            let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
+            prepareDate = today.getFullYear() + '-' + month + '-' + date;
+            // フォームのセット
+            $('.history-detail-modal-wrapper #coverage').val(selectData.coverage);
+            $('.history-detail-modal-wrapper #prepareDate').val(prepareDate);
+            $('.history-detail-modal-wrapper #understanding').val(selectData.understanding);
+            $('.history-detail-modal-wrapper #goal').val(selectData.goal);
+            $('.history-detail-modal-wrapper #learningSatisfaction').val(selectData.satisfaction);
+            $('.history-detail-modal-wrapper #testScore').val(selectData.testScore);
+            break;
+        }
+    }
 }
 
 /**
