@@ -14,6 +14,15 @@ let settingData = {};
 let selectSettingId = undefined;
 let calenderDate = [];
 
+let ajaxFlag = {
+    postPlan: false,
+    editPlan: false,
+    deletePlan: false,
+    postRecord: false,
+    editRecord: false,
+    deleteRecord: false
+}
+
 $(function(){
 
     // テーブルに表示するデータの取得
@@ -94,8 +103,6 @@ $(function(){
         }else{
             planDisplayFlag = false;
         }
-        // カレンダーの日付計算
-        // let calenderDateArray = calcCalenderDate(selectSettingId);
         calenderDisplay(calenderDate);
     });
 
@@ -200,8 +207,6 @@ function getCalenderItem(settingId){
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
 
-            // カレンダーの日付計算
-            // let calenderDateArray = calcCalenderDate(settingId);
             // カレンダー表示
             calenderDisplay(calenderDate);
         }
@@ -250,7 +255,7 @@ function learningPlanAdd(){
     });
 
     // 追加ボタン押されたら
-    $('.learning-add-button').one("click", function() {
+    $('.learning-plan-create-modal-wrapper .learning-add-button').off("click").one("click", function() {
 
         let plan = {};
         plan.time = {};
@@ -266,24 +271,17 @@ function learningPlanAdd(){
         // idの設定
         plan.id = 'L' + new Date().getTime();
 
-        // フォームの値チェック
-        let errorMessage = modules.formValueCheck.check(plan);
-
         // ダブルブッキングチェック
         let doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
-        if(doubleBookingFlag){
-            errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
-        }
 
         // エラーがあれば表示、なければ登録処理
-        if(errorMessage.length !== 0){
-            for(let i in errorMessage){
-                $('.modal-error').append(errorMessage[i] + '<br>');
-            }
+        if(doubleBookingFlag){
+            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
             // モーダルを1秒後に閉じる
             $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
                 $('.modal-error').text('');
+                ajaxFlag.postPlan = false;
             });
         }else{
             // Ajax通信 計画情報をDBに追加
@@ -339,7 +337,7 @@ function privatePlanAdd(){
 
 
     // 追加ボタン押されたら
-    $('.private-add-button').one('click', function () {
+    $('.private-add-button').off('click').one('click', function () {
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
         let plan = {};
@@ -357,20 +355,12 @@ function privatePlanAdd(){
         // idの設定
         plan.id = 'P' + new Date().getTime();  
 
-        // フォームの値チェック
-        let errorMessage = modules.formValueCheck.check(plan);
-
         // ダブルブッキングチェック
         let doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
-        if(doubleBookingFlag){
-            errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
-        }
 
         // エラーがあれば表示、なければ登録処理
-        if(errorMessage.length !== 0){
-            for(let i in errorMessage){
-                $('.modal-error').append(errorMessage[i] + '<br>');
-            }
+        if(doubleBookingFlag){
+            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
             // モーダルを1秒後に閉じる
             $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
@@ -443,7 +433,7 @@ function learningRecordAdd(){
     });
 
     // 追加ボタン押されたら
-    $('.learning-add-button').one("click", function() {
+    $('.learning-add-button').off('click').one("click", function() {
 
         let record = {};
         record.time = {};
@@ -462,20 +452,12 @@ function learningRecordAdd(){
         // idの設定
         record.id = 'R' + new Date().getTime();
 
-        // フォームの値チェック
-        let errorMessage = modules.formValueCheck.check(record);
-
         // ダブルブッキングチェック
         let doubleBookingFlag = calenderDoubleBookingCheck(record, record.id);
-        if(doubleBookingFlag){
-            errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
-        }
 
         // エラーがあれば表示、なければ登録処理
-        if(errorMessage.length !== 0){
-            for(let i in errorMessage){
-                $('.modal-error').append(errorMessage[i] + '<br>');
-            }
+        if(doubleBookingFlag){
+            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
             // モーダルを1秒後に閉じる
             $('.learning-record-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
@@ -558,7 +540,7 @@ function learningPlanDetail(id){
             $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val(selectPlan.memo);
 
             // 編集ボタン押されたら
-            $('.learning-plan-detail-modal-wrapper .learning-edit-button').one("click", function () {
+            $('.learning-plan-detail-modal-wrapper .learning-edit-button').off("click").one("click", function () {
 
                 let editPlan = {};
                 editPlan.time = {};
@@ -571,20 +553,12 @@ function learningPlanDetail(id){
                 editPlan.memo = $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val();
                 editPlan.learningFlag = true;
 
-                // フォームの値チェック
-                let errorMessage = modules.formValueCheck.check(editPlan);
-
                 // ダブルブッキングチェック
                 let doubleBookingFlag = calenderDoubleBookingCheck(editPlan, id);
-                if(doubleBookingFlag){
-                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
-                }
 
                 // エラーがあれば表示、なければ登録処理
-                if(errorMessage.length !== 0){
-                    for(let i in errorMessage){
-                        $('.modal-error').append(errorMessage[i] + '<br>');
-                    }
+                if(doubleBookingFlag){
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
                     $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
@@ -597,7 +571,7 @@ function learningPlanDetail(id){
             });
 
             // 学習計画の削除ボタンを押されたら
-            $('.learning-plan-detail-modal-wrapper .learning-delete-button').one("click", function () {
+            $('.learning-plan-detail-modal-wrapper .learning-delete-button').off('click').one("click", function () {
                 deletePlan(selectPlan, id, i);
             });
 
@@ -664,7 +638,7 @@ function privatePlanDetail(id){
 
             // TODO: 予定編集処理
             // 編集ボタン押されたら
-            $('.private-plan-detail-modal-wrapper .private-edit-button').one("click", function () {
+            $('.private-plan-detail-modal-wrapper .private-edit-button').off("click").one("click", function () {
                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
                 let editPlan = {};
@@ -680,20 +654,12 @@ function privatePlanDetail(id){
                 editPlan.learningFlag = false;
                 editPlan.settingId = selectPlan.settingId;
 
-                // フォームの値チェック
-                let errorMessage = modules.formValueCheck.check(editPlan);
-
                 // ダブルブッキングチェック
                 let doubleBookingFlag = calenderDoubleBookingCheck(editPlan, id);
-                if(doubleBookingFlag){
-                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
-                }
 
                 // エラーがあれば表示、なければ登録処理
-                if(errorMessage.length !== 0){
-                    for(let i in errorMessage){
-                        $('.modal-error').append(errorMessage[i] + '<br>');
-                    }
+                if(doubleBookingFlag){
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
                     $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
@@ -706,7 +672,7 @@ function privatePlanDetail(id){
             });
 
             // プライベートの予定の削除ボタンを押されたら
-            $('.private-plan-detail-modal-wrapper .private-delete-button').one("click", function () {
+            $('.private-plan-detail-modal-wrapper .private-delete-button').off('click').one("click", function () {
                 deletePlan(selectPlan, id, i);
             });
             break;
@@ -757,7 +723,7 @@ function learningRecordDetail(id){
             $('.learning-record-detail-modal-wrapper #detailLearningMemo').val(selectRecord.memo);
 
             // 編集ボタン押されたら
-            $('.learning-record-detail-modal-wrapper .learning-edit-button').one("click", function () {
+            $('.learning-record-detail-modal-wrapper .learning-edit-button').off('click').one("click", function () {
 
                 let editRecord = {};
                 editRecord.time = {};
@@ -770,20 +736,13 @@ function learningRecordDetail(id){
                 editRecord.time.end = $('.learning-record-detail-modal-wrapper #detailLearningTimeEnd').val();
                 editRecord.memo = $('.learning-record-detail-modal-wrapper #detailLearningMemo').val();
 
-                // フォームの値チェック
-                let errorMessage = modules.formValueCheck.check(editRecord);
 
                 // ダブルブッキングチェック
                 let doubleBookingFlag = calenderDoubleBookingCheck(editRecord, id);
-                if(doubleBookingFlag){
-                    errorMessage.push('既に追加された予定と被ります．空いている時間に変更しましょう．');
-                }
 
                 // エラーがあれば表示、なければ登録処理
-                if(errorMessage.length !== 0){
-                    for(let i in errorMessage){
-                        $('.modal-error').append(errorMessage[i] + '<br>');
-                    }
+                if(doubleBookingFlag){
+                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
                     // モーダルを1秒後に閉じる
                     $('.learning-record-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
@@ -816,7 +775,7 @@ function learningRecordDetail(id){
             });
 
             // 削除ボタン押されたら
-            $('.learning-record-detail-modal-wrapper .learning-delete-button').one("click", function () {
+            $('.learning-record-detail-modal-wrapper .learning-delete-button').off('click').one("click", function () {
                 // 記録の削除
                 // Ajax通信
                 $.ajax({
@@ -881,8 +840,6 @@ function calenderDataSet(item, editFlag, deleteFlag){
         }else{
             afterPlans.push(item);
         }
-
-        // displayPlans = afterLearningPlans.concat(displayItems.);
         
         // カレンダーセット
         modules.calenderItemSet.set(afterPlans, $);
@@ -910,8 +867,6 @@ function calenderDataSet(item, editFlag, deleteFlag){
         }else{
             afterRecords.push(item);
         }
-
-        // displayPlans = afterLearningPlans.concat(displayItems.);
         
         // カレンダーセット
         modules.calenderItemSet.set(afterRecords, $);
@@ -1082,11 +1037,12 @@ function deletePlan(deletePlan, id, i){
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
         calenderDataSet(deletePlan, false, i);
+        return true;
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
         alert('削除に失敗しました');
-        return data;
+        return false;
     })
 }
 
