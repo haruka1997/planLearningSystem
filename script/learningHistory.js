@@ -305,7 +305,7 @@ function historyDetail(settingId){
     // キャンセルボタンが押されたら
     $('.header-cansel-button').click(function () {
         $('.history-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', true);
+        $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
         $('.history-detail-modal-wrapper').find('input').val("");
     });
 
@@ -325,23 +325,89 @@ function historyDetail(settingId){
         });
     });
 
+    // フォームの値セット
     let selectData = {};
-    for(let data of historyData){
-        if(data.settingId == settingId){
-            selectData = data;
+    for(let data=0; data<historyData.length; data++){
+        if(historyData[data].settingId == settingId){
+            selectData = historyData[data];
 
             let today = new Date(Number(selectData.prepareDate));
             let month = today.getMonth()+1;
             month = (month < 10) ? '0'+month : month;
             let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
             prepareDate = today.getFullYear() + '-' + month + '-' + date;
-            // フォームのセット
+
             $('.history-detail-modal-wrapper #coverage').val(selectData.coverage);
             $('.history-detail-modal-wrapper #prepareDate').val(prepareDate);
             $('.history-detail-modal-wrapper #understanding').val(selectData.understanding);
             $('.history-detail-modal-wrapper #goal').val(selectData.goal);
             $('.history-detail-modal-wrapper #learningSatisfaction').val(selectData.satisfaction);
             $('.history-detail-modal-wrapper #testScore').val(selectData.testScore);
+
+            // 編集ボタンが押されたら
+            $('.history-detail-modal-wrapper .history-edit-button').off('click').on('click', function(){
+                let editData = {};
+                editData.coverage = $('.history-detail-modal-wrapper #coverage').val();
+                editData.prepareDate = $('.history-detail-modal-wrapper #prepareDate').val();
+                let prepareDateArray = $('.history-detail-modal-wrapper #prepareDate').val().split('-');
+                editData.prepareDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+                editData.understanding = $('.history-detail-modal-wrapper #understanding').val();
+                editData.goal = $('.history-detail-modal-wrapper #goal').val();
+                // editData.insertTime = selectData.insertTime;
+                editData.satisfaction = $('.history-detail-modal-wrapper #learningSatisfaction').val();
+                editData.testScore = $('.history-detail-modal-wrapper #testScore').val();
+                editData.settingId = settingId;
+
+                // 事前テストの点数が入力されたら
+                if(editData.testScore !== ''){
+                    // 目標達成度の算出
+                    if(Number(selectData.goal) <= Number(editData.testScore)){
+                        editData.achievement = 100;
+                    }else{
+                        editData.achievement = 0;
+                    }
+
+                    // 計画実施率の算出
+                    let sum = 0;
+                    let matchCount = 0;
+                    for(let plan in displayItems.plans){
+                        sum++;
+                        let matchFlag = false;
+                        for(let record in displayItems.records){
+                            if(plans[plan].content == displayItems.records[record].content && displayItems.plans[plan].planDate == displayItems.records[record].recordDate && displayItems.plans[plan].planTime == displayItems.records[record].recordTime){
+                                matchFlag = true;
+                                break;
+                            }
+                        }
+                        if(matchFlag){
+                            matchCount++;
+                        }
+                    }
+                    editData.executing = Math.round(matchCount / sum * 100);
+                }
+
+                // 学習履歴の編集
+                // Ajax通信
+                $.ajax({
+                    url:'./../../php/planCreate/updateSetting.php',
+                    type:'POST',
+                    data: editData,
+                    dataType: 'json'       
+                })
+                // Ajaxリクエストが成功した時発動
+                .done( () => {
+                    // settingIdをsessionに保存
+                    historyData[data] =  editData;
+                    historyTableDisplay();
+                    $('.history-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                    $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    alert('学習履歴の更新に失敗しました');
+                });
+
+            });
             break;
         }
     }
@@ -1214,3 +1280,22 @@ function calenderDoubleBookingCheck(item, id){
     }
     return doubleBookingFlag;
 }
+
+// function calcExecuting(){
+//     let sum = 0;
+//     let matchCount = 0;
+//     for(let plan in displayItems.plans){
+//         sum++;
+//         let matchFlag = false;
+//         for(let record in displayItems.records){
+//             if(plans[plan].content == displayItems.records[record].content && displayItems.plans[plan].planDate == displayItems.records[record].recordDate && displayItems.plans[plan].planTime == displayItems.records[record].recordTime){
+//                 matchFlag = true;
+//                 break;
+//             }
+//         }
+//         if(matchFlag){
+//             matchCount++;
+//         }
+//     }
+//     return Math.round(matchCount / sum * 100);
+// }
