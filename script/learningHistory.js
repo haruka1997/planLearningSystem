@@ -29,46 +29,9 @@ $(function(){
     .done( (data) => {
         if(data) {
             historyData = data;
-            // 取得した学習履歴をにテーブルに表示
-            for(var i in data){
-                if(data[i].executing == null){
-                    data[i].executing = '未計算';
-                }else{
-                    data[i].executing = data[i].executing + '%';
-                }
-
-                if(data[i].achievement == 100){
-                    data[i].achievement = '達成';
-                }else if(data[i].achievement == 0){
-                    data[i].achievement = '未達成';
-                }else{
-                    data[i].achievement = '未登録';
-                }
-
-                switch(data[i].satisfaction){
-                    case '0':
-                        data[i].satisfaction = '満足していない';
-                        break;
-                    case '25':
-                        data[i].satisfaction = 'あまり満足していない';
-                        break;
-                    case '50':
-                        data[i].satisfaction = 'どちらともいえない';
-                        break;
-                    case '75':
-                        data[i].satisfaction = 'まあ満足している';
-                        break;
-                    case '100':
-                        data[i].satisfaction = '満足している';
-                        break;
-                    default:
-                        data[i].satisfaction = '未登録';                         
-                }
-
-                $('.learning-history-tbody').append('<tr id=' + data[i].settingId + '><td>' + data[i].coverage + '回</td><td>' + data[i].executing + '</td><td>' + data[i].achievement + '</td><td>' + data[i].satisfaction + '</td></tr>');
-            }
-            
-            selectSettingId = data[i].settingId;
+            console.log(historyData);
+            historyTableDisplay();
+            selectSettingId = data.slice(-1)[0].settingId;
             calenderDate = calcCalenderDate(selectSettingId);
             getCalenderItem(selectSettingId);
         }
@@ -116,6 +79,11 @@ $(function(){
         }
     });
 
+    // 新規学習計画の作成ボタンを押されたら
+    $('.new-plan-create-button').click(function (){
+        newPlanCreate();
+    });
+
     // 学習の計画追加ボタンを押されたら
     $('#add-learning-plan').click(function (){
         learningPlanAdd();
@@ -131,6 +99,50 @@ $(function(){
         learningRecordAdd();
     });
 });
+
+function historyTableDisplay(){
+
+    $('.learning-history-tbody').html('');
+
+    // 取得した学習履歴をにテーブルに表示
+    for(var i in historyData){
+        if(historyData[i].executing == null){
+            historyData[i].executing = '未計算';
+        }else{
+            historyData[i].executing = historyData[i].executing + '%';
+        }
+
+        if(historyData[i].achievement == 100){
+            historyData[i].achievement = '達成';
+        }else if(historyData[i].achievement == 0){
+            historyData[i].achievement = '未達成';
+        }else{
+            historyData[i].achievement = '未登録';
+        }
+
+        switch(historyData[i].satisfaction){
+            case '0':
+                historyData[i].satisfaction = '満足していない';
+                break;
+            case '25':
+                historyData[i].satisfaction = 'あまり満足していない';
+                break;
+            case '50':
+                historyData[i].satisfaction = 'どちらともいえない';
+                break;
+            case '75':
+                historyData[i].satisfaction = 'まあ満足している';
+                break;
+            case '100':
+                historyData[i].satisfaction = '満足している';
+                break;
+            default:
+                historyData[i].satisfaction = '未登録';                         
+        }
+
+        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td>' + historyData[i].coverage + '回</td><td>' + historyData[i].executing + '</td><td>' + historyData[i].achievement + '</td><td>' + historyData[i].satisfaction + '</td></tr>');
+    }
+}
 
 function calenderDisplay(this_monday){
     modules.initCalenderHtml.init($, calenderDate); // カレンダーの内容初期化   
@@ -210,6 +222,76 @@ function getCalenderItem(settingId){
     .fail( (data) => {
        
     });
+}
+
+/**
+ * 新規学習計画の作成
+ */
+function newPlanCreate(){
+    // 目標の設定モーダルの表示
+    $('.learning-setting-modal-wrapper').addClass('is-visible');
+
+    // キャンセルボタンが押されたら
+    $('.header-cansel-button').click(function () {
+        $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
+    });
+
+    // フォームの必須項目が入力されたら
+    $('.learning-setting-modal-wrapper input.required').on('change', function(){
+        $('.learning-setting-modal-wrapper input.required').each(function() {
+            let error = false;
+            if($(this).val() === ''){
+                error = true;
+            }
+            
+            if(!error){
+                $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', false);
+            }else{
+                $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
+            }
+        });
+    });
+
+
+    // 登録ボタンが押されたら
+    $('.learning-setting-regist-button').off('click').on('click', function(){
+        // settingIdの生成
+        let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);
+        let prepareDateArray = $('#prepareDate').val().split('-');
+        let prepareDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+        let data = {
+            'settingId': settingId,
+            'userId': window.sessionStorage.getItem(['userId']),
+            'coverage': $('#coverage').val(),
+            'prepareDate': prepareDate,
+            'understanding': $('#understanding').val(),
+            'goal': $('#goal').val(),
+            'insertTime': new Date().getTime()
+        };
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/planCreate/postSetting.php',
+            type:'POST',
+            data: data,
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( () => {
+            // settingIdをsessionに保存
+            selectSettingId = settingId;
+            historyData.push(data);
+            historyTableDisplay();
+            $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+            $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+           alert('学習の設定情報の登録に失敗しました');
+        });
+    });
+
+
 }
 
 /**
@@ -884,7 +966,7 @@ function calenderDataSet(item, editFlag, deleteFlag){
 function calcCalenderDate(settingId){
     for(data in historyData){
         if(historyData[data].settingId == settingId){
-            let date = historyData[data].insertTime;
+            let date = historyData[data].prepareDate;
             // 指定した週の月曜日の日時取得
             let today = new Date(Number(date));
             let this_year = today.getFullYear();

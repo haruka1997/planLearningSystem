@@ -26,6 +26,10 @@
                 </tbody>
               </table>
           </div>
+          <!-- 新規計画作成ボタン -->
+          <div class="new-plan-create">
+            <button class="new-plan-create-button mdl-button mdl-js-button mdl-button--raised">新規計画作成</button>
+          </div>
           <div class="calender-switch">
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
               <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="計画" checked>
@@ -64,6 +68,8 @@
        <?php include ('./../planCreate/privatePlanDetailModal.php'); ?>
       <!-- 学習記録詳細モーダル -->
       <?php include ('./../learningRecord/learningRecordDetailModal.php'); ?>
+      <!-- 目標の設定モーダル -->
+      <?php include ('./../learningHistory/learningSettingModal.php'); ?>
     </div>
   </body>
 </html>

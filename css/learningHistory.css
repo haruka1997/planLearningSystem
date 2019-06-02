@@ -60,3 +60,8 @@
 .calender-switch .mdl-radio{
     margin: 0 10px 0 0;
 }
+
+.new-plan-create{
+    width: 100%;
+    text-align: center;
+}
