@@ -226,10 +226,10 @@ function learningPlanAdd(){
     });
 
     // 学習日のリスト表示
-    $('#learningDate').html('');
+    $('.learning-plan-create-modal-wrapper #learningDate').html('');
     for(let i in calenderDate){
         let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-        $('<option value="' + value + '">' + value + '</option>').appendTo('#learningDate');
+        $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-plan-create-modal-wrapper #learningDate');
     }
 
     // フォームの必須項目が入力されたら
@@ -312,10 +312,10 @@ function privatePlanAdd(){
     });
 
     // 学習日のリスト表示
-    $('#privateDate').html('');
+    $('.private-plan-create-modal-wrapper #privateDate').html('');
     for(let i in calenderDate){
         let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-        $('<option value="' + value + '">' + value + '</option>').appendTo('#privateDate');
+        $('<option value="' + value + '">' + value + '</option>').appendTo('.private-plan-create-modal-wrapper #privateDate');
     }
 
     // フォームの必須項目が入力されたら
@@ -405,10 +405,10 @@ function learningRecordAdd(){
     });
 
     // 学習日のリスト表示
-    $('#learningDate').html('');
+    $('.learning-record-create-modal-wrapper #learningDate').html('');
     for(let i in calenderDate){
         let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-        $('<option value="' + value + '">' + value + '</option>').appendTo('#learningDate');
+        $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
     }
 
     let formErrorCheck = function(value){
@@ -524,10 +524,10 @@ function learningPlanDetail(id){
             });
 
             // 学習日のリスト表示
-            $('#detailLearningDate').html('');
+            $('.learning-plan-detail-modal-wrapper #detailLearningDate').html('');
             for(let i in calenderDate){
                 let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-                $('<option value="' + value + '">' + value + '</option>').appendTo('#detailLearningDate');
+                $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-plan-detail-modal-wrapper #detailLearningDate');
             }
 
             // フォームの必須項目が入力されたら
@@ -622,10 +622,10 @@ function privatePlanDetail(id){
             });
 
             // 学習日のリスト表示
-            $('#detailPrivateDate').html('');
+            $('.private-plan-detail-modal-wrapper #detailPrivateDate').html('');
             for(let i in calenderDate){
                 let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-                $('<option value="' + value + '">' + value + '</option>').appendTo('#detailPrivateDate');
+                $('<option value="' + value + '">' + value + '</option>').appendTo('.private-plan-detail-modal-wrapper #detailPrivateDate');
             }
 
             // フォームの必須項目が入力されたら
@@ -722,10 +722,10 @@ function learningRecordDetail(id){
             });
 
              // 学習日のリスト表示
-             $('#detailLearningDate').html('');
+             $('.learning-record-detail-modal-wrapper #detailLearningDate').html('');
              for(let i in calenderDate){
                  let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-                 $('<option value="' + value + '">' + value + '</option>').appendTo('#detailLearningDate');
+                 $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-record-detail-modal-wrapper #detailLearningDate');
              }
 
             // フォームの必須項目が入力されたら
