@@ -14,15 +14,6 @@ let settingData = {};
 let selectSettingId = undefined;
 let calenderDate = [];
 
-let ajaxFlag = {
-    postPlan: false,
-    editPlan: false,
-    deletePlan: false,
-    postRecord: false,
-    editRecord: false,
-    deleteRecord: false
-}
-
 $(function(){
 
     // テーブルに表示するデータの取得
@@ -285,7 +276,6 @@ function learningPlanAdd(){
             $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
                 $('.modal-error').text('');
-                ajaxFlag.postPlan = false;
             });
         }else{
             // Ajax通信 計画情報をDBに追加
