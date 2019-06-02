@@ -941,8 +941,15 @@ function calcCalenderDate(settingId){
             let calenderDateArray = [];
             let lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
             let diffForLastDate = lastDate - this_monday;
+            let next_month = this_month+1;
+            // 一桁0詰め処理
+            if(String(this_month).length==1) this_month = '0' + this_month;
+            if(String(next_month).length==1) next_month = '0' + next_month;
+
             if(diffForLastDate < 7){    // 月をまたぎそう
+
                 for(let i=1; i<=(diffForLastDate+1); i++){
+                    if(String(this_monday).length==1) this_monday = '0' + this_monday;
                     calenderDateArray.push({
                         year: this_year,
                         month: this_month,
@@ -951,14 +958,16 @@ function calcCalenderDate(settingId){
                     this_monday++;
                 }
                 for(let j=1; j<=(7-(diffForLastDate+1)); j++){
+                    if(String(j).length==1) j = '0' + j;
                     calenderDateArray.push({
                         year: this_year,
-                        month: this_month+1,
+                        month: next_month,
                         date: j
                     });
                 }  
             }else{
                 for(let i=0; i<7; i++){
+                    if(String(this_monday).length==1) this_monday = '0' + this_monday;
                     calenderDateArray.push({
                         year: this_year,
                         month: this_month,
