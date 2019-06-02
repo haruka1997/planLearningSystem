@@ -366,24 +366,6 @@ function historyDetail(settingId){
                     }else{
                         editData.achievement = 0;
                     }
-
-                    // 計画実施率の算出
-                    let sum = 0;
-                    let matchCount = 0;
-                    for(let plan in displayItems.plans){
-                        sum++;
-                        let matchFlag = false;
-                        for(let record in displayItems.records){
-                            if(plans[plan].content == displayItems.records[record].content && displayItems.plans[plan].planDate == displayItems.records[record].recordDate && displayItems.plans[plan].planTime == displayItems.records[record].recordTime){
-                                matchFlag = true;
-                                break;
-                            }
-                        }
-                        if(matchFlag){
-                            matchCount++;
-                        }
-                    }
-                    editData.executing = Math.round(matchCount / sum * 100);
                 }
 
                 // 学習履歴の編集
@@ -596,7 +578,7 @@ function learningRecordAdd(){
     let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     for(let date in calenderDate){
         let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-        $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
+        $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
     }
 
     let formErrorCheck = function(value){
@@ -1074,8 +1056,9 @@ function calenderDataSet(item, editFlag, deleteFlag){
         }else{
             $('.learning-record-detail-modal-wrapper').removeClass('is-visible');
         }
-
     }
+
+    updateExecuting();
 }
 
 /**
@@ -1281,21 +1264,49 @@ function calenderDoubleBookingCheck(item, id){
     return doubleBookingFlag;
 }
 
-// function calcExecuting(){
-//     let sum = 0;
-//     let matchCount = 0;
-//     for(let plan in displayItems.plans){
-//         sum++;
-//         let matchFlag = false;
-//         for(let record in displayItems.records){
-//             if(plans[plan].content == displayItems.records[record].content && displayItems.plans[plan].planDate == displayItems.records[record].recordDate && displayItems.plans[plan].planTime == displayItems.records[record].recordTime){
-//                 matchFlag = true;
-//                 break;
-//             }
-//         }
-//         if(matchFlag){
-//             matchCount++;
-//         }
-//     }
-//     return Math.round(matchCount / sum * 100);
-// }
+function updateExecuting(){
+    let sum = 0;
+    let matchCount = 0;
+    for(let plan in displayItems.plans){
+        if(displayItems.plans[plan].learningFlag && displayItems.plans[plan].learningFlag == "true"){
+            sum++;
+            let matchFlag = false;
+            for(let record in displayItems.records){
+                if(displayItems.plans[plan].content == displayItems.records[record].content && displayItems.plans[plan].planDate == displayItems.records[record].recordDate && displayItems.plans[plan].planTime == displayItems.records[record].recordTime){
+                    matchFlag = true;
+                    break;
+                }
+            }
+            if(matchFlag){
+                matchCount++;
+            }
+        }
+    }
+    console.log(sum);
+    console.log(matchCount);
+    let executing = Math.round(matchCount / sum * 100);
+
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/learningHistory/updateExecuting.php',
+        type:'POST',
+        data:{
+            'settingId': selectSettingId,
+            'executing': executing
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+       for(let data of historyData){
+           if(data.settingId == selectSettingId){
+               data.executing = executing;
+               historyTableDisplay();
+           }
+       }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    })
+}
