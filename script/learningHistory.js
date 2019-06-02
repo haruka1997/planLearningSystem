@@ -227,9 +227,10 @@ function learningPlanAdd(){
 
     // 学習日のリスト表示
     $('.learning-plan-create-modal-wrapper #learningDate').html('');
+    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     for(let i in calenderDate){
         let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-        $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-plan-create-modal-wrapper #learningDate');
+        $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.learning-plan-create-modal-wrapper #learningDate');
     }
 
     // フォームの必須項目が入力されたら
@@ -313,9 +314,10 @@ function privatePlanAdd(){
 
     // 学習日のリスト表示
     $('.private-plan-create-modal-wrapper #privateDate').html('');
+    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     for(let i in calenderDate){
         let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-        $('<option value="' + value + '">' + value + '</option>').appendTo('.private-plan-create-modal-wrapper #privateDate');
+        $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.private-plan-create-modal-wrapper #privateDate');
     }
 
     // フォームの必須項目が入力されたら
@@ -406,9 +408,10 @@ function learningRecordAdd(){
 
     // 学習日のリスト表示
     $('.learning-record-create-modal-wrapper #learningDate').html('');
+    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     for(let i in calenderDate){
         let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-        $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
+        $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
     }
 
     let formErrorCheck = function(value){
@@ -525,9 +528,10 @@ function learningPlanDetail(id){
 
             // 学習日のリスト表示
             $('.learning-plan-detail-modal-wrapper #detailLearningDate').html('');
+            let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
             for(let i in calenderDate){
                 let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-                $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-plan-detail-modal-wrapper #detailLearningDate');
+                $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.learning-plan-detail-modal-wrapper #detailLearningDate');
             }
 
             // フォームの必須項目が入力されたら
@@ -623,9 +627,10 @@ function privatePlanDetail(id){
 
             // 学習日のリスト表示
             $('.private-plan-detail-modal-wrapper #detailPrivateDate').html('');
+            let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
             for(let i in calenderDate){
                 let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-                $('<option value="' + value + '">' + value + '</option>').appendTo('.private-plan-detail-modal-wrapper #detailPrivateDate');
+                $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.private-plan-detail-modal-wrapper #detailPrivateDate');
             }
 
             // フォームの必須項目が入力されたら
@@ -723,9 +728,10 @@ function learningRecordDetail(id){
 
              // 学習日のリスト表示
              $('.learning-record-detail-modal-wrapper #detailLearningDate').html('');
+             let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
              for(let i in calenderDate){
                  let value = calenderDate[i].year + '-' + calenderDate[i].month + '-' + calenderDate[i].date;
-                 $('<option value="' + value + '">' + value + '</option>').appendTo('.learning-record-detail-modal-wrapper #detailLearningDate');
+                 $('<option value="' + value + '">' + value + day[i] + '</option>').appendTo('.learning-record-detail-modal-wrapper #detailLearningDate');
              }
 
             // フォームの必須項目が入力されたら
