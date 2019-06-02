@@ -29,7 +29,6 @@ $(function(){
     .done( (data) => {
         if(data) {
             historyData = data;
-            console.log(historyData);
             historyTableDisplay();
             selectSettingId = data.slice(-1)[0].settingId;
             calenderDate = calcCalenderDate(selectSettingId);
@@ -107,40 +106,40 @@ function historyTableDisplay(){
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
         if(historyData[i].executing == null){
-            historyData[i].executing = '未計算';
+            historyData[i].executingText = '未計算';
         }else{
-            historyData[i].executing = historyData[i].executing + '%';
+            historyData[i].executingText = historyData[i].executing + '%';
         }
 
         if(historyData[i].achievement == 100){
-            historyData[i].achievement = '達成';
+            historyData[i].achievementText = '達成';
         }else if(historyData[i].achievement == 0){
-            historyData[i].achievement = '未達成';
+            historyData[i].achievementText = '未達成';
         }else{
-            historyData[i].achievement = '未登録';
+            historyData[i].achievementText = '未登録';
         }
 
         switch(historyData[i].satisfaction){
             case '0':
-                historyData[i].satisfaction = '満足していない';
+                historyData[i].satisfactionText = '満足していない';
                 break;
             case '25':
-                historyData[i].satisfaction = 'あまり満足していない';
+                historyData[i].satisfactionText = 'あまり満足していない';
                 break;
             case '50':
-                historyData[i].satisfaction = 'どちらともいえない';
+                historyData[i].satisfactionText = 'どちらともいえない';
                 break;
             case '75':
-                historyData[i].satisfaction = 'まあ満足している';
+                historyData[i].satisfactionText = 'まあ満足している';
                 break;
             case '100':
-                historyData[i].satisfaction = '満足している';
+                historyData[i].satisfactionText = '満足している';
                 break;
             default:
-                historyData[i].satisfaction = '未登録';                         
+                historyData[i].satisfactionText = '未登録';                         
         }
 
-        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td>' + historyData[i].coverage + '回</td><td>' + historyData[i].executing + '</td><td>' + historyData[i].achievement + '</td><td>' + historyData[i].satisfaction + '</td></tr>');
+        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td>' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td></tr>');
     }
 }
 

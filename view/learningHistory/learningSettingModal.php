@@ -11,7 +11,7 @@
             <div class="modal-error"></div>
             <!--授業回 -->
             <div class="form-group pmd-textfield">       
-                <label class="required">授業回</label>
+                <label class="required">予習する授業範囲</label>
                 <select class="select-simple form-control pmd-select2 required" id="coverage">
                     <option value="1">第1回 三角関数①（弧度法、基本性質、三角関数のグラフ）</option>
                     <option value="2">第2回 三角関数②（三角方程式・不等式、加法定理、加法定理の応用）</option>
@@ -29,18 +29,10 @@
                     <option value="14">第14回 総合演習 </option>
                 </select>
             </div>
-            <!-- 予習日時 -->
-            <!-- <div class="form-group pmd-textfield">
-                <label for="learningDate" class="control-label required">
-                    学習日
-                </label>
-                <select class="select-simple form-control pmd-select2 select-learning-date required" id="learningDate">
-                </select>
-            </div> -->
              <!-- 予習日 -->
              <div class="form-group pmd-textfield">
                 <label class="control-label required">
-                    予習開始日(選択した授業回の日)
+                    予習開始日
                 </label>
                 <input type="date" id="prepareDate" class="form-control required">
             </div>
