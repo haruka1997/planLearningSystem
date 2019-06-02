@@ -89,6 +89,10 @@ $(function(){
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
+        // 選択した項目の背景色変更
+        $('.learning-history-tbody tr').removeClass('active');
+        $(this).addClass('active');
+        
         selectSettingId = $(this).attr('id');
         calenderDate = calcCalenderDate(selectSettingId);
         getCalenderItem(selectSettingId);

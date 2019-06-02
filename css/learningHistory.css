@@ -34,6 +34,10 @@
     cursor: pointer;
 }
 
+.learning-history-table table tr.active{
+    background-color: rgb(158, 146, 146);
+}
+
 .learning-history-content{
     position: relative;
     width: 98%;
