@@ -71,7 +71,7 @@ module.exports.set = function(items, $){
                 $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).attr('id', items[itemsIndex].id); //idを付与
             }
 
-            if(!items[itemsIndex].learningFlag || items[itemsIndex].learningFlag == "false"){ //プライベートの予定の追加の場合
+            if(!items[itemsIndex].learningFlag){ //プライベートの予定の追加の場合
                 for(var j=0; j<trNthChild.length; j++){ //色を塗る行分
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass(items[itemsIndex].tag); //classを付与
                 }

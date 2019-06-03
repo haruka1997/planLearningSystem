@@ -205,17 +205,20 @@ function getCalenderItem(settingId){
                 displayItems.plans[plan].id = displayItems.plans[plan].planId;
                 displayItems.plans[plan].date = displayItems.plans[plan].planDate;
                 displayItems.plans[plan].time = JSON.parse(displayItems.plans[plan].planTime);
-                // 学習内容リストのセット
                 if(displayItems.plans[plan].learningFlag == "true"){
-                    $('<option value="' + displayItems.plans[plan].content + '">' + displayItems.plans[plan].content + '</option>').appendTo('#selectLearningContent');
+                    displayItems.plans[plan].learningFlag = true;
+                }else{
+                    displayItems.plans[plan].learningFlag = false;
                 }
             }
-            $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
+
             for(let record in displayItems.records){
                 displayItems.records[record].id = displayItems.records[record].recordId;
                 displayItems.records[record].date = displayItems.records[record].recordDate;
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
+
+            setLearningContentList();
 
             // カレンダー表示
             calenderDisplay(calenderDate);
@@ -1022,6 +1025,8 @@ function calenderDataSet(item, editFlag, deleteFlag){
         modules.calenderItemSet.set(afterPlans, $);
 
         displayItems.plans = JSON.parse(JSON.stringify(afterPlans));
+
+        setLearningContentList();
         // calcTotalLearningTime();    // 合計学習時間の算出
 
         if(editFlag === false && deleteFlag === false){
@@ -1141,6 +1146,8 @@ function postPlan(plan){
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
         calenderDataSet(plan, false, false);
+        // 学習内容リストに追加
+
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
@@ -1267,22 +1274,16 @@ function calenderDoubleBookingCheck(item, id){
 function updateExecuting(){
     let sum = 0;
     let matchCount = 0;
-    let executing = '未計算';
-    let plans = displayItems.plans;
-    let records = displayItems.records;
+    let executing = 0;
 
-    if(plans.length > 0){
-        for(let plan in plans){
-            if(plans[plan].learningFlag || plans[plan].learningFlag == "true"){
-                console.log(sum);
+    if(displayItems.plans.length > 0){
+        for(let plan of displayItems.plans){
+            if(plan.learningFlag){
                 sum++;
                 let matchFlag = false;
-                if(records.length > 0){
-                    for(let record in records){
-                        if(plans[plan].content == records[record].content && plans[plan].planDate == records[record].recordDate && JSON.parse(plans[plan].planTime) == JSON.parse(records[record].recordTim)){
-                            console.log('マッチ');
-                            console.log(plans[plan]);
-                            console.log(records[record]);
+                if(displayItems.records.length > 0){
+                    for(let record of displayItems.records){
+                        if(plan.content == record.content && plan.date == record.date && plan.time.start == record.time.start && plan.time.end == record.time.end){
                             matchFlag = true;
                             break;
                         }
@@ -1295,8 +1296,9 @@ function updateExecuting(){
         }
     }
 
-    console.log(sum);
-    console.log(matchCount);
+    if(displayItems.records.length > sum){
+        sum = displayItems.records.length;
+    }
 
     if(sum !== 0){
         executing = Math.round(matchCount / sum * 100);
@@ -1325,4 +1327,18 @@ function updateExecuting(){
     .fail( (data) => {
        
     })
+}
+
+/**
+ * 学習内容リストのセット
+ */
+function setLearningContentList(){
+    $('#selectLearningContent').html('<option>学習内容を選択</option>');
+    // 学習内容リストのセット
+    for(let plan of displayItems.plans){
+        if(plan.learningFlag){
+            $('<option value="' + plan.content + '">' + plan.content + '</option>').appendTo('#selectLearningContent');
+        }
+    }
+    $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
 }
