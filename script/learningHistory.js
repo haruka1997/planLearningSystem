@@ -1267,24 +1267,40 @@ function calenderDoubleBookingCheck(item, id){
 function updateExecuting(){
     let sum = 0;
     let matchCount = 0;
-    for(let plan in displayItems.plans){
-        if(displayItems.plans[plan].learningFlag && displayItems.plans[plan].learningFlag == "true"){
-            sum++;
-            let matchFlag = false;
-            for(let record in displayItems.records){
-                if(displayItems.plans[plan].content == displayItems.records[record].content && displayItems.plans[plan].planDate == displayItems.records[record].recordDate && displayItems.plans[plan].planTime == displayItems.records[record].recordTime){
-                    matchFlag = true;
-                    break;
+    let executing = '未計算';
+    let plans = displayItems.plans;
+    let records = displayItems.records;
+
+    if(plans.length > 0){
+        for(let plan in plans){
+            if(plans[plan].learningFlag || plans[plan].learningFlag == "true"){
+                console.log(sum);
+                sum++;
+                let matchFlag = false;
+                if(records.length > 0){
+                    for(let record in records){
+                        if(plans[plan].content == records[record].content && plans[plan].planDate == records[record].recordDate && JSON.parse(plans[plan].planTime) == JSON.parse(records[record].recordTim)){
+                            console.log('マッチ');
+                            console.log(plans[plan]);
+                            console.log(records[record]);
+                            matchFlag = true;
+                            break;
+                        }
+                    }
+                    if(matchFlag){
+                        matchCount++;
+                    }
                 }
-            }
-            if(matchFlag){
-                matchCount++;
             }
         }
     }
+
     console.log(sum);
     console.log(matchCount);
-    let executing = Math.round(matchCount / sum * 100);
+
+    if(sum !== 0){
+        executing = Math.round(matchCount / sum * 100);
+    }
 
     // Ajax通信
     $.ajax({

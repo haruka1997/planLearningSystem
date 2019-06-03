@@ -56,17 +56,6 @@
                     <option value="10">10点</option>
                 </select>
             </div>
-            <!--学習満足度 -->
-            <div class="form-group pmd-textfield">
-                <label>今回の学習の満足度</label>
-                <select class="select-simple form-control pmd-select2 learning-content" id="learningSatisfaction">
-                    <option value="0">まったく満足していない</option>
-                    <option value="25">あまり満足していない</option>
-                    <option value="50">どちらともいえない</option>
-                    <option value="75">まあ満足している</option>
-                    <option value="100">非常に満足している</option>
-                </select>
-            </div>
             <!--事前テストの結果 -->
             <div class="form-group pmd-textfield">
                 <label>事前テストの点数</label>
@@ -82,6 +71,17 @@
                     <option value="8">8点</option>
                     <option value="9">9点</option>
                     <option value="10">10点</option>
+                </select>
+            </div>
+            <!--学習満足度 -->
+            <div class="form-group pmd-textfield">
+                <label>今回の学習の満足度</label>
+                <select class="select-simple form-control pmd-select2 learning-content" id="learningSatisfaction">
+                    <option value="0">まったく満足していない</option>
+                    <option value="25">あまり満足していない</option>
+                    <option value="50">どちらともいえない</option>
+                    <option value="75">まあ満足している</option>
+                    <option value="100">非常に満足している</option>
                 </select>
             </div>
             <!-- 追加ボタン -->

@@ -29,7 +29,7 @@
           </div>
           <!-- 新規計画作成ボタン -->
           <div class="new-plan-create">
-            <button class="new-plan-create-button mdl-button mdl-js-button mdl-button--raised">新規計画作成</button>
+            <button class="new-plan-create-button mdl-button mdl-js-button mdl-button--raised">授業回の登録</button>
           </div>
           <div class="calender-switch">
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
