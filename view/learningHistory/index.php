@@ -6,8 +6,6 @@
     <div class="mdl-layout mdl-js-layout">
       <!-- ヘッダ -->
       <?php include ('./../common/header.php'); ?>
-      <!-- メニュー -->
-      <?php include ('./../common/menu.php'); ?>
       <!-- コンテンツ -->
       <main class="mdl-layout__content">
         <div class="learning-history-content">

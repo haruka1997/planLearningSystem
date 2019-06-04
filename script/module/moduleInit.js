@@ -4,7 +4,6 @@ module.exports.moduleInit = function(){
 
     // CSS
     require('./../../lib/material.min.css');
-    require('./../../lib/materialIcons.css');
     require('./../../lib/bootstrap.min.css');
     require('./../../lib/propeller.min.css');
     require('./../../css/login.css');
@@ -23,27 +22,16 @@ module.exports.moduleInit = function(){
 
     // jquery
     modules.$ = require('jquery');
-    // chart.js
-    modules.Chart = require('chart.js');
+  
 
     // loginConfirm
     if(window.location.href.split('/').pop() !== 'login.html'){
         let loginConfirm = require('./loginConfirm.js');
         loginConfirm.confirm();
     }
-    
-    // header
-    let header = require('./header.js');
-    header.init(modules.$);
 
     // initCalenderHtml
     modules.initCalenderHtml = require('./initCalenderHtml.js');
-
-    // formValueCheck
-    modules.formValueCheck = require('./formValueCheck.js');
-
-    // transformValue
-    modules.transformValue = require('./transformValue.js');
 
     return modules;
 

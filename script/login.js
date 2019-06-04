@@ -28,8 +28,7 @@ $(function(){
         .done( (data) => {
             // ユーザ情報セッション保存
             window.sessionStorage.setItem(['userId'], data.userId);
-            // 学習記録の作成ページに遷移
-            window.location.href = './../view/planCreate/index.php';
+            window.location.href = './../view/learningHistory/index.php';
 
         })
         // Ajaxリクエストが失敗した時発動
