@@ -67,7 +67,12 @@ module.exports.set = function(items, $){
            
             //行の削除
             for(var j=0; j<trNthChild.length; j++){ //色を塗る行分
-                $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
+                let id = items[itemsIndex].id.slice(0,1);
+                if(id == 'L' || id == 'P'){
+                    $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
+                }else{
+                    $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-record'); //classを付与
+                }
                 $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).attr('id', items[itemsIndex].id); //idを付与
             }
 
