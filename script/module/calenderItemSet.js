@@ -19,7 +19,7 @@ module.exports.set = function(items, $, prepareDate, selectButton){
             var itemDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
             let nthDay = itemDay - prepareDay;
             if(nthDay < 0){
-                nthDay += 7;
+                nthDay += 8;
             }else{
                 nthDay++;
             }
