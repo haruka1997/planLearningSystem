@@ -64,7 +64,7 @@ $(function(){
         }else{
             planDisplayFlag = false;
         }
-        calenderDisplay(calenderDate);
+        calenderDisplay();
     });
 
     // カレンダー内を押されたら
@@ -147,15 +147,18 @@ function historyTableDisplay(){
     }
 }
 
-function calenderDisplay(this_monday){
-    modules.initCalenderHtml.init($, calenderDate); // カレンダーの内容初期化   
+function calenderDisplay(){
+    modules.initCalenderHtml.init($, calenderDate); // カレンダーの内容初期化 
+
+    let prepareDate = calenderDate[0];  // カレンダーの起点日を取得
+
    if(planDisplayFlag){ //計画のラジオボタンが押されていたら
-        modules.calenderItemSet.set(displayItems.plans, $);  // 計画をカレンダーにセット
+        modules.calenderItemSet.set(displayItems.plans, $, prepareDate);  // 計画をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', 'none');
    }else{
-        modules.calenderItemSet.set(displayItems.records, $); // 記録をカレンダーにセット
+        modules.calenderItemSet.set(displayItems.records, $, prepareDate); // 記録をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', 'none');
         $('.add-record-button').css('display', '');
@@ -221,7 +224,7 @@ function getCalenderItem(settingId){
             setLearningContentList();
 
             // カレンダー表示
-            calenderDisplay(calenderDate);
+            calenderDisplay();
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -1059,13 +1062,13 @@ function calcCalenderDate(settingId){
             let today = new Date(Number(date));
             let this_year = today.getFullYear();
             let this_month = today.getMonth()+1;
-            let this_date = today.getDay();  // 今日の曜日
-            if(this_date == 0) this_date =  7;  // 日曜日なら
-            let this_monday = today.getDate() - this_date + 1;
+            let this_date = today.getDate();  // 今日の日付
+            let dayText = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
 
             let calenderDateArray = [];
+
             let lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-            let diffForLastDate = lastDate - this_monday;
+            let diffForLastDate = lastDate - this_date;
             let next_month = this_month+1;
             // 一桁0詰め処理
             if(String(this_month).length==1) this_month = '0' + this_month;
@@ -1074,34 +1077,42 @@ function calcCalenderDate(settingId){
             if(diffForLastDate < 7){    // 月をまたぎそう
 
                 for(let i=1; i<=(diffForLastDate+1); i++){
-                    if(String(this_monday).length==1) this_monday = '0' + this_monday;
+                    if(String(this_date).length==1) this_date = '0' + this_date;
+                    let dayNum = new Date(Number(this_year), Number(this_month)-1, Number(this_date)).getDay();
+                    let day = dayText[dayNum];
                     calenderDateArray.push({
                         year: this_year,
                         month: this_month,
-                        date: this_monday
+                        date: this_date,
+                        day: day
                     });
-                    this_monday++;
+                    this_date++;
                 }
                 for(let j=1; j<=(7-(diffForLastDate+1)); j++){
                     if(String(j).length==1) j = '0' + j;
+                    let dayNum = new Date(Number(this_year), Number(next_month)-1, Number(j)).getDay();
+                    let day = dayText[dayNum];
                     calenderDateArray.push({
                         year: this_year,
                         month: next_month,
-                        date: j
+                        date: j,
+                        day: day
                     });
                 }  
             }else{
                 for(let i=0; i<7; i++){
-                    if(String(this_monday).length==1) this_monday = '0' + this_monday;
+                    if(String(this_date).length==1) this_date = '0' + this_date;
+                    let dayNum = new Date(Number(this_year), Number(this_month)-1, Number(this_date)).getDay();
+                    let day = dayText[dayNum];
                     calenderDateArray.push({
                         year: this_year,
                         month: this_month,
-                        date: this_monday
+                        date: this_date,
+                        day: day
                     });
-                    this_monday++;
+                    this_date++;
                 }
             }
-
             return calenderDateArray;
         }
     }

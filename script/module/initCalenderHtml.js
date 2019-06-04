@@ -19,9 +19,8 @@ module.exports.init = function($, calenderDateArray){
     // $('.calender-table tbody').css('height', wH);
 
     // カレンダーの日付表示設定
-    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
     $('.calender-table tr .calender-date').each(function(i){
-        $(this).text(calenderDateArray[i].date + '日' + day[i]);
+        $(this).text(calenderDateArray[i].date + '日' + calenderDateArray[i].day);
     });
 
 }

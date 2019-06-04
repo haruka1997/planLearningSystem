@@ -42,6 +42,9 @@ module.exports.moduleInit = function(){
     // formValueCheck
     modules.formValueCheck = require('./formValueCheck.js');
 
+    // transformValue
+    modules.transformValue = require('./transformValue.js');
+
     return modules;
 
 }

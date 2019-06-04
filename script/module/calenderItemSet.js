@@ -1,5 +1,6 @@
-module.exports.set = function(items, $){
+module.exports.set = function(items, $, prepareDate){
 
+    let prepareDay = new Date(Number(prepareDate.year), Number(prepareDate.month)-1, Number(prepareDate.date)).getDay();
     calenderItemSet();
 
     function calenderItemSet(){
@@ -14,10 +15,14 @@ module.exports.set = function(items, $){
             /**
              * どの列に予定を追加するか調整
              */
-            var nthDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
-            if(nthDay == 0){ //日曜日の場合
-                nthDay = 7;
+            var itemDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
+            let nthDay = itemDay - prepareDay + 1;
+            if(nthDay < 0){
+                nthDay = nthDay + 7;
             }
+            // if(nthDay == 0){ //日曜日の場合
+            //     nthDay = 7;
+            // }
 
             /**
              * どの行に予定を追加するか調整 
