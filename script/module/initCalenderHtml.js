@@ -1,4 +1,5 @@
-module.exports.init = function($, calenderDateArray){
+module.exports.init = function($, calenderDateArray, selectItem){
+
     let scrollTop = $('.calender tbody').scrollTop();   // 現在のカレンダーのスクロール位置を取得
 
     // カレンダーがセットされていたら一度削除する
@@ -7,7 +8,11 @@ module.exports.init = function($, calenderDateArray){
     }
 
     // カレンダーモジュール
-    var calender = require('./../../view/common/singleCalender.html');
+    if(selectItem !== '計画と記録'){
+        var calender = require('./../../view/common/singleCalender.html');
+    }else{
+        var calender = require('./../../view/common/doubleCalender.html');
+    }
 
     // カレンダーをセットする
     $(".calender-display-content").append(calender);

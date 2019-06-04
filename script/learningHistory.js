@@ -59,12 +59,14 @@ $(function(){
     // ラジオボタン切り替え
     $( 'input[name="options"]:radio' ).change( function() {
         let radioval = $(this).val();
-        if(radioval == '計画'){
-            planDisplayFlag = true;
-        }else{
-            planDisplayFlag = false;
-        }
-        calenderDisplay();
+        // if(radioval == '計画'){
+        //     planDisplayFlag = true;
+        // }else if(radioval == '記録'){
+        //     planDisplayFlag = false;
+        // }else{
+        //     planDisplayFlag 
+        // }
+        calenderDisplay(radioval);
     });
 
     // カレンダー内を押されたら
@@ -147,20 +149,25 @@ function historyTableDisplay(){
     }
 }
 
-function calenderDisplay(){
-    modules.initCalenderHtml.init($, calenderDate); // カレンダーの内容初期化 
+function calenderDisplay(selectItem){
 
+    modules.initCalenderHtml.init($, calenderDate, selectItem); // カレンダーの内容初期化 
     let prepareDate = calenderDate[0];  // カレンダーの起点日を取得
 
-   if(planDisplayFlag){ //計画のラジオボタンが押されていたら
+   if(selectItem == '計画'){ //計画のラジオボタンが押されていたら
         modules.calenderItemSet.set(displayItems.plans, $, prepareDate);  // 計画をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', 'none');
-   }else{
+   }else if(selectItem == '記録'){
         modules.calenderItemSet.set(displayItems.records, $, prepareDate); // 記録をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', 'none');
+        $('.add-record-button').css('display', '');
+   }else{   // 計画と記録をカレンダーにセット
+        let displayItem = displayItems.plans.concat(displayItems.records);
+        modules.calenderItemSet.set(displayItem, $, prepareDate); // 記録をカレンダーにセット
+        $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', '');
    }
    // スクロール位置をカレンダーの位置にセット
