@@ -121,6 +121,11 @@
     border-right: solid 0.3px #e4e3e3;
     border-top: none;
 }
+
+.double-calender .calender-table .calender-content:nth-child(even){
+    border-right: dotted 0.3px #e4e3e3;
+}
+
 .calender-table tbody tr{
     height: 20px;
 }
