@@ -16,9 +16,11 @@ module.exports.set = function(items, $, prepareDate){
              * どの列に予定を追加するか調整
              */
             var itemDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
-            let nthDay = itemDay - prepareDay + 1;
+            let nthDay = itemDay - prepareDay;
             if(nthDay < 0){
-                nthDay = nthDay + 7;
+                nthDay += 7;
+            }else{
+                nthDay++;
             }
             // if(nthDay == 0){ //日曜日の場合
             //     nthDay = 7;
