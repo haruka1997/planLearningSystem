@@ -40,6 +40,10 @@
               <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="記録">
               <span class="mdl-radio__label">記録</span>
             </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+              <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="計画と記録">
+              <span class="mdl-radio__label">計画と記録</span>
+            </label>
           </div>
           <div class="calender-display-content">
             <!-- 計画・記録追加ボタン -->
