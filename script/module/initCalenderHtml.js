@@ -7,7 +7,7 @@ module.exports.init = function($, calenderDateArray){
     }
 
     // カレンダーモジュール
-    var calender = require('./../../view/common/calender.html');
+    var calender = require('./../../view/common/singleCalender.html');
 
     // カレンダーをセットする
     $(".calender-display-content").append(calender);

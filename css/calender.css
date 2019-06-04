@@ -103,6 +103,19 @@
     width: 14%;
 }
 
+.single-calender .calender-table .calender-content,
+.single-calender .calender-table .calender-date{
+    width: 14%;
+}
+
+.double-calender .calender-table .calender-content{
+    width: 7%;
+}
+
+.double-calender .calender-table .calender-date{
+    width: 14%;
+}
+
 .calender-table .calender-content{
     border-bottom: dotted 0.6px #e4e3e3;
     border-right: solid 0.3px #e4e3e3;
