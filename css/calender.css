@@ -112,10 +112,6 @@
     width: 7%;
 }
 
-.double-calender .calender-table .calender-date{
-    width: 14%;
-}
-
 .calender-table .calender-content{
     border-bottom: dotted 0.6px #e4e3e3;
     border-right: solid 0.3px #e4e3e3;
@@ -171,19 +167,6 @@
     color: #4CAF50;
     border-left: solid 3px #4CAF50;
 }
-
-
-/* .calender-table .add-record{
-    background-color: #0288D1;
-    color: #ffffff;
-    border-left: solid 3px #0288D1;
-    cursor: pointer;
-    font-size: 15px;
-    text-align: left;
-    vertical-align: top;
-    padding: 3px 0px 0px 7px;
-    font-weight: bold;
-} */
 
 .calender-time-border .calender-content{
     border-top: solid 0.3px #e4e3e3;

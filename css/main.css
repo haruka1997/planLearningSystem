@@ -2,10 +2,10 @@ body{
     background: #e6ecf0;
 }
 /* メニューアイコン */
-.mdl-layout__drawer-button{
+/* .mdl-layout__drawer-button{
     top: 10;
     color: #333333;
-}
+} */
 
 /* ヘッダー */
 .mdl-layout__header{

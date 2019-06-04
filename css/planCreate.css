@@ -1,4 +1,4 @@
-.planCreate-content{
+/* .planCreate-content{
     position: relative;
     width: 98%;
     margin-top: 10px;
@@ -33,9 +33,9 @@
     height: auto;
     width: 80%;
     margin: 1em auto;
-}
+} */
 
-.pmd-textfield-floating-label label{
+/* .pmd-textfield-floating-label label{
     font-size: 15px;
     margin-bottom: 30px;
     color: gray;
@@ -43,9 +43,9 @@
 
 .form-group.pmd-textfield{
     width: 100%;
-}
+} */
 
-.footer-button{
+/* .footer-button{
     text-align: center;
     padding: 5px 0px 20px 0px;
 }
@@ -58,17 +58,17 @@
 .footer-button .learning-setting-regist-button.show,
 .footer-button .learning-setting-edit-button.show{
     display: initial !important;
-}
+} */
 
-.planProgress{
+/* .planProgress{
     position: relative;
     text-align: right;
     margin: 30px;
     width: 30%;
     float: right;
-}
+} */
 
-.progress label{
+/* .progress label{
     font-weight: normal;
     font-size: 17px;
     background-color: #ffffff;
@@ -85,9 +85,9 @@
 
 .progress-bar-success{
     background-color: #2196F3;
-}
+} */
 
-.learning-list-item-example{
+/* .learning-list-item-example{
     display: flex;
     margin-bottom: 30px;
 }
@@ -99,7 +99,7 @@
 
 .form-group.expected-time{
     width: 30%;
-}
+} */
 
 .floating-action-button{
     bottom: 1rem;
@@ -154,7 +154,7 @@
     width: 50%;
 }
 
-#learning-setting-content,
+/* #learning-setting-content,
 #learning-list-create-content,
 #plan-create-content{
     display: none;
@@ -168,7 +168,7 @@
 
 .learning-list-form .learning-list-item{
     display: flex;
-}
+} */
 
 .reference-data-title .learning-list-button,
 .reference-data-title .plan-reference-button{
@@ -187,7 +187,6 @@
 .private-plan-create-modal-wrapper,
 .learning-plan-detail-modal-wrapper,
 .private-plan-detail-modal-wrapper,
-.learning-satisfaction-modal-wrapper,
 .learning-record-create-modal-wrapper,
 .learning-record-detail-modal-wrapper,
 .learning-setting-modal-wrapper,
@@ -210,7 +209,6 @@
 .private-plan-create-modal-wrapper.is-visible,
 .learning-plan-detail-modal-wrapper.is-visible,
 .private-plan-detail-modal-wrapper.is-visible,
-.learning-satisfaction-modal-wrapper.is-visible,
 .learning-record-create-modal-wrapper.is-visible,
 .learning-record-detail-modal-wrapper.is-visible,
 .learning-setting-modal-wrapper.is-visible,
@@ -264,8 +262,7 @@
 .learning-add-button,
 .private-add-button,
 .plan-modal-footer-button,
-.private-edit-button,
-.learning-satisfaction-complete-button{
+.private-edit-button{
     text-align: center;
     margin: 10px;
 }
