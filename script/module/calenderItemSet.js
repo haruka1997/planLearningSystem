@@ -1,4 +1,4 @@
-module.exports.set = function(items, $, prepareDate){
+module.exports.set = function(items, $, prepareDate, selectButton){
 
     let prepareDay = new Date(Number(prepareDate.year), Number(prepareDate.month)-1, Number(prepareDate.date)).getDay();
     calenderItemSet();
@@ -11,6 +11,7 @@ module.exports.set = function(items, $, prepareDate){
             var tdNthChild = ""; //どの曜日に予定を追加するかを設定 (例：nth-child(2) => 月曜日)
             var trNthChild = []; //どの時間に予定を追加するかを設定(例：nth-child(1) => 0時)
             var rowspan = ''; //結合するマス数 (例：15分間 => 1)
+            let id = items[itemsIndex].id.slice(0,1);
 
             /**
              * どの列に予定を追加するか調整
@@ -63,7 +64,15 @@ module.exports.set = function(items, $, prepareDate){
             var calenderContent = $('.calender-table tbody tr:' + trNthChild[0])[0].childNodes;
             for(var i=1; i<calenderContent.length; i++){
                 if(calenderContent[i].classList[1] == nthDay){
-                    tdNthChild = 'nth-child(' + Number(i+1) + ')';
+                    if(selectButton !== '計画と記録'){ // singleCalenderの場合
+                        tdNthChild = 'nth-child(' + Number(i+1) + ')';
+                    }else{ // doubleCalenderの場合
+                        if(id == 'L' || id == 'P'){
+                            tdNthChild = 'nth-child(' + Number(i+1) + ')';
+                        }else{
+                            tdNthChild = 'nth-child(' + Number(i+2) + ')';
+                        }
+                    }
                     break;
                 }
             }
@@ -74,7 +83,7 @@ module.exports.set = function(items, $, prepareDate){
            
             //行の削除
             for(var j=0; j<trNthChild.length; j++){ //色を塗る行分
-                let id = items[itemsIndex].id.slice(0,1);
+                // let id = items[itemsIndex].id.slice(0,1);
                 if(id == 'L' || id == 'P'){
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
                 }else{

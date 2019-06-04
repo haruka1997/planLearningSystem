@@ -1,4 +1,4 @@
-module.exports.init = function($, calenderDateArray, selectItem){
+module.exports.init = function($, calenderDateArray, selectButton){
 
     let scrollTop = $('.calender tbody').scrollTop();   // 現在のカレンダーのスクロール位置を取得
 
@@ -8,7 +8,7 @@ module.exports.init = function($, calenderDateArray, selectItem){
     }
 
     // カレンダーモジュール
-    if(selectItem !== '計画と記録'){
+    if(selectButton !== '計画と記録'){
         var calender = require('./../../view/common/singleCalender.html');
     }else{
         var calender = require('./../../view/common/doubleCalender.html');
