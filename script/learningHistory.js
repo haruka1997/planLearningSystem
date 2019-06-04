@@ -644,29 +644,7 @@ function learningRecordAdd(){
                 $('.modal-error').text('');
             });
         }else{
-            // Ajax通信
-            $.ajax({
-                url:'./../../php/learningRecord/postRecord.php',
-                type:'POST',
-                data:{
-                    'userId': window.sessionStorage.getItem(['userId']),
-                    'recordId': record.id,
-                    'settingId': selectSettingId,
-                    'content': record.content,
-                    'recordDate': record.date,
-                    'recordTime': JSON.stringify(record.time),
-                    'memo': record.memo
-                },
-                dataType: 'json'       
-            })
-            // Ajaxリクエストが成功した時発動
-            .done( (data) => {
-                calenderDataSet(record, false, false);
-            })
-            // Ajaxリクエストが失敗した時発動
-            .fail( (data) => {
-                alert('登録に失敗しました');
-            })
+            postRecord(record);
         }
 
     });
@@ -718,6 +696,13 @@ function learningPlanDetail(id){
             $('.learning-plan-detail-modal-wrapper #detailLearningTimeStart').val(selectPlan.time.start);
             $('.learning-plan-detail-modal-wrapper #detailLearningTimeEnd').val(selectPlan.time.end);
             $('.learning-plan-detail-modal-wrapper #detailLearningMemo').val(selectPlan.memo);
+
+            // 完了ボタンが押されたら
+            $('.learning-plan-detail-modal-wrapper .learning-complete-button').off("click").one("click", function () {
+                let record = JSON.parse(JSON.stringify(selectPlan));
+                record.id = 'R' + new Date().getTime();
+                postRecord(record);
+            });
 
             // 編集ボタン押されたら
             $('.learning-plan-detail-modal-wrapper .learning-edit-button').off("click").one("click", function () {
@@ -1006,7 +991,6 @@ function initModalForm(){
 
 function calenderDataSet(item, editFlag, deleteFlag){
     let id = item.id.slice(0,1);
-    modules.initCalenderHtml.init($, calenderDate);
 
     if(id == 'L' || id == 'P'){  // 計画データ
 
@@ -1020,9 +1004,6 @@ function calenderDataSet(item, editFlag, deleteFlag){
         }else{
             afterPlans.push(item);
         }
-        
-        // カレンダーセット
-        modules.calenderItemSet.set(afterPlans, $);
 
         displayItems.plans = JSON.parse(JSON.stringify(afterPlans));
 
@@ -1050,19 +1031,19 @@ function calenderDataSet(item, editFlag, deleteFlag){
             afterRecords.push(item);
         }
         
-        // カレンダーセット
-        modules.calenderItemSet.set(afterRecords, $);
 
         displayItems.records = JSON.parse(JSON.stringify(afterRecords));
         // calcTotalLearningTime();    // 合計学習時間の算出
 
         if(editFlag === false && deleteFlag === false){
             $('.learning-record-create-modal-wrapper').removeClass('is-visible');
+            $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');
         }else{
             $('.learning-record-detail-modal-wrapper').removeClass('is-visible');
         }
     }
 
+    calenderDisplay();
     updateExecuting();
 }
 
@@ -1228,6 +1209,32 @@ function deletePlan(deletePlan, id, i){
     .fail( (data) => {
         alert('削除に失敗しました');
         return false;
+    })
+}
+
+function postRecord(record){
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/learningRecord/postRecord.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId']),
+            'recordId': record.id,
+            'settingId': selectSettingId,
+            'content': record.content,
+            'recordDate': record.date,
+            'recordTime': JSON.stringify(record.time),
+            'memo': record.memo
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        calenderDataSet(record, false, false);
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('登録に失敗しました');
     })
 }
 
