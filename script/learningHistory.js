@@ -4,7 +4,7 @@ modules = modules.moduleInit();
 
 var $ = modules.$; //jquery
 
-let selectButton = '';
+let selectButton = '計画';
 let displayItems = {
     plans: [],
     records: []
@@ -150,6 +150,8 @@ function historyTableDisplay(){
 }
 
 function calenderDisplay(){
+
+    console.log(selectButton);
 
     modules.initCalenderHtml.init($, calenderDate, selectButton); // カレンダーの内容初期化 
     let prepareDate = calenderDate[0];  // カレンダーの起点日を取得
