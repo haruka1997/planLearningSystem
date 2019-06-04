@@ -1,11 +1,6 @@
 body{
     background: #e6ecf0;
 }
-/* メニューアイコン */
-/* .mdl-layout__drawer-button{
-    top: 10;
-    color: #333333;
-} */
 
 /* ヘッダー */
 .mdl-layout__header{
@@ -16,4 +11,291 @@ body{
 /* メニューリンク */
 .mdl-layout__header-row .mdl-navigation__link{
     color: #333333;
+}
+
+.floating-action-button{
+    bottom: 1rem;
+    position: fixed;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.floating-action-button button{
+    margin: 10px;
+}
+
+.reference-data{
+    position: relative;
+    padding: 20px;
+    width: 100%;
+}
+
+.reference-data-title{
+    display: flex;
+}
+
+.reference-data-list .learning-list-item,
+.reference-data-list .plan-reference-item{
+    padding: 0 16px;
+    margin: 10px 20px;
+    background: #f9f9f9;
+    border-left: solid 10px #2196F3;
+    display: none;
+}
+
+.reference-data-list .learning-list-item p{
+    padding: 7px;
+    margin: 0;
+}
+
+.plan-reference-item{
+    display: none;
+}
+
+.plan-reference-item.show{
+    display: inline;
+}
+
+.plan-reference-chart{
+    display: flex;
+    width: 100%;
+}
+
+.plan-reference-chart div{
+    padding: 10px;
+    width: 50%;
+}
+
+.reference-data-title .learning-list-button,
+.reference-data-title .plan-reference-button{
+    display: none;
+}
+
+.reference-data-title .learning-list-button.show,
+.reference-data-title .plan-reference-button.show{
+    display: initial;
+}
+
+
+
+/* モーダル */
+.learning-plan-create-modal-wrapper,
+.private-plan-create-modal-wrapper,
+.learning-plan-detail-modal-wrapper,
+.private-plan-detail-modal-wrapper,
+.learning-record-create-modal-wrapper,
+.learning-record-detail-modal-wrapper,
+.learning-setting-modal-wrapper,
+.history-detail-modal-wrapper{
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.5s, transform 0s 0.5s;
+    transform: scale(0);
+}
+.learning-plan-create-modal-wrapper.is-visible,
+.private-plan-create-modal-wrapper.is-visible,
+.learning-plan-detail-modal-wrapper.is-visible,
+.private-plan-detail-modal-wrapper.is-visible,
+.learning-record-create-modal-wrapper.is-visible,
+.learning-record-detail-modal-wrapper.is-visible,
+.learning-setting-modal-wrapper.is-visible,
+.history-detail-modal-wrapper.is-visible{
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s;
+}
+.plan-modal{
+    align-self: flex-start;
+    width: 60%;
+    box-sizing: border-box;
+    background: #fff;
+    line-height: 1.4em;
+    transform: translateY(60px);
+    transition: 0.5s;
+    border-radius: 10px;
+    overflow: scroll;
+}
+
+.plan-modal #modal-header{
+    position: relative;
+    height: 50px;
+    border-bottom: 1px #c2c2c2 solid;
+    width: 100%;
+    padding: 15px 0px 10px 20px;
+    font-size: 19px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#modal-header .header-cansel-button{
+    margin-left: auto;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.plan-modal #modal-content{
+    padding: 20px;
+}
+
+#modal-content .form-group.pmd-textfield{
+    width: 100%;
+}
+
+#modal-content label.required::after{
+    color: red;
+    content: " *";
+}
+
+.learning-add-button,
+.private-add-button,
+.plan-modal-footer-button,
+.private-edit-button{
+    text-align: center;
+    margin: 10px;
+}
+
+.plan-modal-footer-button button{
+    margin: 0 10px 0 10px;
+}
+
+.form-tag{
+    display: flex;
+}
+
+.form-tag .tag{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.form-tag #red{
+    background: #EF9A9A;
+}
+
+.form-tag #yellow{
+    background: #FFF59D;
+}
+
+.form-tag #green{
+    background: #A5D6A7;
+}
+
+.form-tag #red.active{
+    background: #F44336;
+}
+
+.form-tag #yellow.active{
+    background: #FFEB3B;
+}
+
+.form-tag #green.active{
+    background: #4CAF50;
+}
+
+.modal-error{
+    color: #EF6262;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.totalLearningTime{
+    float: right;
+    margin: 0 50px 20px 0;
+}
+
+.input-learning-content{
+    margin: 15px 0 10px 0;
+}
+
+.record-modal-footer-button{
+    text-align: center;
+    margin: 10px;
+}
+
+.record-modal-footer-button button{
+    margin: 0 10px 0 10px;
+}
+
+.learning-history-table{
+    position: relative;
+    width: 98%;
+    margin-top: 10px;
+    background-color: #ffffff;
+    margin-left: 1%;
+    height: auto;
+    padding: 10px;
+}
+
+.table tbody tr td,
+.table thead tr th{
+    border: 1px solid #ddd;
+    padding: 10px 0;
+    line-height: 1;
+}
+
+.learning-history-table table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.learning-history-table table th,
+.learning-history-table table td{
+    text-align: center;
+}
+
+.learning-history-table table th{
+    background-color: #aaa5a5;
+    color: #fff;
+}
+
+.learning-history-table table td{
+    cursor: pointer;
+}
+
+.learning-history-table table tr.active{
+    background-color: rgb(158, 146, 146);
+}
+
+.learning-history-content{
+    position: relative;
+    width: 98%;
+    margin-top: 10px;
+    background-color: #ffffff;
+    margin-left: 1%;
+    height: auto;
+    padding: 10px;
+}
+
+.calender-switch{
+    float: right;
+    padding: 0 30px 10px 0;
+}
+
+.calender-switch .mdl-radio__label{
+    font-weight: initial !important;
+}
+
+.calender-switch .mdl-radio{
+    margin: 0 10px 0 0;
+}
+
+.new-plan-create{
+    width: 100%;
+    text-align: center;
+}
+
+.history-detail-button.mdl-button{
+    height: auto;
+    line-height: 1;
 }
