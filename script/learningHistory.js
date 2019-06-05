@@ -59,13 +59,6 @@ $(function(){
     // ラジオボタン切り替え
     $( 'input[name="options"]:radio' ).change( function() {
         selectButton = $(this).val();
-        // if(radioval == '計画'){
-        //     planDisplayFlag = true;
-        // }else if(radioval == '記録'){
-        //     planDisplayFlag = false;
-        // }else{
-        //     planDisplayFlag 
-        // }
         calenderDisplay();
     });
 

@@ -6,7 +6,7 @@
         $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
         // $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
-        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId ORDER BY prepareDate ASC'); 
+        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId ORDER BY coverage ASC'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
 
         $stmt->execute();
