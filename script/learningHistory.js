@@ -35,7 +35,6 @@ function initDOM(){
         $(this).addClass('active');
         
         selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
-        calcCalenderDate();
         getCalenderItem();  // カレンダーに表示するアイテムの取得
     });
 
@@ -94,7 +93,7 @@ function initDOM(){
 /**
  * 学習履歴テーブルの表示
  */
-function historyTableDisplay(){
+function displayHistoryTable(){
 
     $('.learning-history-tbody').html(''); // テーブル内容の初期化
 
@@ -136,6 +135,8 @@ function historyTableDisplay(){
  * カレンダーの表示
  */
 function displayCalender(){
+
+    calcCalenderDate();
 
     modules.initCalenderHtml.init($, calenderDate, selectButton); // カレンダーの内容初期化
     // fabボタンを非表示化
@@ -241,7 +242,8 @@ function displayLearningSetting(){
             // 作成した授業回をテーブルに表示
             selectSettingId = settingId;
             historyData.push(data);
-            historyTableDisplay();
+            displayHistoryTable();
+            displayCalender();
             
             exit();
         })
@@ -337,10 +339,9 @@ function displayHistoryDetail(settingId){
                 .done( () => {
                     historyData[data] =  editData;
                     historyData[data].executing = selectData.executing;
-                    historyTableDisplay();
+                    displayHistoryTable();
 
                     if(selectData.prepareDate != editData.prepareDate){
-                        calcCalenderDate();
                         updateExecuting();
                         displayCalender();
                     }
@@ -351,8 +352,31 @@ function displayHistoryDetail(settingId){
                 .fail( (data) => {
                     alert('学習履歴の更新に失敗しました');
                 });
-
             });
+
+            // 削除ボタンが押されたら
+            $('.history-detail-modal-wrapper .history-delete-button').off('click').on('click', function(){
+                $.ajax({
+                    url:'./../../php/learningHistory/deleteSetting.php',
+                    type:'POST',
+                    data: selectData,
+                    dataType: 'json'       
+                })
+                // Ajaxリクエストが成功した時発動
+                .done( () => {
+                    historyData.splice(data, 1);
+                    selectSettingId = historyData[historyData.length-1].settingId;
+                    displayHistoryTable();
+                    getCalenderItem();
+
+                    exit();
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    alert('学習履歴の削除に失敗しました');
+                });
+            });
+
             break;
         }
     }
@@ -1149,7 +1173,7 @@ function updateExecuting(){
        for(let data of historyData){
            if(data.settingId == selectSettingId){
                data.executing = executing;
-               historyTableDisplay();
+               displayHistoryTable();
            }
        }
     })
@@ -1188,9 +1212,8 @@ function getHistoryData(){
     .done( (data) => {
         if(data) {
             historyData = data;
-            historyTableDisplay();
+            displayHistoryTable();
             selectSettingId = data.slice(-1)[0].settingId;
-            calcCalenderDate();
             getCalenderItem();
         }
     })
@@ -1207,6 +1230,7 @@ function getCalenderItem(){
     // 表示アイテムの初期化
     displayItems.plans = [];
     displayItems.records = [];
+
     $('#selectLearningContent').html('<option>学習内容を選択</option>');
 
     $.ajax({

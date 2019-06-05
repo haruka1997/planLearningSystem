@@ -87,6 +87,7 @@
             <!-- 追加ボタン -->
             <div class="plan-modal-footer-button">
                 <button class="history-edit-button mdl-button mdl-js-button mdl-button--raised">編集</button>
+                <button class="history-delete-button mdl-button mdl-js-button mdl-button--raised">削除</button>
             </div>
         </div>
     </div>
