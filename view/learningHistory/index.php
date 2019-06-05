@@ -11,7 +11,7 @@
         <div class="learning-history-content">
           <!-- 学習履歴テーブル -->
           <div class="learning-history-table">
-              <table class="table table-hover">
+              <table class="table">
                 <thead>
                   <tr id="table-header">
                       <th>授業回</th>
