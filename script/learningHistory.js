@@ -17,28 +17,16 @@ let calenderDate = [];
 $(function(){
 
     // テーブルに表示するデータの取得
-    $.ajax({
-        url:'./../../php/learningHistory/getHistoryData.php',
-        type:'POST',
-        data:{
-            'userId': window.sessionStorage.getItem(['userId'])
-        },
-        dataType: 'json'       
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (data) => {
-        if(data) {
-            historyData = data;
-            historyTableDisplay();
-            selectSettingId = data.slice(-1)[0].settingId;
-            calcCalenderDate();
-            getCalenderItem(selectSettingId);
-        }
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-       
-    });
+    getHistoryData();
+
+    // DOMの初期設定
+    initDOM();
+});
+
+/**
+ * DOMの初期設定
+ */
+function initDOM(){
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
@@ -46,70 +34,81 @@ $(function(){
         $('.learning-history-tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        selectSettingId = $(this).attr('id');
+        selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
         calcCalenderDate();
-        getCalenderItem(selectSettingId);
+        getCalenderItem();  // カレンダーに表示するアイテムの取得
     });
 
-    // 詳細ボタンをクリックされたら
+    // テーブルの詳細ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
-        historyDetail($(this).attr('id'));
+        displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
     });
 
     // ラジオボタン切り替え
+    // TODO: DOM要素の見直し(クラスで指定するなど)
     $( 'input[name="options"]:radio' ).change( function() {
-        selectButton = $(this).val();
-        calenderDisplay();
+        selectButton = $(this).val(); // 選択したボタンの取得
+        displayCalender(); // カレンダー表示
     });
 
     // カレンダー内を押されたら
     $(document).on("click", ".calender-content", function () {
-        var id = $(this).attr("id");
-        if(id !== undefined){   //計画詳細表示の場合
-            var category = id.slice(0,1);
+        let id = $(this).attr("id"); // 選択されたアイテムのIDを取得
+        if(id !== undefined){
+            let category = id.slice(0,1);   // IDの先頭文字を取得(L:学習計画, P:プライベートの予定, R:学習記録)
             if(category === 'L'){   // 学習記録詳細表示
-                learningPlanDetail(id);
+                displayLearningPlanDetail(id);
             }else if(category === 'P'){
-                privatePlanDetail(id);   // プライベート予定詳細表示
+                displayPrivatePlanDetail(id);   // プライベート予定詳細表示
             }else{
-                learningRecordDetail(id);   // 学習記録詳細表示
+                displayLearningRecordDetail(id);   // 学習記録詳細表示
             }
         }
     });
 
-    // 新規学習計画の作成ボタンを押されたら
+    // 授業回の登録ボタンを押されたら
+    // TODO: クラス名見直し
     $('.new-plan-create-button').click(function (){
-        newPlanCreate();
+        displayLearningSetting(); // 目標の設定表示
     });
 
     // 学習の計画追加ボタンを押されたら
+    // TODO: クラス名見直し
     $('#add-learning-plan').click(function (){
-        learningPlanAdd();
+        displayLearningPlanAdd();
     });
 
-    // 学習の計画追加ボタンを押されたら
+    // プライベートの予定追加ボタンを押されたら
+    // TODO: クラス名見直し
     $('#add-private-plan').click(function (){
-        privatePlanAdd();
+        displayPrivatePlanAdd();
     });
 
     // 学習の記録追加ボタンを押されたら
+    // TODO: クラス名見直し
     $('#add-learning-record').click(function (){
-        learningRecordAdd();
+        displayLearningRecordAdd();
     });
-});
+}
 
+/**
+ * 学習履歴テーブルの表示
+ */
 function historyTableDisplay(){
 
-    $('.learning-history-tbody').html('');
+    $('.learning-history-tbody').html(''); // テーブル内容の初期化
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
+
+        // 計画実施率の表示
         if(historyData[i].executing == null){
             historyData[i].executingText = '未計算';
         }else{
             historyData[i].executingText = historyData[i].executing + '%';
         }
 
+        // 目標達成率の表示
         if(historyData[i].achievement == 100){
             historyData[i].achievementText = '達成';
         }else if(historyData[i].achievement == 0){
@@ -118,33 +117,31 @@ function historyTableDisplay(){
             historyData[i].achievementText = '未登録';
         }
 
+        // 学習満足度の表示
         switch(historyData[i].satisfaction){
-            case '0':
-                historyData[i].satisfactionText = '満足していない';
-                break;
-            case '25':
-                historyData[i].satisfactionText = 'あまり満足していない';
-                break;
-            case '50':
-                historyData[i].satisfactionText = 'どちらともいえない';
-                break;
-            case '75':
-                historyData[i].satisfactionText = 'まあ満足している';
-                break;
-            case '100':
-                historyData[i].satisfactionText = '満足している';
-                break;
-            default:
-                historyData[i].satisfactionText = '未登録';                         
+            case '0': historyData[i].satisfactionText = '満足していない'; break;
+            case '25': historyData[i].satisfactionText = 'あまり満足していない'; break;
+            case '50': historyData[i].satisfactionText = 'どちらともいえない'; break;
+            case '75': historyData[i].satisfactionText = 'まあ満足している'; break;
+            case '100': historyData[i].satisfactionText = '満足している'; break;
+            default: historyData[i].satisfactionText = '未登録';                         
         }
 
+        // テーブル内容の表示
         $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td id=' + historyData[i].settingId + '"class="coverage">' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td><td><button id="' + historyData[i].settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>');
     }
 }
 
-function calenderDisplay(){
+/**
+ * カレンダーの表示
+ */
+function displayCalender(){
 
     modules.initCalenderHtml.init($, calenderDate, selectButton); // カレンダーの内容初期化
+    // fabボタンを非表示化
+    $('.add-plan-button').css('display', 'none');
+    $('.add-record-button').css('display', 'none');
+
     let prepareDate = calenderDate[0];  // カレンダーの起点日を取得
 
     // カレンダーに表示するアイテムの検査
@@ -165,133 +162,62 @@ function calenderDisplay(){
         return checkedItems;
     }
 
-
-   if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
-        displayItems.plans = displayItemCheck(displayItems.plans);
-        modules.calenderItemSet.set(displayItemCheck(displayItems.plans), $, prepareDate, selectButton);  // 計画をカレンダーにセット
-        // ボタンの表示切り替え
+    let displayItem = [];
+    if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
+        displayItem = displayItemCheck(displayItems.plans);
         $('.add-plan-button').css('display', '');
-        $('.add-record-button').css('display', 'none');
-   }else if(selectButton == '記録'){
-        displayItems.records = displayItemCheck(displayItems.records);
-        modules.calenderItemSet.set(displayItemCheck(displayItems.records), $, prepareDate, selectButton); // 記録をカレンダーにセット
-        // ボタンの表示切り替え
-        $('.add-plan-button').css('display', 'none');
+    }else if(selectButton == '記録'){
+        displayItem = displayItemCheck(displayItems.records);
         $('.add-record-button').css('display', '');
-   }else{   // 計画と記録をカレンダーにセット
-        let displayItem = displayItems.plans.concat(displayItems.records);
+    }else{   // 計画と記録をカレンダーにセット
+        displayItem = displayItems.plans.concat(displayItems.records);
         displayItem = displayItemCheck(displayItem);
-        modules.calenderItemSet.set(displayItemCheck(displayItem), $, prepareDate, selectButton); // 記録をカレンダーにセット
         $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', '');
-   }
-   // スクロール位置をカレンダーの位置にセット
-//    $('.mdl-layout').animate({scrollTop: $('.mdl-layout')[0].scrollHeight}, 'normal');
-}
+    }
 
-/**
- * カレンダーに表示する計画と記録のデータを取得(Ajax)
- */
-function getCalenderItem(settingId){
-    // 表示アイテムの初期化
-    displayItems.plans = [];
-    displayItems.records = [];
-    $('#selectLearningContent').html('<option>学習内容を選択</option>');
-
-    $.ajax({
-        url:'./../../php/learningHistory/getCalenderItem.php',
-        type:'POST',
-        data:{
-            'settingId': settingId
-        },
-        dataType: 'json'       
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (data) => {
-        if(data) {
-            // 計画と記録に配列分け
-            plans = data.plan;
-            records = data.record;
-            
-            // 二重登録されたものを除外
-            displayItems.plans = plans.filter(function(v1,i1,a1){ 
-                return (a1.findIndex(function(v2){ 
-                    return (v1.insertTime===v2.insertTime) 
-                }) === i1);
-            });
-            displayItems.records = records.filter(function(v1,i1,a1){ 
-                return (a1.findIndex(function(v2){ 
-                    return (v1.insertTime===v2.insertTime) 
-                }) === i1);
-            });
-
-            for(let plan in displayItems.plans){
-                // id, date, timeに変換
-                displayItems.plans[plan].id = displayItems.plans[plan].planId;
-                displayItems.plans[plan].date = displayItems.plans[plan].planDate;
-                displayItems.plans[plan].time = JSON.parse(displayItems.plans[plan].planTime);
-                if(displayItems.plans[plan].learningFlag == "true"){
-                    displayItems.plans[plan].learningFlag = true;
-                }else{
-                    displayItems.plans[plan].learningFlag = false;
-                }
-            }
-
-            for(let record in displayItems.records){
-                displayItems.records[record].id = displayItems.records[record].recordId;
-                displayItems.records[record].date = displayItems.records[record].recordDate;
-                displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
-            }
-
-            setLearningContentList();
-
-            // カレンダー表示
-            calenderDisplay();
-        }
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-       
-    });
+    modules.calenderItemSet.set(displayItem, $, prepareDate, selectButton);
 }
 
 /**
  * 新規学習計画の作成
  */
-function newPlanCreate(){
-    // 目標の設定モーダルの表示
-    $('.learning-setting-modal-wrapper').addClass('is-visible');
+function displayLearningSetting(){
+
+    $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+
+    // モーダルを閉じる処理
+    let exit = function(){
+        $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);    // 登録ボタンのdisable化
+        $('.learning-setting-modal-wrapper').find('input').val(""); // input項目の初期化
+    }
 
     // キャンセルボタンが押されたら
     $('.header-cansel-button').click(function () {
-        $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
-        $('.learning-setting-modal-wrapper').find('input').val("");
+        exit();
     });
 
-    // フォームの必須項目が入力されたら
+    // フォームの入力項目チェック
+    // 必須項目が入力されていたら「登録」ボタンのdisable化を解除
     $('.learning-setting-modal-wrapper input.required').on('change', function(){
         $('.learning-setting-modal-wrapper input.required').each(function() {
-            let error = false;
+            let disabled = false;
             if($(this).val() === ''){
-                error = true;
+                disabled = true;
             }
-            
-            if(!error){
-                $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', false);
-            }else{
-                $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
-            }
+            $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', disabled);
         });
     });
 
 
     // 登録ボタンが押されたら
     $('.learning-setting-regist-button').off('click').on('click', function(){
-        // settingIdの生成
-        let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);
+        let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);   // settingIdの生成
+        // 予習開始日の入力値をunixTimeに変換
         let prepareDateArray = $('#prepareDate').val().split('-');
         let prepareDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+        // POSTデータの生成
         let data = {
             'settingId': settingId,
             'userId': window.sessionStorage.getItem(['userId']),
@@ -310,12 +236,12 @@ function newPlanCreate(){
         })
         // Ajaxリクエストが成功した時発動
         .done( () => {
-            // settingIdをsessionに保存
+            // 作成した授業回をテーブルに表示
             selectSettingId = settingId;
             historyData.push(data);
             historyTableDisplay();
-            $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-            $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);
+            
+            exit();
         })
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
@@ -327,29 +253,29 @@ function newPlanCreate(){
 /**
  * 学習履歴の詳細
  */
-function historyDetail(settingId){
+function displayHistoryDetail(settingId){
     $('.history-detail-modal-wrapper').addClass('is-visible');    //学習履歴詳細モーダル表示
 
-    // キャンセルボタンが押されたら
-    $('.header-cansel-button').click(function () {
+    let exit = function(){
         $('.history-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
         $('.history-detail-modal-wrapper').find('input').val("");
+    };
+
+    // キャンセルボタンが押されたら
+    $('.header-cansel-button').click(function () {
+        exit();
     });
 
-    // フォームの必須項目が入力されたら
+    // フォームの入力項目チェック
     $('.history-detail-modal-wrapper input.required').on('change', function(){
         $('.history-detail-modal-wrapper input.required').each(function() {
-            let error = false;
+            let disabled = false;
             if($(this).val() === ''){
-                error = true;
+                disabled = true;
             }
-            
-            if(!error){
-                $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
-            }else{
-                $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', true);
-            }
+
+            $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', disabled);
         });
     });
 
@@ -359,12 +285,14 @@ function historyDetail(settingId){
         if(historyData[data].settingId == settingId){
             selectData = historyData[data];
 
+            // 予習日入力値用に変換
             let today = new Date(Number(selectData.prepareDate));
             let month = today.getMonth()+1;
             month = (month < 10) ? '0'+month : month;
             let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
             prepareDate = today.getFullYear() + '-' + month + '-' + date;
 
+            // フォームに値をセット
             $('.history-detail-modal-wrapper #coverage').val(selectData.coverage);
             $('.history-detail-modal-wrapper #prepareDate').val(prepareDate);
             $('.history-detail-modal-wrapper #understanding').val(selectData.understanding);
@@ -381,7 +309,6 @@ function historyDetail(settingId){
                 editData.prepareDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
                 editData.understanding = $('.history-detail-modal-wrapper #understanding').val();
                 editData.goal = $('.history-detail-modal-wrapper #goal').val();
-                // editData.insertTime = selectData.insertTime;
                 editData.satisfaction = $('.history-detail-modal-wrapper #learningSatisfaction').val();
                 editData.testScore = $('.history-detail-modal-wrapper #testScore').val();
                 editData.settingId = settingId;
@@ -406,17 +333,17 @@ function historyDetail(settingId){
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( () => {
-                    // settingIdをsessionに保存
                     historyData[data] =  editData;
+                    historyData[data].executing = selectData.executing;
                     historyTableDisplay();
 
-                    if(selectData.prepareDate !== editData.prepareDate){
+                    if(selectData.prepareDate != editData.prepareDate){
                         calcCalenderDate();
                         updateExecuting();
-                        calenderDisplay();
+                        displayCalender();
                     }
-                    $('.history-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-                    $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
+
+                    exit();
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
@@ -432,37 +359,37 @@ function historyDetail(settingId){
 /**
  * 学習の計画追加処理
  */
-function learningPlanAdd(){
+function displayLearningPlanAdd(){
     $('.learning-plan-create-modal-wrapper').addClass('is-visible');    //学習計画作成モーダル表示
+
+    let exit = function(){
+        $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', true);
+        $('.learning-plan-create-modal-wrapper').find('input').val("");
+        $('.modal-error').text('');
+    }
 
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
-        $('.learning-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', true);
-        initModalForm();
+        exit();
     });
 
     // 学習日のリスト表示
     $('.learning-plan-create-modal-wrapper #learningDate').html('');
-    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
-    for(let date in calenderDate){
-        let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-        $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.learning-plan-create-modal-wrapper #learningDate');
+    for(let date of calenderDate){
+        let value = date.year + '-' + date.month + '-' + date.date;
+        $('<option value="' + value + '">' + value + date.day + '</option>').appendTo('.learning-plan-create-modal-wrapper #learningDate');
     }
 
     // フォームの必須項目が入力されたら
     $('.learning-plan-create-modal-wrapper input.required').on('change', function(){
         $('.learning-plan-create-modal-wrapper input.required').each(function() {
-            let error = false;
+            let disabled = false;
             if($(this).val() === ''){
-                error = true;
+                disabled = true;
             }
-            
-            if(!error){
-                $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', false);
-            }else{
-                $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', true);
-            }
+
+            $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', disabled);
         });
     });
 
@@ -492,26 +419,32 @@ function learningPlanAdd(){
             // モーダルを1秒後に閉じる
             $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
-                $('.modal-error').text('');
             });
         }else{
             // Ajax通信 計画情報をDBに追加
             postPlan(plan);
         }
+
+        exit();
     });
 }
 
 /**
  * プライベートの予定追加処理
  */
-function privatePlanAdd(){
+function displayPrivatePlanAdd(){
     $('.private-plan-create-modal-wrapper').addClass('is-visible');    //プライベートの予定モーダル表示
 
-    // キャンセルボタン押されたら
-    $('.header-cansel-button').click(function () {
+    let exit = function(){
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         $('.tag').removeClass('active');// タグ選択状態を全解除
         $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', true);
+        $('.private-plan-create-modal-wrapper').find('input').val("");
+        $('.modal-error').text('');      
+    }
+    // キャンセルボタン押されたら
+    $('.header-cansel-button').click(function () {
+        exit();
     });
 
     // タグボタンを押されたら
@@ -523,33 +456,26 @@ function privatePlanAdd(){
 
     // 学習日のリスト表示
     $('.private-plan-create-modal-wrapper #privateDate').html('');
-    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
-    for(let date in calenderDate){
-        let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-        $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.private-plan-create-modal-wrapper #privateDate');
+    for(let date of calenderDate){
+        let value = date.year + '-' + date.month + '-' + date.date;
+        $('<option value="' + value + '">' + value + date.day + '</option>').appendTo('.private-plan-create-modal-wrapper #privateDate');
     }
 
     // フォームの必須項目が入力されたら
     $('.private-plan-create-modal-wrapper input.required').on('change', function(){
-        let error = false;
+        let disabled = false;
         $('.private-plan-create-modal-wrapper input.required').each(function() {
             if($(this).val() === ''){
-                error = true;
+                disabled = true;
             }
         });
 
-        if(!error){
-            $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', false);
-        }else{
-            $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', true);
-        }
-
+        $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', disabled);
     });
 
 
     // 追加ボタン押されたら
     $('.private-add-button').off('click').one('click', function () {
-        $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
         let plan = {};
         plan.time = {};
@@ -575,27 +501,35 @@ function privatePlanAdd(){
             // モーダルを1秒後に閉じる
             $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
-                $('.modal-error').text('');
             });
         }else{
             // Ajax通信 計画情報をDBに追加
             postPlan(plan);
-        }      
+        }
+        exit();      
     });
 }
 
 /**
  * 学習の記録追加処理
  */
-function learningRecordAdd(){
+function displayLearningRecordAdd(){
 
     $('.learning-record-create-modal-wrapper').addClass('is-visible');    //学習記録作成モーダル表示
 
-    // キャンセルボタン押されたら
-    $('.header-cansel-button').click(function () {
+    setLearningContentList();
+
+    let exit = function(){
         $('.learning-record-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', true);
-        initModalForm();
+        $('.learning-record-create-modal-wrapper').find('input').val("");
+        $('.modal-error').text('');     
+        $('.input-learning-content').css('display', 'none'); 
+    }
+
+    // キャンセルボタン押されたら
+    $('.header-cansel-button').click(function () {
+        exit();
     });
 
     // 学習内容で「その他」を選択されたら
@@ -609,25 +543,21 @@ function learningRecordAdd(){
 
     // 学習日のリスト表示
     $('.learning-record-create-modal-wrapper #learningDate').html('');
-    let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
-    for(let date in calenderDate){
-        let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-        $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
+    for(let date of calenderDate){
+        let value = date.year + '-' + date.month + '-' + date.date;
+        $('<option value="' + value + '">' + value + date.day + '</option>').appendTo('.learning-record-create-modal-wrapper #learningDate');
     }
 
     let formErrorCheck = function(value){
-        let error = false;
+        let disabled = false;
         let selectContent = $('.learning-record-create-modal-wrapper select.required').val();
         let inputContent = $('.learning-record-create-modal-wrapper #inputLearningContent').val();
         if(value === '' || selectContent == '学習内容を選択' || (selectContent == 'その他' && inputContent == '')){
-            error = true;
+            disabled = true;
         }
 
-        if(!error){
-            $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', false);
-        }else{
-            $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', true);
-        }
+        $('.learning-record-create-modal-wrapper .learning-add-button').attr('disabled', disabled);
+
     };
 
     // フォームの必須項目が入力されたら
@@ -672,11 +602,12 @@ function learningRecordAdd(){
             // モーダルを1秒後に閉じる
             $('.learning-record-create-modal-wrapper').delay(2000).queue(function(){
                 $(this).removeClass('is-visible').dequeue();
-                $('.modal-error').text('');
             });
         }else{
             postRecord(record);
         }
+
+        exit();
 
     });
 }
@@ -685,39 +616,40 @@ function learningRecordAdd(){
  * 計画の詳細表示
  * @param {String} id 
  */
-function learningPlanDetail(id){
+function displayLearningPlanDetail(id){
     for(var i=0; i<displayItems.plans.length; i++){
         if(displayItems.plans[i].id == id){ //選択した計画データ一致
             let selectPlan = displayItems.plans[i];
+
             $('.learning-plan-detail-modal-wrapper').addClass('is-visible');    //学習計画詳細モーダル表示
+
+            let exit = function(){
+                $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', false); 
+                $('.modal-error').text('');       
+            }
 
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
-                $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-                $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
+                exit();
             });
 
             // 学習日のリスト表示
             $('.learning-plan-detail-modal-wrapper #detailLearningDate').html('');
-            let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
-            for(let date in calenderDate){
-                let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-                $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.learning-plan-detail-modal-wrapper #detailLearningDate');
+            for(let date of calenderDate){
+                let value = date.year + '-' + date.month + '-' + date.date;
+                $('<option value="' + value + '">' + value + date.day + '</option>').appendTo('.learning-plan-detail-modal-wrapper #detailLearningDate');
             }
-
+        
             // フォームの必須項目が入力されたら
             $('.learning-plan-detail-modal-wrapper input.required').on('change', function(){
-                let error = false;
+                let disabled = false;
                 $('.learning-plan-detail-modal-wrapper input.required').each(function() {
                     if($(this).val() === ''){
-                        error = true;
+                        disabled = true;
                     }
-                    
-                    if(!error){
-                        $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
-                    }else{
-                        $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', true);
-                    }
+
+                    $('.learning-plan-detail-modal-wrapper .learning-edit-button').attr('disabled', disabled);
                 });
             });
 
@@ -733,6 +665,7 @@ function learningPlanDetail(id){
                 let record = JSON.parse(JSON.stringify(selectPlan));
                 record.id = 'R' + new Date().getTime();
                 postRecord(record);
+                exit();
             });
 
             // 編集ボタン押されたら
@@ -758,17 +691,18 @@ function learningPlanDetail(id){
                     // モーダルを1秒後に閉じる
                     $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
-                        $('.modal-error').text('');
                     });
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
                     updatePlan(editPlan, id, i);
-                }      
+                }
+                exit();      
             });
 
             // 学習計画の削除ボタンを押されたら
             $('.learning-plan-detail-modal-wrapper .learning-delete-button').off('click').one("click", function () {
                 deletePlan(selectPlan, id, i);
+                exit();
             });
 
             break;
@@ -780,42 +714,41 @@ function learningPlanDetail(id){
  * プライベートの予定詳細表示
  * @param {String} id 
  */
-function privatePlanDetail(id){
+function displayPrivatePlanDetail(id){
     for(var i=0; i<displayItems.plans.length; i++){
         if(displayItems.plans[i].id == id){ //選択した計画データ一致
             let selectPlan = displayItems.plans[i];
             $('.private-plan-detail-modal-wrapper').addClass('is-visible');    //プライベートの予定詳細モーダル表示
 
+            let exit = function(){
+                 $('.tag').removeClass('active');// タグ選択状態を全解除
+                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                 $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
+                 $('.modal-error').text('');
+             }
+
             // キャンセルボタン押されたら
             $('.header-cansel-button').click(function () {
-                 // タグ初期化
-                $('.tag').removeClass('active');// タグ選択状態を全解除
-                $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-                $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
-                initModalForm();
+                exit();
             });
 
             // 学習日のリスト表示
             $('.private-plan-detail-modal-wrapper #detailPrivateDate').html('');
-            let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
-            for(let date in calenderDate){
-                let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-                $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.private-plan-detail-modal-wrapper #detailPrivateDate');
+            for(let date of calenderDate){
+                let value = date.year + '-' + date.month + '-' + date.date;
+                $('<option value="' + value + '">' + value + date.day + '</option>').appendTo('.private-plan-detail-modal-wrapper #detailPrivateDate');
             }
 
             // フォームの必須項目が入力されたら
             $('.private-plan-detail-modal-wrapper input.required').on('change', function(){
-                let error = false;
+                let disabled = false;
                 $('.private-plan-detail-modal-wrapper input.required').each(function() {
                     if($(this).val() === ''){
-                        error = true;
+                        disabled = true;
                     }
-                    
-                    if(!error){
-                        $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
-                    }else{
-                        $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', true);
-                    }
+
+                    $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', disabled);
+
                 });
             });
 
@@ -832,10 +765,8 @@ function privatePlanDetail(id){
                 $(this).addClass('active'); //選択したタグを選択状態にセット
             });
 
-            // TODO: 予定編集処理
             // 編集ボタン押されたら
             $('.private-plan-detail-modal-wrapper .private-edit-button').off("click").one("click", function () {
-                $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
 
                 let editPlan = {};
                 editPlan.time = {};
@@ -859,55 +790,59 @@ function privatePlanDetail(id){
                     // モーダルを1秒後に閉じる
                     $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
-                        $('.modal-error').text('');
                     });
                 }else{
                     editPlan.id = 'P' + new Date().getTime();
                     updatePlan(editPlan, id, i);
-                }     
+                }
+                exit();     
             });
 
             // プライベートの予定の削除ボタンを押されたら
             $('.private-plan-detail-modal-wrapper .private-delete-button').off('click').one("click", function () {
                 deletePlan(selectPlan, id, i);
+                exit();
             });
+
             break;
         }
     }
 }
 
-function learningRecordDetail(id){
+function displayLearningRecordDetail(id){
     for(var i=0; i<displayItems.records.length; i++){
         if(displayItems.records[i].id == id){ //選択した計画データ一致
             let selectRecord = displayItems.records[i];
             $('.learning-record-detail-modal-wrapper').addClass('is-visible');    //学習記録詳細モーダル表示
 
-            // キャンセルボタン押されたら
-            $('.header-cansel-button').click(function () {
+            let exit = function(){
                 $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
                 $('.learning-record-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+                $('.modal-error').text('');
+            }
+
+            // キャンセルボタン押されたら
+            $('.header-cansel-button').click(function () {
+                exit();
             });
 
              // 学習日のリスト表示
              $('.learning-record-detail-modal-wrapper #detailLearningDate').html('');
-             let day = ['(月)', '(火)', '(水)', '(木)', '(金)', '(土)', '(日)'];
-             for(let date in calenderDate){
-                 let value = calenderDate[date].year + '-' + calenderDate[date].month + '-' + calenderDate[date].date;
-                 $('<option value="' + value + '">' + value + day[date] + '</option>').appendTo('.learning-record-detail-modal-wrapper #detailLearningDate');
-             }
+             for(let date of calenderDate){
+                let value = date.year + '-' + date.month + '-' + date.date;
+                $('<option value="' + value + '">' + value + date.day + '</option>').appendTo('.learning-record-detail-modal-wrapper #detailLearningDate');
+            }
 
             // フォームの必須項目が入力されたら
             $('.learning-record-detail-modal-wrapper input.required').on('change', function(){
-                let error = false;
+                let disabled = false;
                 $('.learning-record-detail-modal-wrapper input.required').each(function() {
                     if($(this).val() === ''){
-                        error = true;
-                    }                    
-                    if(!error){
-                        $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', false);
-                    }else{
-                        $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', true);
+                        disabled = true;
                     }
+                    
+                    $('.learning-record-detail-modal-wrapper .learning-edit-button').attr('disabled', disabled);
+
                 });
             });
 
@@ -942,11 +877,8 @@ function learningRecordDetail(id){
                     // モーダルを1秒後に閉じる
                     $('.learning-record-detail-modal-wrapper').delay(2000).queue(function(){
                         $(this).removeClass('is-visible').dequeue();
-                        $('.modal-error').text('');
                     });
                 }else{                    
-                    // 記録の編集
-                    // Ajax通信
                     $.ajax({
                         url:'./../../php/learningRecord/updateRecord.php',
                         type:'POST',
@@ -968,12 +900,12 @@ function learningRecordDetail(id){
                         alert('編集に失敗しました');
                     })
                 }
+
+                exit();
             });
 
             // 削除ボタン押されたら
             $('.learning-record-detail-modal-wrapper .learning-delete-button').off('click').one("click", function () {
-                // 記録の削除
-                // Ajax通信
                 $.ajax({
                     url:'./../../php/learningRecord/deleteRecord.php',
                     type:'POST',
@@ -990,34 +922,13 @@ function learningRecordDetail(id){
                 .fail( (data) => {
                     alert('削除に失敗しました');
                 })
+                exit();
             });
 
             break;
 
         }
     }
-}
-
-/**
- * モーダルフォームの初期化
- * @param {array} plan 
- */
-function initModalForm(){
-    $('#learningContent').val('');
-    $('#selectLearningContent').val('学習内容を選択');
-    $('.input-learning-content').css('display', 'none');
-    $('#inputLearningContent').val('');
-    $('#learningDate').val('');
-    $('#learningTimeStart').val('');
-    $('#learningTimeEnd').val('');
-    $('#learningMemo').val('');
-    $('#privateDate').val('');
-    $('#privateTimeStart').val('');
-    $('#privateTimeEnd').val('');
-    $('#privateTimeEnd').val('');
-    $('.tag').removeClass('active');
-    $('#privateMemo').val('');
-    $('.modal-error').text('');
 }
 
 function calenderDataSet(item, editFlag, deleteFlag){
@@ -1038,7 +949,6 @@ function calenderDataSet(item, editFlag, deleteFlag){
 
         displayItems.plans = JSON.parse(JSON.stringify(afterPlans));
 
-        setLearningContentList();
         // calcTotalLearningTime();    // 合計学習時間の算出
 
         if(editFlag === false && deleteFlag === false){
@@ -1074,7 +984,7 @@ function calenderDataSet(item, editFlag, deleteFlag){
         }
     }
 
-    calenderDisplay();
+    displayCalender();
     updateExecuting();
 }
 
@@ -1145,6 +1055,214 @@ function calcCalenderDate(){
     }
 }
 
+function calenderDoubleBookingCheck(item, id){
+    let checkId = id.slice(0,1);
+    let doubleBookingFlag = false;
+
+    if(checkId == 'L' || checkId == 'P'){
+
+        for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
+            if(id !== displayItems.plans[learningIndex].id){
+                if(displayItems.plans[learningIndex].date == item.date){
+                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                    if((displayItems.plans[learningIndex].time.start < item.time.start && displayItems.plans[learningIndex].time.end > item.time.start)
+                    || (displayItems.plans[learningIndex].time.start < item.time.end && displayItems.plans[learningIndex].time.end > item.time.end)
+                    || (displayItems.plans[learningIndex].time.start > item.time.start && displayItems.plans[learningIndex].time.end < item.time.end)
+                    || (displayItems.plans[learningIndex].time.start == item.time.start && displayItems.plans[learningIndex].time.end == item.time.end)){
+                        doubleBookingFlag = true;
+                        break;
+                    }
+                }
+            }
+        } 
+    }else{
+
+        for(var learningIndex = 0; learningIndex < displayItems.records.length; learningIndex++){
+            if(id !== displayItems.records[learningIndex].id){
+                if(displayItems.records[learningIndex].date == item.date){
+                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                    if((displayItems.records[learningIndex].time.start < item.time.start && displayItems.records[learningIndex].time.end > item.time.start)
+                    || (displayItems.records[learningIndex].time.start < item.time.end && displayItems.records[learningIndex].time.end > item.time.end)
+                    || (displayItems.records[learningIndex].time.start > item.time.start && displayItems.records[learningIndex].time.end < item.time.end)
+                    || (displayItems.records[learningIndex].time.start == item.time.start && displayItems.records[learningIndex].time.end == item.time.end)){
+                        doubleBookingFlag = true;
+                        break;
+                    }
+                }
+            }
+        } 
+    }
+    return doubleBookingFlag;
+}
+
+function updateExecuting(){
+    let sum = 0;
+    let matchCount = 0;
+    let executing = 0;
+
+    if(displayItems.plans.length > 0){
+        for(let plan of displayItems.plans){
+            if(plan.learningFlag){
+                sum++;
+                let matchFlag = false;
+                if(displayItems.records.length > 0){
+                    for(let record of displayItems.records){
+                        if(plan.content == record.content && plan.date == record.date && plan.time.start == record.time.start && plan.time.end == record.time.end){
+                            matchFlag = true;
+                            break;
+                        }
+                    }
+                    if(matchFlag){
+                        matchCount++;
+                    }
+                }
+            }
+        }
+    }
+
+    if(displayItems.records.length > sum){
+        sum = displayItems.records.length;
+    }
+
+    if(sum !== 0){
+        executing = Math.round(matchCount / sum * 100);
+    }
+
+    // Ajax通信
+    $.ajax({
+        url:'./../../php/learningHistory/updateExecuting.php',
+        type:'POST',
+        data:{
+            'settingId': selectSettingId,
+            'executing': executing
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+       for(let data of historyData){
+           if(data.settingId == selectSettingId){
+               data.executing = executing;
+               historyTableDisplay();
+           }
+       }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    })
+}
+
+/**
+ * 学習内容リストのセット
+ */
+function setLearningContentList(){
+    $('#selectLearningContent').html('<option>学習内容を選択</option>');
+    // 学習内容リストのセット
+    for(let plan of displayItems.plans){
+        if(plan.learningFlag){
+            $('<option value="' + plan.content + '">' + plan.content + '</option>').appendTo('#selectLearningContent');
+        }
+    }
+    $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
+}
+
+// Ajax通信
+
+function getHistoryData(){
+    $.ajax({
+        url:'./../../php/learningHistory/getHistoryData.php',
+        type:'POST',
+        data:{
+            'userId': window.sessionStorage.getItem(['userId'])
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            historyData = data;
+            historyTableDisplay();
+            selectSettingId = data.slice(-1)[0].settingId;
+            calcCalenderDate();
+            getCalenderItem();
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    });
+}
+
+/**
+ * カレンダーに表示する計画と記録のデータを取得(Ajax)
+ */
+function getCalenderItem(){
+    // 表示アイテムの初期化
+    displayItems.plans = [];
+    displayItems.records = [];
+    $('#selectLearningContent').html('<option>学習内容を選択</option>');
+
+    $.ajax({
+        url:'./../../php/learningHistory/getCalenderItem.php',
+        type:'POST',
+        data:{
+            'settingId': selectSettingId
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            // 計画と記録に配列分け
+            plans = data.plan;
+            records = data.record;
+            
+            // 二重登録されたものを除外
+            displayItems.plans = plans.filter(function(v1,i1,a1){ 
+                return (a1.findIndex(function(v2){ 
+                    return (v1.insertTime===v2.insertTime) 
+                }) === i1);
+            });
+            displayItems.records = records.filter(function(v1,i1,a1){ 
+                return (a1.findIndex(function(v2){ 
+                    return (v1.insertTime===v2.insertTime) 
+                }) === i1);
+            });
+
+            for(let plan in displayItems.plans){
+                // id, date, timeに変換
+                displayItems.plans[plan].id = displayItems.plans[plan].planId;
+                displayItems.plans[plan].date = displayItems.plans[plan].planDate;
+                displayItems.plans[plan].time = JSON.parse(displayItems.plans[plan].planTime);
+                if(displayItems.plans[plan].learningFlag == "true"){
+                    displayItems.plans[plan].learningFlag = true;
+                }else{
+                    displayItems.plans[plan].learningFlag = false;
+                }
+            }
+
+            for(let record in displayItems.records){
+                displayItems.records[record].id = displayItems.records[record].recordId;
+                displayItems.records[record].date = displayItems.records[record].recordDate;
+                displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
+            }
+
+            // カレンダー表示
+            displayCalender();
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       
+    });
+}
+
+
+/**
+ * ajax postPlan
+ * @param {*} plan 
+ */
 function postPlan(plan){
     $.ajax({
         url:'./../../php/planCreate/postPlan.php',
@@ -1274,116 +1392,4 @@ function postRecord(record){
     .fail( (data) => {
         alert('登録に失敗しました');
     })
-}
-
-function calenderDoubleBookingCheck(item, id){
-    let checkId = id.slice(0,1);
-    let doubleBookingFlag = false;
-
-    if(checkId == 'L' || checkId == 'P'){
-
-        for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
-            if(id !== displayItems.plans[learningIndex].id){
-                if(displayItems.plans[learningIndex].date == item.date){
-                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                    if((displayItems.plans[learningIndex].time.start < item.time.start && displayItems.plans[learningIndex].time.end > item.time.start)
-                    || (displayItems.plans[learningIndex].time.start < item.time.end && displayItems.plans[learningIndex].time.end > item.time.end)
-                    || (displayItems.plans[learningIndex].time.start > item.time.start && displayItems.plans[learningIndex].time.end < item.time.end)
-                    || (displayItems.plans[learningIndex].time.start == item.time.start && displayItems.plans[learningIndex].time.end == item.time.end)){
-                        doubleBookingFlag = true;
-                        break;
-                    }
-                }
-            }
-        } 
-    }else{
-
-        for(var learningIndex = 0; learningIndex < displayItems.records.length; learningIndex++){
-            if(id !== displayItems.records[learningIndex].id){
-                if(displayItems.records[learningIndex].date == item.date){
-                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                    if((displayItems.records[learningIndex].time.start < item.time.start && displayItems.records[learningIndex].time.end > item.time.start)
-                    || (displayItems.records[learningIndex].time.start < item.time.end && displayItems.records[learningIndex].time.end > item.time.end)
-                    || (displayItems.records[learningIndex].time.start > item.time.start && displayItems.records[learningIndex].time.end < item.time.end)
-                    || (displayItems.records[learningIndex].time.start == item.time.start && displayItems.records[learningIndex].time.end == item.time.end)){
-                        doubleBookingFlag = true;
-                        break;
-                    }
-                }
-            }
-        } 
-    }
-    return doubleBookingFlag;
-}
-
-function updateExecuting(){
-    let sum = 0;
-    let matchCount = 0;
-    let executing = 0;
-
-    if(displayItems.plans.length > 0){
-        for(let plan of displayItems.plans){
-            if(plan.learningFlag){
-                sum++;
-                let matchFlag = false;
-                if(displayItems.records.length > 0){
-                    for(let record of displayItems.records){
-                        if(plan.content == record.content && plan.date == record.date && plan.time.start == record.time.start && plan.time.end == record.time.end){
-                            matchFlag = true;
-                            break;
-                        }
-                    }
-                    if(matchFlag){
-                        matchCount++;
-                    }
-                }
-            }
-        }
-    }
-
-    if(displayItems.records.length > sum){
-        sum = displayItems.records.length;
-    }
-
-    if(sum !== 0){
-        executing = Math.round(matchCount / sum * 100);
-    }
-
-    // Ajax通信
-    $.ajax({
-        url:'./../../php/learningHistory/updateExecuting.php',
-        type:'POST',
-        data:{
-            'settingId': selectSettingId,
-            'executing': executing
-        },
-        dataType: 'json'       
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (data) => {
-       for(let data of historyData){
-           if(data.settingId == selectSettingId){
-               data.executing = executing;
-               historyTableDisplay();
-           }
-       }
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-       
-    })
-}
-
-/**
- * 学習内容リストのセット
- */
-function setLearningContentList(){
-    $('#selectLearningContent').html('<option>学習内容を選択</option>');
-    // 学習内容リストのセット
-    for(let plan of displayItems.plans){
-        if(plan.learningFlag){
-            $('<option value="' + plan.content + '">' + plan.content + '</option>').appendTo('#selectLearningContent');
-        }
-    }
-    $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
 }
