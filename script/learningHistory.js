@@ -126,6 +126,8 @@ function displayHistoryTable(){
         // テーブル内容の表示
         $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td id=' + historyData[i].settingId + '"class="coverage">' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td><td><button id="' + historyData[i].settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>');
     }
+
+    changeTableColor();
 }
 
 /**
@@ -249,7 +251,6 @@ function displayLearningSetting(){
             selectSettingId = settingId;
             historyData.push(data);
             displayHistoryTable();
-            changeTableColor();
             displayCalender();
             
             exit();
@@ -374,7 +375,6 @@ function displayHistoryDetail(settingId){
                     historyData.splice(data, 1);
                     selectSettingId = historyData[historyData.length-1].settingId;
                     displayHistoryTable();
-                    changeTableColor();
                     getCalenderItem();
 
                     exit();
@@ -1216,9 +1216,8 @@ function getHistoryData(){
     .done( (data) => {
         if(data) {
             historyData = data;
-            displayHistoryTable();
             selectSettingId = data.slice(-1)[0].settingId;
-            changeTableColor();
+            displayHistoryTable();
             getCalenderItem();
         }
     })
