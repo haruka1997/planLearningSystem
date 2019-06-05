@@ -31,7 +31,7 @@ $(function(){
             historyData = data;
             historyTableDisplay();
             selectSettingId = data.slice(-1)[0].settingId;
-            calenderDate = calcCalenderDate(selectSettingId);
+            calcCalenderDate();
             getCalenderItem(selectSettingId);
         }
     })
@@ -47,7 +47,7 @@ $(function(){
         $(this).addClass('active');
         
         selectSettingId = $(this).attr('id');
-        calenderDate = calcCalenderDate(selectSettingId);
+        calcCalenderDate();
         getCalenderItem(selectSettingId);
     });
 
@@ -151,24 +151,44 @@ function historyTableDisplay(){
 
 function calenderDisplay(){
 
-    console.log(selectButton);
-
-    modules.initCalenderHtml.init($, calenderDate, selectButton); // カレンダーの内容初期化 
+    modules.initCalenderHtml.init($, calenderDate, selectButton); // カレンダーの内容初期化
     let prepareDate = calenderDate[0];  // カレンダーの起点日を取得
 
+    // カレンダーに表示するアイテムの検査
+    let displayItemCheck = function(items){
+        let lastDate = calenderDate[6]; // カレンダーの最終日を取得
+        let checkedItems = [];
+        let prepareUnixTime = new Date(prepareDate.year, Number(prepareDate.month), Number(prepareDate.date)).getTime();
+        let lastUnixTime = new Date(lastDate.year, Number(lastDate.month), Number(lastDate.date)).getTime();
+
+        for(item of items){
+            let itemDateArray = item.date.split('-');
+            let itemUnixTime = new Date(Number(itemDateArray[0]), Number(itemDateArray[1]), Number(itemDateArray[2])).getTime();
+            // カレンダーの表示日時範囲内のアイテムのみ抽出
+            if(itemUnixTime >= prepareUnixTime && itemUnixTime <= lastUnixTime){
+                checkedItems.push(item);
+            }
+        }
+        return checkedItems;
+    }
+
+
    if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
-        modules.calenderItemSet.set(displayItems.plans, $, prepareDate, selectButton);  // 計画をカレンダーにセット
+        displayItems.plans = displayItemCheck(displayItems.plans);
+        modules.calenderItemSet.set(displayItemCheck(displayItems.plans), $, prepareDate, selectButton);  // 計画をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', 'none');
    }else if(selectButton == '記録'){
-        modules.calenderItemSet.set(displayItems.records, $, prepareDate, selectButton); // 記録をカレンダーにセット
+        displayItems.records = displayItemCheck(displayItems.records);
+        modules.calenderItemSet.set(displayItemCheck(displayItems.records), $, prepareDate, selectButton); // 記録をカレンダーにセット
         // ボタンの表示切り替え
         $('.add-plan-button').css('display', 'none');
         $('.add-record-button').css('display', '');
    }else{   // 計画と記録をカレンダーにセット
         let displayItem = displayItems.plans.concat(displayItems.records);
-        modules.calenderItemSet.set(displayItem, $, prepareDate, selectButton); // 記録をカレンダーにセット
+        displayItem = displayItemCheck(displayItem);
+        modules.calenderItemSet.set(displayItemCheck(displayItem), $, prepareDate, selectButton); // 記録をカレンダーにセット
         $('.add-plan-button').css('display', '');
         $('.add-record-button').css('display', '');
    }
@@ -396,6 +416,12 @@ function historyDetail(settingId){
                     // settingIdをsessionに保存
                     historyData[data] =  editData;
                     historyTableDisplay();
+
+                    if(selectData.prepareDate !== editData.prepareDate){
+                        calcCalenderDate();
+                        updateExecuting();
+                        calenderDisplay();
+                    }
                     $('.history-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
                     $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', false);
                 })
@@ -1061,11 +1087,10 @@ function calenderDataSet(item, editFlag, deleteFlag){
 
 /**
  * カレンダーの日付計算
- * @param {} settingId 
  */
-function calcCalenderDate(settingId){
+function calcCalenderDate(){
     for(data in historyData){
-        if(historyData[data].settingId == settingId){
+        if(historyData[data].settingId == selectSettingId){
             let date = historyData[data].prepareDate;
             // 指定した週の月曜日の日時取得
             let today = new Date(Number(date));
@@ -1122,7 +1147,7 @@ function calcCalenderDate(settingId){
                     this_date++;
                 }
             }
-            return calenderDateArray;
+            calenderDate = calenderDateArray
         }
     }
 }
