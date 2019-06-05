@@ -86,7 +86,8 @@ body{
 .learning-record-create-modal-wrapper,
 .learning-record-detail-modal-wrapper,
 .learning-setting-modal-wrapper,
-.history-detail-modal-wrapper{
+.history-detail-modal-wrapper,
+.statistics-modal-wrapper{
     display: flex;
     justify-content: center;
     overflow: auto;
@@ -108,7 +109,8 @@ body{
 .learning-record-create-modal-wrapper.is-visible,
 .learning-record-detail-modal-wrapper.is-visible,
 .learning-setting-modal-wrapper.is-visible,
-.history-detail-modal-wrapper.is-visible{
+.history-detail-modal-wrapper.is-visible,
+.statistics-modal-wrapper.is-visible{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;
@@ -295,7 +297,9 @@ body{
     text-align: center;
 }
 
-.history-detail-button.mdl-button{
+.history-detail-button.mdl-button,
+.history-statistics-button.mdl-button{
     height: auto;
     line-height: 1;
 }
+

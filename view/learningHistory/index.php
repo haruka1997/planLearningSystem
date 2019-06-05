@@ -53,7 +53,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>                
               </button>
               <button class="mdl-button mdl-js-button mdl-button--fab add-record-button" id="add-learning-record" type="button" title="学習の記録追加" style="display:none;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>              </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>              
+              </button>
             </div>
           </div>
         </div>
@@ -74,6 +75,8 @@
       <?php include ('./../learningHistory/learningSettingModal.php'); ?>
       <!-- 学習履歴の詳細モーダル -->
       <?php include ('./../learningHistory/historyDetailModal.php'); ?>
+      <!-- 統計情報のモーダル -->
+      <?php include ('./../learningHistory/statisticsModal.php'); ?>
     </div>
   </body>
 </html>

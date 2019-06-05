@@ -40,6 +40,11 @@ function initDOM(){
         displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
     });
 
+    // テーブルの統計ボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .history-statistics-button", function () {
+        displayStatistics();  // 学習履歴の詳細表示
+    });
+
     // ラジオボタン切り替え
     // TODO: DOM要素の見直し(クラスで指定するなど)
     $( 'input[name="options"]:radio' ).change( function() {
@@ -124,7 +129,7 @@ function displayHistoryTable(){
         }
 
         // テーブル内容の表示
-        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td id=' + historyData[i].settingId + '"class="coverage">' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td><td><button id="' + historyData[i].settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>');
+        $('.learning-history-tbody').append('<tr id=' + historyData[i].settingId + '><td id=' + historyData[i].settingId + '"class="coverage">' + historyData[i].coverage + '回</td><td>' + historyData[i].executingText + '</td><td>' + historyData[i].achievementText + '</td><td>' + historyData[i].satisfactionText + '</td><td><button id="' + historyData[i].settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>');
     }
 
     changeTableColor();
@@ -390,6 +395,21 @@ function displayHistoryDetail(settingId){
     }
 }
 
+/**
+ * 統計情報の表示
+ */
+function displayStatistics(){
+    $('.statistics-modal-wrapper').addClass('is-visible');    //統計情報モーダルの表示
+
+    // 計画学習時間の合計算出
+
+    // 実際学習時間の合計算出
+
+    // 学習時間の分布算出
+
+    // 学習時間帯の分布算出
+
+}
 /**
  * 学習の計画追加処理
  */
