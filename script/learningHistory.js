@@ -135,7 +135,7 @@ function displayHistoryTable(){
  */
 function changeTableColor(){
     let selectTr = $('.learning-history-tbody').find('#' + selectSettingId);
-    $(selectTr).removeClass('select');
+    $('.learning-history-tbody tr').removeClass('select');
     $(selectTr).addClass('select');
 }
 
