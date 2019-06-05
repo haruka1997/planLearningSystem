@@ -164,10 +164,12 @@ function displayCalender(){
 
     let displayItem = [];
     if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
-        displayItem = displayItemCheck(displayItems.plans);
+        displayItems.plans = displayItemCheck(displayItems.plans);
+        displayItem = displayItems.plans;
         $('.add-plan-button').css('display', '');
     }else if(selectButton == '記録'){
-        displayItem = displayItemCheck(displayItems.records);
+        displayItems.records = displayItemCheck(displayItems.records);
+        displayItem = displayItems.records;
         $('.add-record-button').css('display', '');
     }else{   // 計画と記録をカレンダーにセット
         displayItem = displayItems.plans.concat(displayItems.records);
@@ -1123,6 +1125,10 @@ function updateExecuting(){
     if(displayItems.records.length > sum){
         sum = displayItems.records.length;
     }
+
+    console.log(displayItems);
+    console.log('sum', sum);
+    console.log('matchCount', matchCount);
 
     if(sum !== 0){
         executing = Math.round(matchCount / sum * 100);
