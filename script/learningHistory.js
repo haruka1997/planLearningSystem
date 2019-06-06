@@ -401,6 +401,15 @@ function displayHistoryDetail(settingId){
 function displayStatistics(){
     $('.statistics-modal-wrapper').addClass('is-visible');    //統計情報モーダルの表示
 
+    let exit = function(){
+        $('.statistics-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+    }
+
+    // キャンセルボタン押されたら
+    $('.header-cansel-button').click(function () {
+        exit();
+    });
+
     // 計画学習時間の合計算出
 
     // 実際学習時間の合計算出
