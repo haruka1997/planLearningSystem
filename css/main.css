@@ -24,58 +24,10 @@ body{
     margin: 10px;
 }
 
-.reference-data{
+.statistics-data-list{
     position: relative;
-    padding: 20px;
     width: 100%;
 }
-
-.reference-data-title{
-    display: flex;
-}
-
-.reference-data-list .learning-list-item,
-.reference-data-list .plan-reference-item{
-    padding: 0 16px;
-    margin: 10px 20px;
-    background: #f9f9f9;
-    border-left: solid 10px #2196F3;
-    display: none;
-}
-
-.reference-data-list .learning-list-item p{
-    padding: 7px;
-    margin: 0;
-}
-
-.plan-reference-item{
-    display: none;
-}
-
-.plan-reference-item.show{
-    display: inline;
-}
-
-.plan-reference-chart{
-    display: flex;
-    width: 100%;
-}
-
-.plan-reference-chart div{
-    padding: 10px;
-    width: 50%;
-}
-
-.reference-data-title .learning-list-button,
-.reference-data-title .plan-reference-button{
-    display: none;
-}
-
-.reference-data-title .learning-list-button.show,
-.reference-data-title .plan-reference-button.show{
-    display: initial;
-}
-
 
 
 /* モーダル */
@@ -267,6 +219,24 @@ body{
 
 .learning-history-table table tr.select{
     background-color: #E1F5FE;
+}
+
+#total-learning-time-table{
+    margin: 10px;
+}
+
+#total-learning-time-table table{
+    border-collapse: collapse;
+    width: auto;
+}
+
+#total-learning-time-table table th,
+#total-learning-time-table table td{
+    text-align: center;
+    border: 1px solid #c2c2c2;
+    vertical-align: middle;
+    padding: 10px;
+    font-weight: normal;
 }
 
 .learning-history-content{

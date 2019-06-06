@@ -405,9 +405,12 @@ function displayStatistics(){
 
     // 実際学習時間の合計算出
 
-    // 学習時間の分布算出
+    // 1回あたりの平均学習時間
 
     // 学習時間帯の分布算出
+
+    // グラフの表示
+    modules.setChartItem.set(modules);
 
 }
 /**

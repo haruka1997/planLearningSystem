@@ -19,6 +19,9 @@ module.exports.moduleInit = function(){
 
     // jquery
     modules.$ = require('jquery');
+
+    // chart.js
+    modules.Chart = require('chart.js');
   
 
     // loginConfirm
@@ -29,6 +32,8 @@ module.exports.moduleInit = function(){
 
     // initCalenderHtml
     modules.initCalenderHtml = require('./initCalenderHtml.js');
+
+    modules.setChartItem = require('./setChartItem.js');
 
     return modules;
 
