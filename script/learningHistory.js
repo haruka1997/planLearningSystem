@@ -36,6 +36,8 @@ function initDOM(){
             selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
             changeTableColor(); // 選択した項目の背景色変更
             getCalenderItem();  // カレンダーに表示するアイテムの取得
+        }else{
+            setStatistics();
         }
     });
 
