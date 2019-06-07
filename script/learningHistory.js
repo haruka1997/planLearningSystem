@@ -13,7 +13,8 @@ let historyData = [];
 let settingData = {};
 let selectSettingId = undefined;
 let calenderDate = [];
-let displayStatisticsFlag = false;
+let statisticsData = {};
+
 
 $(function(){
 
@@ -31,9 +32,11 @@ function initDOM(){
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
-        selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
-        changeTableColor(); // 選択した項目の背景色変更
-        getCalenderItem();  // カレンダーに表示するアイテムの取得
+        if(selectSettingId !== $(this).attr('id')){
+            selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
+            changeTableColor(); // 選択した項目の背景色変更
+            getCalenderItem();  // カレンダーに表示するアイテムの取得
+        }
     });
 
     // テーブルの詳細ボタンをクリックされたら
@@ -43,7 +46,7 @@ function initDOM(){
 
     // テーブルの統計ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-statistics-button", function () {
-        displayStatisticsFlag = true;
+        displayStatistics();
     });
 
     // ラジオボタン切り替え
@@ -400,7 +403,7 @@ function displayHistoryDetail(settingId){
 }
 
 /**
- * 統計情報の表示
+ * 統計情報の設定
  */
 function displayStatistics(){
     $('.statistics-modal-wrapper').addClass('is-visible');    //統計情報モーダルの表示
@@ -408,13 +411,27 @@ function displayStatistics(){
     let exit = function(){
         $('.statistics-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         displayStatisticsFlag = false;
-        timeChart.destroy();
+        statisticsData.timeChart.destroy();
     }
 
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
         exit();
     });
+
+    // テーブル内容の表示
+    $('#totalPlanTime td').text(statisticsData.totalPlanTime + '分');
+    $('#totalRecordTime td').text(statisticsData.totalRecordTime + '分');
+    $('#averageRecordTime td').text(statisticsData.averageRecordTime + '分');
+
+}
+
+/**
+ * 統計情報の表示
+ */
+function setStatistics(){
+
+    statisticsData = {};
 
     // 計画学習時間の合計算出
     let totalPlanTime = 0;
@@ -466,14 +483,16 @@ function displayStatistics(){
     if(totalRecordTime !== 0){
         averageRecordTime = Math.round(totalRecordTime / displayItems.records.length);
     }
-
-    // テーブル内容の表示
-    $('#totalPlanTime td').text(totalPlanTime + '分');
-    $('#totalRecordTime td').text(totalRecordTime + '分');
-    $('#averageRecordTime td').text(averageRecordTime + '分');
-    // グラフの表示
+    // グラフのセット
     let timeChart = modules.setChartItem.set(modules, timezone);
     timeChart.update();
+
+    statisticsData = {
+        totalPlanTime: totalPlanTime,
+        totalRecordTime: totalRecordTime,
+        averageRecordTime: averageRecordTime,
+        timeChart: timeChart
+    }
 
 }
 /**
@@ -1369,10 +1388,8 @@ function getCalenderItem(){
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
 
-            // 統計情報の表示ボタンが押されたなら
-            if(displayStatisticsFlag){
-                displayStatistics();
-            }
+            // 統計情報のセット
+            setStatistics();
 
             // カレンダー表示
             displayCalender();
