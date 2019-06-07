@@ -408,6 +408,7 @@ function displayStatistics(){
     let exit = function(){
         $('.statistics-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         displayStatisticsFlag = false;
+        timeChart.destroy();
     }
 
     // キャンセルボタン押されたら
@@ -471,7 +472,8 @@ function displayStatistics(){
     $('#totalRecordTime td').text(totalRecordTime + '分');
     $('#averageRecordTime td').text(averageRecordTime + '分');
     // グラフの表示
-    modules.setChartItem.set(modules, timezone);
+    let timeChart = modules.setChartItem.set(modules, timezone);
+    timeChart.update();
 
 }
 /**
