@@ -14,6 +14,7 @@ let settingData = {};
 let selectSettingId = undefined;
 let calenderDate = [];
 let statisticsData = {};
+let setStatisticsFlag = false;
 
 
 $(function(){
@@ -48,7 +49,9 @@ function initDOM(){
 
     // テーブルの統計ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-statistics-button", function () {
-        displayStatistics();
+        if(setStatisticsFlag){
+            displayStatistics();
+        }
     });
 
     // ラジオボタン切り替え
@@ -420,12 +423,6 @@ function displayStatistics(){
     $('.header-cansel-button').click(function () {
         exit();
     });
-
-    // テーブル内容の表示
-    $('#totalPlanTime td').text(statisticsData.totalPlanTime + '分');
-    $('#totalRecordTime td').text(statisticsData.totalRecordTime + '分');
-    $('#averageRecordTime td').text(statisticsData.averageRecordTime + '分');
-
 }
 
 /**
@@ -485,6 +482,12 @@ function setStatistics(){
     if(totalRecordTime !== 0){
         averageRecordTime = Math.round(totalRecordTime / displayItems.records.length);
     }
+
+    // テーブル内容のセット
+    $('#totalPlanTime td').text(totalPlanTime + '分');
+    $('#totalRecordTime td').text(totalRecordTime + '分');
+    $('#averageRecordTime td').text(averageRecordTime + '分');
+    
     // グラフのセット
     let timeChart = modules.setChartItem.set(modules, timezone);
     timeChart.update();
@@ -494,7 +497,9 @@ function setStatistics(){
         totalRecordTime: totalRecordTime,
         averageRecordTime: averageRecordTime,
         timeChart: timeChart
-    }
+    };
+
+    setStatisticsFlag = true;
 
 }
 /**
