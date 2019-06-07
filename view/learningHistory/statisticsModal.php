@@ -13,9 +13,9 @@
                 <div class="statistics-item">
                     <div id="total-learning-time-table">
                         <table class="table">
-                            <tr><th>合計学習計画時間</th><td>10分</td></tr>
-                            <tr><th>合計学習記録時間</th><td>５分</td></tr>
-                            <tr><th>1回あたりの平均学習時間</th><td>30分</td></tr>
+                            <tr id="totalPlanTime"><th>合計学習計画時間</th><td>10分</td></tr>
+                            <tr id="totalRecordTime"><th>合計学習記録時間</th><td>５分</td></tr>
+                            <tr id="averageRecordTime"><th>1回あたりの平均学習時間</th><td>30分</td></tr>
                         </table>
                     </div>
                 </div>   

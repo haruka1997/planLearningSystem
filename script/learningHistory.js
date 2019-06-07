@@ -411,13 +411,75 @@ function displayStatistics(){
     });
 
     // 計画学習時間の合計算出
+    let totalPlanTime = 0;
+    for(let plan of displayItems.plans){
+        if(plan.learningFlag){
+            let start = plan.time.start.split(':') // 開始時の取得
+            let end = plan.time.end.split(':') // 最後時の取得
+            totalPlanTime += (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+        }
+    }
 
     // 実際学習時間の合計算出
+    let totalRecordTime = 0;
+    for(let record of displayItems.records){
+        let start = record.time.start.split(':') // 開始時の取得
+        let end = record.time.end.split(':') // 最後時の取得
+        let diffTime = (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+        totalRecordTime += diffTime;
+    }
 
     // 1回あたりの平均学習時間
+    let averageRecordTime = 0;
+    if(totalRecordTime !== 0){
+        averageRecordTime = Math.round(totalRecordTime / displayItems.records.length);
+    }
 
-    // 学習時間帯の分布算出
+    // // 学習時間帯の分布算出
+    let chartData = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0};
+    for(let record of displayItems.records){
+        let start = record.time.start.split(':') // 開始時の取得
+        let end = record.time.end.split(':') // 最後時の取得
+        let startHour = Number(start[0]);
+        let startMinute = Number(start[1]);
+        let endHour = Number(end[0]);
+        let endMinute = Number(end[1]);
 
+        let diffTime = (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+
+        console.log('diffTime', diffTime);
+        if(startHour !== endHour){
+            console.log('start', start);
+            console.log('end', end);
+            if(diffTime > 60){
+                while(diffTime > 60){
+                    console.log('diffTime', diffTime);
+                    diffTimeRate = Math.floor(diffTime / 60);
+                    console.log('diffTimeRate', diffTimeRate);
+                    // chartData[startHour] += 60;
+                    for(let i = diffTimeRate; i>0; i--){
+                        console.log('追加する時間', startHour+i-1);
+                        console.log('追加する前', JSON.stringify(chartData[startHour+i-1]));
+                        chartData[startHour+i-1] += 60;
+                        console.log('追加した後', JSON.stringify(chartData[startHour+i-1]));
+                        diffTime -= 60;
+                    }
+                }
+                chartData[startHour] += diffTime;
+            }else{
+                chartData[startHour] += diffTime;
+            }
+        }
+        console.log('chartData', JSON.stringify(chartData));
+
+    }
+
+    console.log(chartData);
+
+    // テーブル内容の表示
+    $('#totalPlanTime td').text(totalPlanTime + '分');
+    $('#totalRecordTime td').text(totalRecordTime + '分');
+    $('#averageRecordTime td').text(averageRecordTime + '分');
     // グラフの表示
     modules.setChartItem.set(modules);
 
