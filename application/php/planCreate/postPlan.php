@@ -3,8 +3,8 @@
 
     //エラー処理
     try {
+        // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
         $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
-        
 
         $stmt = $dbh->prepare('INSERT INTO plan (planId, userId, settingId, content, planDate, planTime, memo, tag, learningFlag) VALUES(:planId, :userId, :settingId, :content, :planDate, :planTime, :memo, :tag, :learningFlag)'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
@@ -23,8 +23,10 @@
             echo json_encode($flag);
             exit();  // 処理終了
         }else{
-            // echo $stmt->execute();
+            echo json_encode($flag);
         }
+        $dbh = null;
     } catch (PDOException $e) {
+        echo json_encode($e); 
     }
 ?>

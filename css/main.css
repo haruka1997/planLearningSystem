@@ -252,6 +252,11 @@ body{
 .calender-switch{
     float: right;
     padding: 0 30px 10px 0;
+    display: none;
+}
+
+.calender-switch.active{
+    display: initial;
 }
 
 .calender-switch .mdl-radio__label{

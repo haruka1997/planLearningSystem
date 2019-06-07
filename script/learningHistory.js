@@ -13,6 +13,7 @@ let historyData = [];
 let settingData = {};
 let selectSettingId = undefined;
 let calenderDate = [];
+let displayStatisticsFlag = false;
 
 $(function(){
 
@@ -42,7 +43,7 @@ function initDOM(){
 
     // テーブルの統計ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-statistics-button", function () {
-        displayStatistics();  // 学習履歴の詳細表示
+        displayStatisticsFlag = true;
     });
 
     // ラジオボタン切り替え
@@ -148,6 +149,9 @@ function changeTableColor(){
  * カレンダーの表示
  */
 function displayCalender(){
+
+    // スイッチを表示
+    $('.calender-switch').addClass('active');
 
     calcCalenderDate();
 
@@ -403,6 +407,7 @@ function displayStatistics(){
 
     let exit = function(){
         $('.statistics-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        displayStatisticsFlag = false;
     }
 
     // キャンセルボタン押されたら
@@ -420,13 +425,39 @@ function displayStatistics(){
         }
     }
 
-    // 実際学習時間の合計算出
+    // 実際学習時間と学習時間帯の分布の算出
     let totalRecordTime = 0;
+    let timezone = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0};
     for(let record of displayItems.records){
         let start = record.time.start.split(':') // 開始時の取得
         let end = record.time.end.split(':') // 最後時の取得
-        let diffTime = (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+        let startTimeHour = Number(start[0]);
+        let startTimeMinute = Number(start[1]);
+        let endTimeHour = Number(end[0]);
+        let endTimeMinute = Number(end[1]);
+    
+        // 実際学習時間の合計算出
+        let diffTime = (endTimeHour * 60 + endTimeMinute) - (startTimeHour * 60 + startTimeMinute);
         totalRecordTime += diffTime;
+
+        // 学習時間帯の分布を算出
+        // 開始時と終了時が同一の場合は処理の流れを別にする
+        if (startTimeHour === endTimeHour) {
+            timezone[startTimeHour] += endTimeMinute - startTimeMinute;
+        }
+
+        // 開始時と終了時が異なる場合は以下の通り計算する
+        for (let currentHour = startTimeHour; currentHour <= endTimeHour; currentHour++) {
+            if (currentHour === startTimeHour) {
+                timezone[currentHour] += 60 - startTimeMinute;
+            } 
+            else if (currentHour === endTimeHour) { 
+                timezone[currentHour] += endTimeMinute;
+            }
+            else {
+                timezone[currentHour] += 60;
+            }
+        }
     }
 
     // 1回あたりの平均学習時間
@@ -435,53 +466,12 @@ function displayStatistics(){
         averageRecordTime = Math.round(totalRecordTime / displayItems.records.length);
     }
 
-    // // 学習時間帯の分布算出
-    let chartData = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0};
-    for(let record of displayItems.records){
-        let start = record.time.start.split(':') // 開始時の取得
-        let end = record.time.end.split(':') // 最後時の取得
-        let startHour = Number(start[0]);
-        let startMinute = Number(start[1]);
-        let endHour = Number(end[0]);
-        let endMinute = Number(end[1]);
-
-        let diffTime = (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
-
-        console.log('diffTime', diffTime);
-        if(startHour !== endHour){
-            console.log('start', start);
-            console.log('end', end);
-            if(diffTime > 60){
-                while(diffTime > 60){
-                    console.log('diffTime', diffTime);
-                    diffTimeRate = Math.floor(diffTime / 60);
-                    console.log('diffTimeRate', diffTimeRate);
-                    // chartData[startHour] += 60;
-                    for(let i = diffTimeRate; i>0; i--){
-                        console.log('追加する時間', startHour+i-1);
-                        console.log('追加する前', JSON.stringify(chartData[startHour+i-1]));
-                        chartData[startHour+i-1] += 60;
-                        console.log('追加した後', JSON.stringify(chartData[startHour+i-1]));
-                        diffTime -= 60;
-                    }
-                }
-                chartData[startHour] += diffTime;
-            }else{
-                chartData[startHour] += diffTime;
-            }
-        }
-        console.log('chartData', JSON.stringify(chartData));
-
-    }
-
-    console.log(chartData);
-
     // テーブル内容の表示
     $('#totalPlanTime td').text(totalPlanTime + '分');
     $('#totalRecordTime td').text(totalRecordTime + '分');
     $('#averageRecordTime td').text(averageRecordTime + '分');
     // グラフの表示
-    modules.setChartItem.set(modules);
+    modules.setChartItem.set(modules, timezone);
 
 }
 /**
@@ -543,11 +533,12 @@ function displayLearningPlanAdd(){
 
         // エラーがあれば表示、なければ登録処理
         if(doubleBookingFlag){
-            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-            // モーダルを1秒後に閉じる
-            $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible').dequeue();
-            });
+            alert('既に追加された予定と被ります．空いている時間に変更しましょう．');
+            // $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
+            // // モーダルを1秒後に閉じる
+            // $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
+            //     $(this).removeClass('is-visible').dequeue();
+            // });
         }else{
             // Ajax通信 計画情報をDBに追加
             postPlan(plan);
@@ -1308,7 +1299,7 @@ function getHistoryData(){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        if(data) {
+        if(data.length>0) {
             historyData = data;
             selectSettingId = data.slice(-1)[0].settingId;
             displayHistoryTable();
@@ -1376,8 +1367,14 @@ function getCalenderItem(){
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
 
+            // 統計情報の表示ボタンが押されたなら
+            if(displayStatisticsFlag){
+                displayStatistics();
+            }
+
             // カレンダー表示
             displayCalender();
+
         }
     })
     // Ajaxリクエストが失敗した時発動

@@ -1,4 +1,7 @@
-module.exports.set = function(modules){
+module.exports.set = function(modules, timezone){
+
+    // timezoneをチャートのdataに変換
+    let data = Object.values(timezone);
 
     // 平均学習時間帯
     var ctx = document.getElementById("average-learning-timezone").getContext('2d');
@@ -8,8 +11,8 @@ module.exports.set = function(modules){
             labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
             datasets: [
                 {
-                    label: '平均学習時間(分)',
-                    data: [0, 0, 0, 0, 0, 0, 10, 30, 60, 20, 10, 20, 15, 15, 20, 30, 0, 0, 0, 0, 0, 0, 0, 50],
+                    label: '合計学習時間(分)',
+                    data: data,
                     backgroundColor: "#64B5F6",
                     lineTension: 0
                 }
