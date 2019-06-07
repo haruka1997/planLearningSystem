@@ -14,8 +14,10 @@ module.exports.set = function(modules, timezone){
                 {
                     label: '合計学習時間(分)',
                     data: data,
-                    backgroundColor: "#64B5F6",
-                    lineTension: 0
+                    borderColor: "#0288D1",
+                    pointBorderColor: "#0288D1",
+                    lineTension: 0,
+                    fill: false,
                 }
             ],
         },
