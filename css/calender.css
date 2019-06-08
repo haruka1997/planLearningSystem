@@ -150,6 +150,17 @@
     font-weight: bold;
 }
 
+.calender-table .add-class{
+    background-color: #E8EAF6;
+    color: #3F51B5;
+    border-left: solid 3px #3F51B5;
+    font-size: 0.9em;
+    text-align: left;
+    vertical-align: top;
+    padding: 3px 0px 0px 7px;
+    font-weight: bold;
+}
+
 .calender-table .add-plan.red{
     background-color: #FFEBEE;
     color: #F44336;

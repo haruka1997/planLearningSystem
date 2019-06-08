@@ -1,6 +1,22 @@
-module.exports.set = function(items, $, prepareDate, selectButton){
+module.exports.set = function(displayItems, $, selectHistoryData, selectButton){
 
-    let prepareDay = new Date(Number(prepareDate.year), Number(prepareDate.month)-1, Number(prepareDate.date)).getDay();
+    let classDate = new Date(Number(selectHistoryData.classDate));
+    let items = JSON.parse(JSON.stringify(displayItems));
+
+    let classItem = {   // テストデータ
+        content: "第" + selectHistoryData.coverage + "回 基礎数C",
+        date: classDate,
+        time: {
+            start: "14:40",
+            end: "16:10"
+        },
+        id: "C" + new Date().getTime()
+    };
+
+    items.push(classItem);
+    
+
+    let classDay = classDate.getDay();
     calenderItemSet();
 
     function calenderItemSet(){
@@ -17,15 +33,12 @@ module.exports.set = function(items, $, prepareDate, selectButton){
              * どの列に予定を追加するか調整
              */
             var itemDay = new Date(items[itemsIndex].date).getDay(); //曜日(0:日曜, 1:月曜...)
-            let nthDay = itemDay - prepareDay;
+            let nthDay = itemDay - classDay;
             if(nthDay < 0){
-                nthDay += 8;
-            }else{
-                nthDay++;
+                nthDay += 7;
+            }else if(nthDay == 0){
+                nthDay = 7;
             }
-            // if(nthDay == 0){ //日曜日の場合
-            //     nthDay = 7;
-            // }
 
             /**
              * どの行に予定を追加するか調整 
@@ -67,7 +80,7 @@ module.exports.set = function(items, $, prepareDate, selectButton){
                     if(selectButton !== '計画と記録'){ // singleCalenderの場合
                         tdNthChild = 'nth-child(' + Number(i+1) + ')';
                     }else{ // doubleCalenderの場合
-                        if(id == 'L' || id == 'P'){
+                        if(id == 'L' || id == 'P' || id == 'C'){
                             tdNthChild = 'nth-child(' + Number(i+1) + ')';
                         }else{
                             tdNthChild = 'nth-child(' + Number(i+2) + ')';
@@ -86,8 +99,10 @@ module.exports.set = function(items, $, prepareDate, selectButton){
                 // let id = items[itemsIndex].id.slice(0,1);
                 if(id == 'L' || id == 'P'){
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-plan'); //classを付与
-                }else{
+                }else if(id == 'R'){
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-record'); //classを付与
+                }else{
+                    $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-class'); //classを付与
                 }
                 $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).attr('id', items[itemsIndex].id); //idを付与
             }

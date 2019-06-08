@@ -34,7 +34,7 @@
                 <label class="control-label required">
                     選択した授業日
                 </label>
-                <input type="date" id="prepareDate" class="form-control required">
+                <input type="date" id="classDate" class="form-control required">
             </div>
            <!-- 理解度 -->
             <div class="form-group pmd-textfield">       

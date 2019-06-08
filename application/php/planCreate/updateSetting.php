@@ -6,11 +6,11 @@
         // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system', 'localhost', 'localhost');
         $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
-        $stmt = $dbh->prepare('UPDATE history SET coverage = :coverage, prepareDate = :prepareDate, understanding = :understanding, goal = :goal, satisfaction = :satisfaction, testScore = :testScore, achievement = :achievement WHERE settingId = :settingId'); 
+        $stmt = $dbh->prepare('UPDATE history SET coverage = :coverage, classDate = :classDate, understanding = :understanding, goal = :goal, satisfaction = :satisfaction, testScore = :testScore, achievement = :achievement WHERE settingId = :settingId'); 
         $stmt->bindParam(':coverage', $_POST['coverage'] , PDO::PARAM_STR);
         $stmt->bindParam(':understanding', $_POST['understanding'], PDO::PARAM_STR);
         $stmt->bindParam(':goal', $_POST['goal'], PDO::PARAM_STR);
-        $stmt->bindParam(':prepareDate', $_POST['prepareDate'] , PDO::PARAM_STR);
+        $stmt->bindParam(':classDate', $_POST['classDate'] , PDO::PARAM_STR);
         $stmt->bindParam(':satisfaction', $_POST['satisfaction'], PDO::PARAM_STR);
         $stmt->bindParam(':testScore', $_POST['testScore'], PDO::PARAM_STR);
         $stmt->bindParam(':achievement', $_POST['achievement'], PDO::PARAM_STR);

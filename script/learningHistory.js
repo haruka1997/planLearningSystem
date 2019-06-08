@@ -10,7 +10,7 @@ let displayItems = {
     records: []
 };
 let historyData = [];
-let settingData = {};
+let selectHistoryData = {};
 let selectSettingId = undefined;
 let calenderDate = [];
 let statisticsData = {};
@@ -35,6 +35,11 @@ function initDOM(){
     $(document).on("click", ".learning-history-tbody tr", function () {
         if(selectSettingId !== $(this).attr('id')){
             selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
+            for(let data of histotyData){
+                if(data.settingId == selectSettingId){
+                    selectHistoryData = data;
+                }
+            }
             changeTableColor(); // 選択した項目の背景色変更
             getCalenderItem();  // カレンダーに表示するアイテムの取得
         }else{
@@ -168,13 +173,13 @@ function displayCalender(){
     $('.add-plan-button').css('display', 'none');
     $('.add-record-button').css('display', 'none');
 
-    let prepareDate = calenderDate[0];  // カレンダーの起点日を取得
+    let classDate = calenderDate[0];  // カレンダーの起点日を取得
 
     // カレンダーに表示するアイテムの検査
     let displayItemCheck = function(items){
         let lastDate = calenderDate[6]; // カレンダーの最終日を取得
         let checkedItems = [];
-        let prepareUnixTime = new Date(prepareDate.year, Number(prepareDate.month), Number(prepareDate.date)).getTime();
+        let prepareUnixTime = new Date(classDate.year, Number(classDate.month), Number(classDate.date)).getTime();
         let lastUnixTime = new Date(lastDate.year, Number(lastDate.month), Number(lastDate.date)).getTime();
 
         for(item of items){
@@ -204,7 +209,7 @@ function displayCalender(){
         $('.add-record-button').css('display', '');
     }
 
-    modules.calenderItemSet.set(displayItem, $, prepareDate, selectButton);
+    modules.calenderItemSet.set(displayItem, $, selectHistoryData, selectButton);
 }
 
 /**
@@ -243,14 +248,14 @@ function displayLearningSetting(){
     $('.learning-setting-regist-button').off('click').on('click', function(){
         let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);   // settingIdの生成
         // 予習開始日の入力値をunixTimeに変換
-        let prepareDateArray = $('#prepareDate').val().split('-');
-        let prepareDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+        let prepareDateArray = $('#classDate').val().split('-');
+        let classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
         // POSTデータの生成
         let data = {
             'settingId': settingId,
             'userId': window.sessionStorage.getItem(['userId']),
             'coverage': $('#coverage').val(),
-            'prepareDate': prepareDate,
+            'classDate': classDate,
             'understanding': $('#understanding').val(),
             'goal': $('#goal').val(),
             'insertTime': new Date().getTime()
@@ -315,15 +320,15 @@ function displayHistoryDetail(settingId){
             selectData = historyData[data];
 
             // 予習日入力値用に変換
-            let today = new Date(Number(selectData.prepareDate));
+            let today = new Date(Number(selectData.classDate));
             let month = today.getMonth()+1;
             month = (month < 10) ? '0'+month : month;
             let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
-            prepareDate = today.getFullYear() + '-' + month + '-' + date;
+            classDate = today.getFullYear() + '-' + month + '-' + date;
 
             // フォームに値をセット
             $('.history-detail-modal-wrapper #coverage').val(selectData.coverage);
-            $('.history-detail-modal-wrapper #prepareDate').val(prepareDate);
+            $('.history-detail-modal-wrapper #classDate').val(classDate);
             $('.history-detail-modal-wrapper #understanding').val(selectData.understanding);
             $('.history-detail-modal-wrapper #goal').val(selectData.goal);
             $('.history-detail-modal-wrapper #learningSatisfaction').val(selectData.satisfaction);
@@ -333,9 +338,8 @@ function displayHistoryDetail(settingId){
             $('.history-detail-modal-wrapper .history-edit-button').off('click').on('click', function(){
                 let editData = {};
                 editData.coverage = $('.history-detail-modal-wrapper #coverage').val();
-                editData.prepareDate = $('.history-detail-modal-wrapper #prepareDate').val();
-                let prepareDateArray = $('.history-detail-modal-wrapper #prepareDate').val().split('-');
-                editData.prepareDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+                let prepareDateArray = $('.history-detail-modal-wrapper #classDate').val().split('-');
+                editData.classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
                 editData.understanding = $('.history-detail-modal-wrapper #understanding').val();
                 editData.goal = $('.history-detail-modal-wrapper #goal').val();
                 editData.satisfaction = $('.history-detail-modal-wrapper #learningSatisfaction').val();
@@ -364,9 +368,10 @@ function displayHistoryDetail(settingId){
                 .done( () => {
                     historyData[data] =  editData;
                     historyData[data].executing = selectData.executing;
+                    selectHistoryData = historyData[data];
                     displayHistoryTable();
 
-                    if(selectData.prepareDate != editData.prepareDate){
+                    if(selectData.classDate != editData.classDate){
                         updateExecuting();
                         displayCalender();
                     }
@@ -391,6 +396,7 @@ function displayHistoryDetail(settingId){
                 .done( () => {
                     historyData.splice(data, 1);
                     selectSettingId = historyData[historyData.length-1].settingId;
+                    selectHistoryData = historyData[historyData.length-1];
                     displayHistoryTable();
                     getCalenderItem();
 
@@ -1141,21 +1147,21 @@ function calenderDataSet(item, editFlag, deleteFlag){
 function calcCalenderDate(){
     let calenderDateArray = [];
     let dayText = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
-    for(data of historyData){
-        if(data.settingId == selectSettingId){
-            // 授業日までの1週間の日付を取得
-            for(let date=6; date>=0; date--){
-                let classDate = new Date(Number(data.prepareDate)); // 授業日を取得
-                classDate.setDate(classDate.getDate() - date);
-                calenderDateArray.push({
-                    year: classDate.getFullYear(),
-                    month: classDate.getMonth()+1,
-                    date: classDate.getDate(),
-                    day: dayText[classDate.getDay()]
-                })
-            }
-            break;
-        }
+    // 授業日までの1週間の日付を取得
+    for(let beforeDate=6; beforeDate>=0; beforeDate--){
+        let classDate = new Date(Number(selectHistoryData.classDate)); // 授業日を取得
+        classDate.setDate(classDate.getDate() - beforeDate);
+        let month = classDate.getMonth()+1;
+        let date = classDate.getDate();
+        if(month<10) month = '0' + month;
+        if(date<10) date = '0' + date;
+       
+        calenderDateArray.push({
+            year: classDate.getFullYear(),
+            month: month,
+            date: date,
+            day: dayText[classDate.getDay()]
+        })
     }
     calenderDate =  calenderDateArray;
 }
@@ -1245,12 +1251,8 @@ function updateExecuting(){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-       for(let data of historyData){
-           if(data.settingId == selectSettingId){
-               data.executing = executing;
-               displayHistoryTable();
-           }
-       }
+        selectHistoryData.executing = executing;
+        displayHistoryTable();
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
@@ -1288,6 +1290,7 @@ function getHistoryData(){
         if(data.length>0) {
             historyData = data;
             selectSettingId = data.slice(-1)[0].settingId;
+            selectHistoryData = data.slice(-1)[0];
             displayHistoryTable();
             getCalenderItem();
         }
