@@ -32,7 +32,7 @@
              <!-- 予習日 -->
              <div class="form-group pmd-textfield">
                 <label class="control-label required">
-                    予習開始日
+                    選択した授業日
                 </label>
                 <input type="date" id="prepareDate" class="form-control required">
             </div>
