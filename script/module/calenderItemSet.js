@@ -112,26 +112,7 @@ module.exports.set = function(displayItems, $, selectHistoryData, selectButton, 
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass(escape(items[itemsIndex].tag)); //classを付与
                 }
             }
-            // initModalForm();
         }
     }
-
-    // function initModalForm(){
-    //         $('#learningContent').val('');
-    //         $('#selectLearningContent').val('学習内容を選択');
-    //         $('.input-learning-content').css('display', 'none');
-    //         $('#inputLearningContent').val('');
-    //         $('#learningDate').val('');
-    //         $('#learningTimeStart').val('');
-    //         $('#learningTimeEnd').val('');
-    //         $('#learningMemo').val('');
-    //         $('#privateDate').val('');
-    //         $('#privateTimeStart').val('');
-    //         $('#privateTimeEnd').val('');
-    //         $('#privateTimeEnd').val('');
-    //         $('.tag').removeClass('active');
-    //         $('#privateMemo').val('');
-    //         $('.modal-error').text('');
-    // }
 }
 
