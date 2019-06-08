@@ -35,7 +35,7 @@ function initDOM(){
     $(document).on("click", ".learning-history-tbody tr", function () {
         if(selectSettingId !== $(this).attr('id')){
             selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
-            for(let data of histotyData){
+            for(let data of historyData){
                 if(data.settingId == selectSettingId){
                     selectHistoryData = data;
                 }
