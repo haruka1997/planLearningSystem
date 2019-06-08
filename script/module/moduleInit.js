@@ -35,6 +35,8 @@ module.exports.moduleInit = function(){
 
     modules.setChartItem = require('./setChartItem.js');
 
+    modules.htmlescape = require('./htmlescape.js');
+
     return modules;
 
 }

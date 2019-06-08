@@ -1,4 +1,4 @@
-module.exports.init = function($, calenderDateArray, selectButton){
+module.exports.init = function($, calenderDateArray, selectButton, escape){
 
     let scrollTop = $('.calender tbody').scrollTop();   // 現在のカレンダーのスクロール位置を取得
 

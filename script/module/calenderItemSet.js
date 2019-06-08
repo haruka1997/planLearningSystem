@@ -1,4 +1,4 @@
-module.exports.set = function(displayItems, $, selectHistoryData, selectButton){
+module.exports.set = function(displayItems, $, selectHistoryData, selectButton, escape){
 
     let classDate = new Date(Number(selectHistoryData.classDate));
     let items = JSON.parse(JSON.stringify(displayItems));
@@ -92,7 +92,7 @@ module.exports.set = function(displayItems, $, selectHistoryData, selectButton){
 
             //予定を追加する対象行列に時間と予定名を追加
             // 学習内容7文字だけ抽出
-            $('.calender-table tbody tr:' + trNthChild[0] + ' td:' + tdNthChild).html(items[itemsIndex].time.start + ' ' + items[itemsIndex].content);   //学習内容を設定
+            $('.calender-table tbody tr:' + trNthChild[0] + ' td:' + tdNthChild).text(escape(items[itemsIndex].time.start) + ' ' + escape(items[itemsIndex].content));   //学習内容を設定
            
             //行の削除
             for(var j=0; j<trNthChild.length; j++){ //色を塗る行分
@@ -104,35 +104,15 @@ module.exports.set = function(displayItems, $, selectHistoryData, selectButton){
                 }else{
                     $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass('add-class'); //classを付与
                 }
-                $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).attr('id', items[itemsIndex].id); //idを付与
+                $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).attr('id', escape(items[itemsIndex].id)); //idを付与
             }
 
-            if(!items[itemsIndex].learningFlag){ //プライベートの予定の追加の場合
+            if(id == 'P'){ //プライベートの予定の追加の場合
                 for(var j=0; j<trNthChild.length; j++){ //色を塗る行分
-                    $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass(items[itemsIndex].tag); //classを付与
+                    $('.calender-table tbody tr:' + trNthChild[j] + ' td:' + tdNthChild).addClass(escape(items[itemsIndex].tag)); //classを付与
                 }
             }
-
-            initModalForm();
         }
-    }
-
-    function initModalForm(){
-            $('#learningContent').val('');
-            $('#selectLearningContent').val('学習内容を選択');
-            $('.input-learning-content').css('display', 'none');
-            $('#inputLearningContent').val('');
-            $('#learningDate').val('');
-            $('#learningTimeStart').val('');
-            $('#learningTimeEnd').val('');
-            $('#learningMemo').val('');
-            $('#privateDate').val('');
-            $('#privateTimeStart').val('');
-            $('#privateTimeEnd').val('');
-            $('#privateTimeEnd').val('');
-            $('.tag').removeClass('active');
-            $('#privateMemo').val('');
-            $('.modal-error').text('');
     }
 }
 
