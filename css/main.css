@@ -8,6 +8,10 @@ body{
     color: #333333;
 }
 
+.mdl-layout__header{
+    display: initial !important;
+}
+
 /* メニューリンク */
 .mdl-layout__header-row .mdl-navigation__link{
     color: #333333;
@@ -246,7 +250,7 @@ body{
     margin-top: 10px;
     background-color: #ffffff;
     margin-left: 1%;
-    height: auto;
+    height: 100%;
     padding: 10px;
 }
 

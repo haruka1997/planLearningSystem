@@ -20,8 +20,9 @@ module.exports.init = function($, calenderDateArray, selectButton){
     $('.calender tbody').scrollTop(scrollTop);  // 前回のスクロール位置に設定
 
     // カレンダーの縦幅設定
-    // var wH = $(window).height() - 50;  // 現在の画面の縦幅を取得
-    // $('.calender-table tbody').css('height', wH);
+    var wH = $(window).height() - 100;  // 現在の画面の縦幅を取得
+    console.log(wH);
+    $('.calender-table tbody').css('height', wH);
 
     // カレンダーの日付表示設定
     $('.calender-table tr .calender-date').each(function(i){

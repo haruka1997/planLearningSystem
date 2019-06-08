@@ -1139,67 +1139,25 @@ function calenderDataSet(item, editFlag, deleteFlag){
  * カレンダーの日付計算
  */
 function calcCalenderDate(){
-    for(data in historyData){
-        if(historyData[data].settingId == selectSettingId){
-            let date = historyData[data].prepareDate;
-            // 指定した週の月曜日の日時取得
-            let today = new Date(Number(date));
-            let this_year = today.getFullYear();
-            let this_month = today.getMonth()+1;
-            let this_date = today.getDate();  // 今日の日付
-            let dayText = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
-
-            let calenderDateArray = [];
-
-            let lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-            let diffForLastDate = lastDate - this_date;
-            let next_month = this_month+1;
-            // 一桁0詰め処理
-            if(String(this_month).length==1) this_month = '0' + this_month;
-            if(String(next_month).length==1) next_month = '0' + next_month;
-
-            if(diffForLastDate < 7){    // 月をまたぎそう
-
-                for(let i=1; i<=(diffForLastDate+1); i++){
-                    if(String(this_date).length==1) this_date = '0' + this_date;
-                    let dayNum = new Date(Number(this_year), Number(this_month)-1, Number(this_date)).getDay();
-                    let day = dayText[dayNum];
-                    calenderDateArray.push({
-                        year: this_year,
-                        month: this_month,
-                        date: this_date,
-                        day: day
-                    });
-                    this_date++;
-                }
-                for(let j=1; j<=(7-(diffForLastDate+1)); j++){
-                    if(String(j).length==1) j = '0' + j;
-                    let dayNum = new Date(Number(this_year), Number(next_month)-1, Number(j)).getDay();
-                    let day = dayText[dayNum];
-                    calenderDateArray.push({
-                        year: this_year,
-                        month: next_month,
-                        date: j,
-                        day: day
-                    });
-                }  
-            }else{
-                for(let i=0; i<7; i++){
-                    if(String(this_date).length==1) this_date = '0' + this_date;
-                    let dayNum = new Date(Number(this_year), Number(this_month)-1, Number(this_date)).getDay();
-                    let day = dayText[dayNum];
-                    calenderDateArray.push({
-                        year: this_year,
-                        month: this_month,
-                        date: this_date,
-                        day: day
-                    });
-                    this_date++;
-                }
+    let calenderDateArray = [];
+    let dayText = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
+    for(data of historyData){
+        if(data.settingId == selectSettingId){
+            // 授業日までの1週間の日付を取得
+            for(let date=6; date>=0; date--){
+                let classDate = new Date(Number(data.prepareDate)); // 授業日を取得
+                classDate.setDate(classDate.getDate() - date);
+                calenderDateArray.push({
+                    year: classDate.getFullYear(),
+                    month: classDate.getMonth()+1,
+                    date: classDate.getDate(),
+                    day: dayText[classDate.getDay()]
+                })
             }
-            calenderDate = calenderDateArray
+            break;
         }
     }
+    calenderDate =  calenderDateArray;
 }
 
 function calenderDoubleBookingCheck(item, id){
