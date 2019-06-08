@@ -272,6 +272,11 @@ function displayLearningSetting(){
             // 作成した授業回をテーブルに表示
             selectSettingId = settingId;
             historyData.push(data);
+            selectHistoryData = data;
+            displayItems = {
+                plans: [],
+                records: []
+            };
             displayHistoryTable();
             displayCalender();
             
