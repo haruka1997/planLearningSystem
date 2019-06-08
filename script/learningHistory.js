@@ -380,7 +380,7 @@ function displayHistoryDetail(settingId){
 
                     if(selectData.classDate != editData.classDate){
                         updateExecuting();
-                        displayCalender();
+                        getCalenderItem();
                     }
 
                     exit();
