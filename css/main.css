@@ -196,6 +196,7 @@ body{
     border: 1px solid #ddd;
     padding: 10px 0;
     line-height: 1;
+    vertical-align: middle;
 }
 
 .learning-history-table table{

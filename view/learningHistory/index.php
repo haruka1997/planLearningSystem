@@ -16,9 +16,9 @@
                   <tr id="table-header">
                       <th>授業回</th>
                       <th>計画実施率</th>
-                      <th>目標達成率</th>
+                      <th>目標達成度</th>
                       <th>学習満足度</th>
-                      <th></th>
+                      <th width="15%"></th>
                   </tr>
                 </thead>
                 <tbody class="learning-history-tbody">
