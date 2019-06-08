@@ -211,6 +211,7 @@ function displayCalender(){
     }
 
     modules.calenderItemSet.set(displayItem, $, selectHistoryData, selectButton, escape);
+    setStatistics();
 }
 
 /**
@@ -1362,9 +1363,6 @@ function getCalenderItem(){
                 displayItems.records[record].date = displayItems.records[record].recordDate;
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
-
-            // 統計情報のセット
-            setStatistics();
 
             // カレンダー表示
             displayCalender();
