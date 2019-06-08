@@ -6,6 +6,11 @@
         $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system;charset=utf8', 'localhost', 'localhost');
         // $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
+        // プリペアドステートメントのエミュレーションを無効にして、
+        // MySQL ネイティブの静的プレースホルダを使用する
+        $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+
         $stmt = $dbh->prepare('SELECT * FROM record WHERE userId = :userId AND settingId = :settingId'); 
         $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
         $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);

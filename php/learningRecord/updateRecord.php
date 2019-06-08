@@ -6,6 +6,11 @@
         $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system;charset=utf8', 'localhost', 'localhost');
         // $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
+        // プリペアドステートメントのエミュレーションを無効にして、
+        // MySQL ネイティブの静的プレースホルダを使用する
+        $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+
         $stmt = $dbh->prepare('UPDATE record SET content = :content, recordDate = :recordDate, recordTime = :recordTime, memo = :memo WHERE recordId = :recordId'); 
         $stmt->bindParam(':recordId', $_POST['recordId'] , PDO::PARAM_STR);
         $stmt->bindParam(':content', $_POST['content'], PDO::PARAM_STR);
