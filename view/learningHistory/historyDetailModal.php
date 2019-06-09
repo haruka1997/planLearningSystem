@@ -13,20 +13,21 @@
             <div class="form-group pmd-textfield">       
                 <label class="required">予習する授業範囲</label>
                 <select class="select-simple form-control pmd-select2 required" id="coverage">
-                    <option value="1">第1回 三角関数①（弧度法、基本性質、三角関数のグラフ）</option>
-                    <option value="2">第2回 三角関数②（三角方程式・不等式、加法定理、加法定理の応用）</option>
-                    <option value="3">第3回 指数関数①（指数法則、累乗根、指数関数のグラフ、指数の大小比較、指数方程式・不等式）</option>
-                    <option value="4">第4回 対数関数①（対数の基本性質、対数関数のグラフ、対数の大小比較、対数方程式・不等式、常用対数）</option>
-                    <option value="5">第5回 数列①（等差数列、等比数列、∑公式）</option>
-                    <option value="6">第6回 数列②（いろいろな数列、漸化式）</option>
-                    <option value="7">第7回 作問演習、TAとの個人面談</option>
-                    <option value="8">第8回 極限①（無限級数と極限）</option>
-                    <option value="9">第9回 極限②（極限の計算、初等関数の極限）</option>
-                    <option value="10">第10回 微分法①（微分係数、極限と導関数，接線の方程式，関数の増加・減少）</option>
-                    <option value="11">第11回 微分法②（積と商・合成関数の微分，初等関数の微分，微分法の応用）</option>
-                    <option value="12">第12回 積分法①（不定積分，定積分）</option>
-                    <option value="13">第13回 積分法②（面積）</option>
+                <option value="1">第1回 命題論理・集合①（必要条件・十分条件，逆・裏・対偶，和集合，積集合，部分集合，集合が3つの場合の和集合と積集合，補集合，ド・モルガンの法則）</option>
+                    <option value="2">第2回 命題論理・集合②（応用問題）</option>
+                    <option value="3">第3回 命題論理・集合③（背理法，数学的帰納法）</option>
+                    <option value="4">第4回 命題論理・集合④（作問演習）</option>
+                    <option value="5">第5回 ベクトル①（ベクトルの計算，ベクトルの成分，ベクトルの内積）</option>
+                    <option value="6">第6回 ベクトル②（位置ベクトル）</option>
+                    <option value="7">第7回 ベクトル③（ベクトル方程式）</option>
+                    <option value="8">第8回 ベクトル④（ベクトルの応用，空間ベクトル①）</option>
+                    <option value="9">第9回 ベクトル⑤（空間ベクトル②）</option>
+                    <option value="10">第10回 ベクトル⑥（作問演習）</option>
+                    <option value="11">第11回 行列①（行列の相等と成分，行列の和・差・実数倍，零行列と列ベクトル行ベクトル，行列の積，対角行列と単位行列，行列の積の性質，ケーリー・ハミルトン）</option>
+                    <option value="12">第12回 行列②（逆行列，連立1次方程式の解法）</option>
+                    <option value="13">第13回 行列③（作問演習）</option>
                     <option value="14">第14回 総合演習 </option>
+                    <option value="15">第15回 期末試験 </option>
                 </select>
             </div>
              <!-- 予習日 -->
