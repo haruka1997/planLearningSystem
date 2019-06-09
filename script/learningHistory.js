@@ -145,7 +145,7 @@ function displayHistoryTable(){
 
         let tableText = {
             settingId: escape(historyData[i].settingId),
-            coverage: escape(historyData[i].coverage),
+            coverage: escape(historyData[i].coverage) + '回  (' + new Date(Number(historyData[i].classDate)).getMonth() + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
             understanding: escape(historyData[i].understanding),
             executing: escape(historyData[i].executingText),
             achievement: escape(historyData[i].achievementText),
@@ -154,7 +154,7 @@ function displayHistoryTable(){
 
         // テーブル内容の表示
         $('.learning-history-tbody').append(
-            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '回</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
         );
     }
 
