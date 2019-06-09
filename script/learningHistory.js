@@ -126,9 +126,9 @@ function displayHistoryTable(){
 
         // 目標達成率の表示
         if(historyData[i].achievement == 100){
-            historyData[i].achievementText = '達成';
+            historyData[i].achievementText = '達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
         }else if(historyData[i].achievement == 0){
-            historyData[i].achievementText = '未達成';
+            historyData[i].achievementText = '未達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
         }else{
             historyData[i].achievementText = '未登録';
         }
