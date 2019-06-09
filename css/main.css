@@ -15,6 +15,7 @@ body{
 /* メニューリンク */
 .mdl-layout__header-row .mdl-navigation__link{
     color: #333333;
+    padding: 0 40px 0 50px;
 }
 
 .floating-action-button{
