@@ -514,7 +514,6 @@ function setStatistics(){
     
     // グラフのセット
     let timeChart = modules.setChartItem.set(modules, timezone);
-    timeChart.update();
 
     statisticsData = {
         totalPlanTime: totalPlanTime,
@@ -522,6 +521,8 @@ function setStatistics(){
         averageRecordTime: averageRecordTime,
         timeChart: timeChart
     };
+
+    statisticsData.timeChart.update();
 
     setStatisticsFlag = true;
 
