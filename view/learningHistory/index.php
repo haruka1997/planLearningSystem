@@ -15,6 +15,7 @@
                 <thead>
                   <tr id="table-header">
                       <th>授業回</th>
+                      <th>理解度</th>
                       <th>計画実施率</th>
                       <th>目標達成度</th>
                       <th>学習満足度</th>

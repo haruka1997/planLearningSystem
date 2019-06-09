@@ -144,7 +144,7 @@ function displayHistoryTable(){
         }
 
         // テーブル内容の表示
-        $('.learning-history-tbody').append('<tr id=' + escape(historyData[i].settingId) + '><td id=' + escape(historyData[i].settingId) + '"class="coverage">' + escape(historyData[i].coverage) + '回</td><td>' + escape(historyData[i].executingText) + '</td><td>' + escape(historyData[i].achievementText) + '</td><td>' + escape(historyData[i].satisfactionText) + '</td><td><button id="' + escape(historyData[i].settingId) + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>');
+        $('.learning-history-tbody').append('<tr id=' + escape(historyData[i].settingId) + '><td id=' + escape(historyData[i].settingId) + '"class="coverage">' + escape(historyData[i].coverage) + '回</td><td>' + escape(historyData[i].understanding) + '</td><td>' + escape(historyData[i].executingText) + '</td><td>' + escape(historyData[i].achievementText) + '</td><td>' + escape(historyData[i].satisfactionText) + '</td><td><button id="' + escape(historyData[i].settingId) + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>');
     }
 
     changeTableColor();
