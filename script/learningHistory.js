@@ -145,7 +145,7 @@ function displayHistoryTable(){
 
         let tableText = {
             settingId: escape(historyData[i].settingId),
-            coverage: escape(historyData[i].coverage) + '回  (' + new Date(Number(historyData[i].classDate)).getMonth() + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
+            coverage: escape(historyData[i].coverage) + '回  (' + Number(new Date(Number(historyData[i].classDate)).getMonth()+1) + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
             understanding: escape(historyData[i].understanding),
             executing: escape(historyData[i].executingText),
             achievement: escape(historyData[i].achievementText),
