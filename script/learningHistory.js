@@ -112,6 +112,8 @@ function initDOM(){
  */
 function displayHistoryTable(){
 
+    console.log(historyData);
+
     $('.learning-history-tbody').html(''); // テーブル内容の初期化
 
     // 取得した学習履歴をにテーブルに表示
@@ -365,7 +367,7 @@ function displayHistoryDetail(settingId){
                 editData.settingId = settingId;
 
                 // 事前テストの点数が入力されたら
-                if(editData.testScore !== ''){
+                if(editData.testScore !== null){
                     // 目標達成度の算出
                     if(Number(selectData.goal) <= Number(editData.testScore)){
                         editData.achievement = 100;
