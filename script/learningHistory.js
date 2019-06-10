@@ -1287,7 +1287,7 @@ function setLearningContentList(){
     // 学習内容リストのセット
     for(let plan of displayItems.plans){
         if(plan.learningFlag){
-            $('<option value="' + escape(plan.conten) + '">' + escape(plan.content) + '</option>').appendTo('#selectLearningContent');
+            $('<option value="' + escape(plan.content) + '">' + escape(plan.content) + '</option>').appendTo('#selectLearningContent');
         }
     }
     $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
