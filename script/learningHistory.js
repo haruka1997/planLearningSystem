@@ -16,6 +16,7 @@ let selectSettingId = undefined;
 let calenderDate = [];
 let statisticsData = {};
 let setStatisticsFlag = false;
+let selectTag = "red";
 
 
 $(function(){
@@ -111,8 +112,6 @@ function initDOM(){
  * 学習履歴テーブルの表示
  */
 function displayHistoryTable(){
-
-    console.log(historyData);
 
     $('.learning-history-tbody').html(''); // テーブル内容の初期化
 
@@ -589,11 +588,6 @@ function displayLearningPlanAdd(){
         // エラーがあれば表示、なければ登録処理
         if(doubleBookingFlag){
             alert('既に追加された予定と被ります．空いている時間に変更しましょう．');
-            // $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-            // // モーダルを1秒後に閉じる
-            // $('.learning-plan-create-modal-wrapper').delay(2000).queue(function(){
-            //     $(this).removeClass('is-visible').dequeue();
-            // });
         }else{
             // Ajax通信 計画情報をDBに追加
             postPlan(plan);
@@ -612,9 +606,9 @@ function displayPrivatePlanAdd(){
     let exit = function(){
         $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         $('.tag').removeClass('active');// タグ選択状態を全解除
+        $('#red').addClass('active'); //選択したタグを選択状態にセット
         $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', true);
         $('.private-plan-create-modal-wrapper').find('input').val("");
-        $('.modal-error').text('');      
     }
     // キャンセルボタン押されたら
     $('.header-cansel-button').click(function () {
@@ -671,11 +665,7 @@ function displayPrivatePlanAdd(){
 
         // エラーがあれば表示、なければ登録処理
         if(doubleBookingFlag){
-            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-            // モーダルを1秒後に閉じる
-            $('.private-plan-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible').dequeue();
-            });
+            alert('既に追加された予定と被ります．空いている時間に変更しましょう．')
         }else{
             // Ajax通信 計画情報をDBに追加
             postPlan(plan);
@@ -772,11 +762,7 @@ function displayLearningRecordAdd(){
 
         // エラーがあれば表示、なければ登録処理
         if(doubleBookingFlag){
-            $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-            // モーダルを1秒後に閉じる
-            $('.learning-record-create-modal-wrapper').delay(2000).queue(function(){
-                $(this).removeClass('is-visible').dequeue();
-            });
+            alert('既に追加された記録と被ります．')
         }else{
             postRecord(record);
         }
@@ -861,11 +847,7 @@ function displayLearningPlanDetail(id){
 
                 // エラーがあれば表示、なければ登録処理
                 if(doubleBookingFlag){
-                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-                    // モーダルを1秒後に閉じる
-                    $('.learning-plan-detail-modal-wrapper').delay(2000).queue(function(){
-                        $(this).removeClass('is-visible').dequeue();
-                    });
+                    alert('既に追加された予定と被ります．空いている時間に変更しましょう')
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
                     updatePlan(editPlan, id, i);
@@ -960,11 +942,7 @@ function displayPrivatePlanDetail(id){
 
                 // エラーがあれば表示、なければ登録処理
                 if(doubleBookingFlag){
-                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-                    // モーダルを1秒後に閉じる
-                    $('.private-plan-detail-modal-wrapper').delay(2000).queue(function(){
-                        $(this).removeClass('is-visible').dequeue();
-                    });
+                    alert('既に追加された予定と被ります．空いている時間に変更しましょう');
                 }else{
                     editPlan.id = 'P' + new Date().getTime();
                     updatePlan(editPlan, id, i);
@@ -1047,11 +1025,7 @@ function displayLearningRecordDetail(id){
 
                 // エラーがあれば表示、なければ登録処理
                 if(doubleBookingFlag){
-                    $('.modal-error').text('既に追加された予定と被ります．空いている時間に変更しましょう．');
-                    // モーダルを1秒後に閉じる
-                    $('.learning-record-detail-modal-wrapper').delay(2000).queue(function(){
-                        $(this).removeClass('is-visible').dequeue();
-                    });
+                    alert('既に追加された記録と被ります．');
                 }else{                    
                     $.ajax({
                         url:'./../../php/learningRecord/updateRecord.php',

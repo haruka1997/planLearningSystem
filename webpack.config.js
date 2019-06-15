@@ -9,7 +9,7 @@ module.exports = {
       moduleInit: `./script/module/moduleInit.js`,
       learningHistory: `./script/learningHistory.js`
     },
-    mode: 'development',
+    mode: 'production',
    
     // ファイルの出力設定
     output: {

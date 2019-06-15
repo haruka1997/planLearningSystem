@@ -6,6 +6,11 @@
         // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system;charset=utf8', 'localhost', 'localhost');
         $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
+        // プリペアドステートメントのエミュレーションを無効にして、
+        // MySQL ネイティブの静的プレースホルダを使用する
+        $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+
         $stmt = $dbh->prepare('UPDATE plan SET editFlag = "true", editId = :editId WHERE planId = :planId'); 
         $stmt->bindParam(':planId', $_POST['planId'] , PDO::PARAM_STR);
         $stmt->bindParam(':editId', $_POST['editId'], PDO::PARAM_STR);
