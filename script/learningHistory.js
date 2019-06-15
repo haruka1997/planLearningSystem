@@ -267,7 +267,6 @@ function displayLearningSetting(){
         // POSTデータの生成
         let data = {
             'settingId': settingId,
-            'userId': window.sessionStorage.getItem(['userId']),
             'coverage': $('#coverage').val(),
             'classDate': classDate,
             'understanding': $('#understanding').val(),
@@ -1276,9 +1275,7 @@ function getHistoryData(){
     $.ajax({
         url:'./../../php/learningHistory/getHistoryData.php',
         type:'POST',
-        data:{
-            'userId': window.sessionStorage.getItem(['userId'])
-        },
+        data:{},
         dataType: 'json'       
     })
     // Ajaxリクエストが成功した時発動
@@ -1373,7 +1370,6 @@ function postPlan(plan){
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',
         data:{
-            'userId': window.sessionStorage.getItem(['userId']),
             'planId': plan.id,
             'settingId': selectSettingId,
             'content': plan.content,
@@ -1407,7 +1403,6 @@ function updatePlan(editPlan, id, i){
         url:'./../../php/planCreate/postPlan.php',
         type:'POST',
         data:{
-            'userId': window.sessionStorage.getItem(['userId']),
             'planId': editPlan.id,
             'settingId': selectSettingId,
             'content': editPlan.content,
@@ -1477,7 +1472,6 @@ function postRecord(record){
         url:'./../../php/learningRecord/postRecord.php',
         type:'POST',
         data:{
-            'userId': window.sessionStorage.getItem(['userId']),
             'recordId': record.id,
             'settingId': selectSettingId,
             'content': record.content,
