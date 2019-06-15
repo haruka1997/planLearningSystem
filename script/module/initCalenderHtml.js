@@ -24,14 +24,15 @@ module.exports.init = function($, calenderDateArray, selectButton, escape){
     $('.calender tbody').scrollTop(scrollTop);  // 前回のスクロール位置に設定
 
     // カレンダーの日付表示設定
-    $('.calender-table tr .calender-date').each(function(i){
-        $(this).text(calenderDateArray[i].date + '日' + calenderDateArray[i].day);
-        if(calenderDateArray[i].day == '(土)'){
-            $(this).css('color', '#0288D1');
-        }
-        if(calenderDateArray[i].day == '(日)'){
-            $(this).css('color', '#F44336');
-        }
-    });
-
+    if(calenderDateArray.length>0){
+        $('.calender-table tr .calender-date').each(function(i){
+            $(this).text(calenderDateArray[i].date + '日' + calenderDateArray[i].day);
+            if(calenderDateArray[i].day == '(土)'){
+                $(this).css('color', '#0288D1');
+            }
+            if(calenderDateArray[i].day == '(日)'){
+                $(this).css('color', '#F44336');
+            }
+        });
+    }
 }
