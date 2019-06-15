@@ -177,7 +177,7 @@ function changeTableColor(){
 function displayCalender(){
 
     // スイッチを表示
-    $('.calender-switch').addClass('active');
+    $('.calender-display-content').addClass('active');
 
     calcCalenderDate();
 

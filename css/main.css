@@ -257,10 +257,13 @@ body{
 .calender-switch{
     float: right;
     padding: 0 30px 10px 0;
+}
+
+.calender-display-content{
     display: none;
 }
 
-.calender-switch.active{
+.calender-display-content.active{
     display: initial;
 }
 
