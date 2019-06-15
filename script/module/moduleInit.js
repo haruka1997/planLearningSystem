@@ -23,13 +23,6 @@ module.exports.moduleInit = function(){
     // chart.js
     modules.Chart = require('chart.js');
   
-
-    // loginConfirm
-    if(window.location.href.split('/').pop() !== 'login.html'){
-        let loginConfirm = require('./loginConfirm.js');
-        loginConfirm.confirm();
-    }
-
     // initCalenderHtml
     modules.initCalenderHtml = require('./initCalenderHtml.js');
 

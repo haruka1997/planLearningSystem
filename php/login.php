@@ -1,4 +1,15 @@
 <?php 
+    session_start();    // セッション開始
+    //クッキー情報の削除
+    if($_COOKIE['PHPSESSID']){  //もしセッションクッキー情報が残っていれば
+        setcookie('PHPSESSID', '', time() - 1800);  //該当クッキー削除
+    }
+
+    //userIdがセッションに保存されていたら
+    if($_SESSION['userId'] !== undefined){
+        $_SESSION = array();    // セッション変数を全て削除
+    }
+
     header("Content-Type: application/json; charset=UTF-8");
     //エラー処理
     try {
@@ -20,6 +31,8 @@
         $stmt->execute();
 
         if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {    //入力したユーザIDとパスワードに一致するデータがあれば
+            session_regenerate_id(true);    //セッション置き換え
+            $_SESSION['userId'] = $row['userId'];   //ユーザIDをセッションに保存
             echo json_encode($row);
             exit();  // 処理終了
         }

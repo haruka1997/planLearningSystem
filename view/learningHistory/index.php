@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['userId'])){
+    header('Location: ./../login.php');
+  }
+?>
 <html>
   <head>
   <script type="text/javascript" src="./../../application/dist/learningHistory.bundle.js"></script>

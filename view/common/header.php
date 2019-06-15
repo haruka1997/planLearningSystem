@@ -3,7 +3,7 @@
     <span class="mdl-layout-title header-title-text">学習計画の作成</span>
     <div class="mdl-layout-spacer"></div>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="./../login.html">ログアウト</a>
+      <a class="mdl-navigation__link" href="./../login.php">ログアウト</a>
     </nav>
   </div>
 </header>

@@ -1,4 +1,5 @@
 <?php 
+    session_start();    // セッション開始
     header("Content-Type: application/json; charset=UTF-8");
 
     //エラー処理
@@ -12,7 +13,7 @@
 
 
         $stmt = $dbh->prepare('INSERT INTO plan (planId, userId, settingId, content, planDate, planTime, memo, tag, learningFlag) VALUES(:planId, :userId, :settingId, :content, :planDate, :planTime, :memo, :tag, :learningFlag)'); 
-        $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
+        $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
         $stmt->bindParam(':planId', $_POST['planId'] , PDO::PARAM_STR);
         $stmt->bindParam(':settingId', $_POST['settingId'] , PDO::PARAM_STR);
         $stmt->bindParam(':content', $_POST['content'] , PDO::PARAM_STR);

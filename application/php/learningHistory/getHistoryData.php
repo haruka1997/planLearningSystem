@@ -12,7 +12,7 @@
 
 
         $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId ORDER BY coverage ASC'); 
-        $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
+        $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
 
         $stmt->execute();
     

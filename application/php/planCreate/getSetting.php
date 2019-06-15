@@ -1,4 +1,5 @@
 <?php 
+    session_start();    // セッション開始
     header("Content-Type: application/json; charset=UTF-8");
 
     //エラー処理
@@ -12,7 +13,7 @@
 
 
         $stmt = $dbh->prepare('SELECT * FROM setting WHERE userId = :userId AND insertTime > :startDate'); 
-        $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
+        $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
         $stmt->bindParam(':startDate', $_POST['startDate'], PDO::PARAM_INT);
 
         $stmt->execute();

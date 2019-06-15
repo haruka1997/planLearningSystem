@@ -1,4 +1,5 @@
 <?php 
+    session_start();    // セッション開始
     header("Content-Type: application/json; charset=UTF-8");
 
     //エラー処理
@@ -10,9 +11,8 @@
         // MySQL ネイティブの静的プレースホルダを使用する
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-
         $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId ORDER BY coverage ASC'); 
-        $stmt->bindParam(':userId', $_POST['userId'], PDO::PARAM_STR);
+        $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
 
         $stmt->execute();
     
