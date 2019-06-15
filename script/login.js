@@ -26,7 +26,7 @@ $(function(){
         .done( (data) => {
             // ユーザ情報セッション保存
             window.sessionStorage.setItem(['userId'], data.userId);
-            window.location.href = './../view/learningHistory/index.php';
+            window.location.href = './../view/main/index.php';
 
         })
         // Ajaxリクエストが失敗した時発動

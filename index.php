@@ -3,7 +3,7 @@
 
     //userIdがセッションに保存されていたら
     if($_SESSION['userId'] !== undefined){
-        header('Location: ./view/learningHistory/index.php');
+        header('Location: ./view/main/index.php');
     }else{
         header('Location: /view/login.php');
     }

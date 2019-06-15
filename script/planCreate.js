@@ -368,7 +368,7 @@ function learningSatisfactionModal(data){
     
     // 計画進捗率を算出するために計画と記録を取得
     $.ajax({
-        url:'./../../php/learningHistory/getPlanAndRecord.php',
+        url:'./../../php/main/getPlanAndRecord.php',
         type:'POST',
         data:{
             'settingId': settingId

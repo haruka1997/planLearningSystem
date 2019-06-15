@@ -6,7 +6,7 @@
 ?>
 <html>
   <head>
-  <script type="text/javascript" src="./../../application/dist/learningHistory.bundle.js"></script>
+  <script type="text/javascript" src="./../../application/dist/main.bundle.js"></script>
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">
@@ -79,11 +79,11 @@
       <!-- 学習記録詳細モーダル -->
       <?php include ('./../learningRecord/learningRecordDetailModal.php'); ?>
       <!-- 目標の設定モーダル -->
-      <?php include ('./../learningHistory/learningSettingModal.php'); ?>
+      <?php include ('./../main/learningSettingModal.php'); ?>
       <!-- 学習履歴の詳細モーダル -->
-      <?php include ('./../learningHistory/historyDetailModal.php'); ?>
+      <?php include ('./../main/historyDetailModal.php'); ?>
       <!-- 統計情報のモーダル -->
-      <?php include ('./../learningHistory/statisticsModal.php'); ?>
+      <?php include ('./../main/statisticsModal.php'); ?>
     </div>
   </body>
 </html>

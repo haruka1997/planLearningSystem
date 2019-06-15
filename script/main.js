@@ -404,7 +404,7 @@ function displayHistoryDetail(settingId){
             // 削除ボタンが押されたら
             $('.history-detail-modal-wrapper .history-delete-button').off('click').on('click', function(){
                 $.ajax({
-                    url:'./../../php/learningHistory/deleteSetting.php',
+                    url:'./../../php/main/deleteSetting.php',
                     type:'POST',
                     data: selectData,
                     dataType: 'json'       
@@ -1234,7 +1234,7 @@ function updateExecuting(){
 
     // Ajax通信
     $.ajax({
-        url:'./../../php/learningHistory/updateExecuting.php',
+        url:'./../../php/main/updateExecuting.php',
         type:'POST',
         data:{
             'settingId': selectSettingId,
@@ -1272,7 +1272,7 @@ function setLearningContentList(){
 
 function getHistoryData(){
     $.ajax({
-        url:'./../../php/learningHistory/getHistoryData.php',
+        url:'./../../php/main/getHistoryData.php',
         type:'POST',
         data:{},
         dataType: 'json'       
@@ -1304,7 +1304,7 @@ function getCalenderItem(){
     $('#selectLearningContent').html('<option>学習内容を選択</option>');
 
     $.ajax({
-        url:'./../../php/learningHistory/getCalenderItem.php',
+        url:'./../../php/main/getCalenderItem.php',
         type:'POST',
         data:{
             'settingId': selectSettingId
