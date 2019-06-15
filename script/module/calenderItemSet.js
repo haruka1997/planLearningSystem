@@ -1,4 +1,4 @@
-module.exports.set = function(displayItems, $, selectHistoryData, selectButton, escape){
+module.exports.set = function(displayItems, selectHistoryData, selectButton, escape){
 
     let classDate = new Date(Number(selectHistoryData.classDate));
     let items = JSON.parse(JSON.stringify(displayItems));

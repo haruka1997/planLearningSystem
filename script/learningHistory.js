@@ -1,8 +1,7 @@
 // モジュール設定
 var modules = require('./module/moduleInit.js');
-modules = modules.moduleInit();
+modules = modules.mainSet();
 
-const  $ = modules.$; //jquery
 const escape = modules.htmlescape.escape;   //htmlエスケープモジュール
 
 let selectButton = '計画';
@@ -181,7 +180,7 @@ function displayCalender(){
 
     calcCalenderDate();
 
-    modules.initCalenderHtml.init($, calenderDate, selectButton, escape); // カレンダーの内容初期化
+    modules.initCalenderHtml.init(calenderDate, selectButton, escape); // カレンダーの内容初期化
     // fabボタンを非表示化
     $('.add-plan-button').css('display', 'none');
     $('.add-record-button').css('display', 'none');
@@ -222,7 +221,7 @@ function displayCalender(){
         $('.add-record-button').css('display', '');
     }
 
-    modules.calenderItemSet.set(displayItem, $, selectHistoryData, selectButton, escape);
+    modules.calenderItemSet.set(displayItem, selectHistoryData, selectButton, escape);
     setStatistics();
 }
 
