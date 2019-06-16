@@ -33,7 +33,7 @@ $(function(){
 function initDOM(){
 
     // カレンダー入力ライブラリ
-    $("#datepicker").datepicker();
+    // $("#datepicker").datepicker();
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
@@ -648,6 +648,7 @@ function displayPrivatePlanAdd(){
 
         let plan = {};
         plan.time = {};
+        let doubleBookingFlag = false;
 
         //  入力内容の取得
         plan.content = "";
@@ -662,7 +663,7 @@ function displayPrivatePlanAdd(){
         plan.id = 'P' + new Date().getTime();  
 
         // ダブルブッキングチェック
-        let doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
+        doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
 
         // エラーがあれば表示、なければ登録処理
         if(doubleBookingFlag){
@@ -825,7 +826,16 @@ function displayLearningPlanDetail(id){
             $('.learning-plan-detail-modal-wrapper .learning-complete-button').off("click").one("click", function () {
                 let record = JSON.parse(JSON.stringify(selectPlan));
                 record.id = 'R' + new Date().getTime();
-                postRecord(record);
+
+                // ダブルブッキングチェック
+                let doubleBookingFlag = calenderDoubleBookingCheck(record, record.id);
+
+                // エラーがあれば表示、なければ登録処理
+                if(doubleBookingFlag){
+                    alert('既に追加された記録と被ります．')
+                }else{
+                    postRecord(record);
+                }
                 exit();
             });
 
@@ -1164,19 +1174,16 @@ function calcCalenderDate(){
 
 function calenderDoubleBookingCheck(item, id){
     let checkId = id.slice(0,1);
-    let doubleBookingFlag = false;
+    let doubleBookingFlag = true;
 
     if(checkId == 'L' || checkId == 'P'){
 
         for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
             if(id !== displayItems.plans[learningIndex].id){
                 if(displayItems.plans[learningIndex].date == item.date){
-                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                    if((displayItems.plans[learningIndex].time.start < item.time.start && displayItems.plans[learningIndex].time.end > item.time.start)
-                    || (displayItems.plans[learningIndex].time.start < item.time.end && displayItems.plans[learningIndex].time.end > item.time.end)
-                    || (displayItems.plans[learningIndex].time.start > item.time.start && displayItems.plans[learningIndex].time.end < item.time.end)
-                    || (displayItems.plans[learningIndex].time.start == item.time.start && displayItems.plans[learningIndex].time.end == item.time.end)){
-                        doubleBookingFlag = true;
+                    if((displayItems.plans[learningIndex].time.start > item.time.start) && (displayItems.plans[learningIndex].time.start > item.time.end)
+                    || (displayItems.plans[learningIndex].time.end < item.time.start) && (displayItems.plans[learningIndex].time.end < item.time.end)){
+                        doubleBookingFlag = false;
                         break;
                     }
                 }
@@ -1188,10 +1195,8 @@ function calenderDoubleBookingCheck(item, id){
             if(id !== displayItems.records[learningIndex].id){
                 if(displayItems.records[learningIndex].date == item.date){
                     // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                    if((displayItems.records[learningIndex].time.start < item.time.start && displayItems.records[learningIndex].time.end > item.time.start)
-                    || (displayItems.records[learningIndex].time.start < item.time.end && displayItems.records[learningIndex].time.end > item.time.end)
-                    || (displayItems.records[learningIndex].time.start > item.time.start && displayItems.records[learningIndex].time.end < item.time.end)
-                    || (displayItems.records[learningIndex].time.start == item.time.start && displayItems.records[learningIndex].time.end == item.time.end)){
+                    if((displayItems.records[learningIndex].time.start > item.time.start) && (displayItems.records[learningIndex].time.start > item.time.end)
+                    || (displayItems.records[learningIndex].time.end < item.time.start) && (displayItems.records[learningIndex].time.end < item.time.end)){
                         doubleBookingFlag = true;
                         break;
                     }
