@@ -9,9 +9,9 @@ module.exports.init = function(calenderDateArray, selectButton, escape){
 
     // カレンダーモジュール
     if(selectButton !== '計画と記録'){
-        var calender = require('./../../view/common/singleCalender.html');
+        var calender = require('./../../view/main/singleCalender.html');
     }else{
-        var calender = require('./../../view/common/doubleCalender.html');
+        var calender = require('./../../view/main/doubleCalender.html');
     }
 
     // カレンダーをセットする

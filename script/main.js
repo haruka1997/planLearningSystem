@@ -32,6 +32,9 @@ $(function(){
  */
 function initDOM(){
 
+    // カレンダー入力ライブラリ
+    $("#datepicker").datepicker();
+
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
         if(selectSettingId !== $(this).attr('id')){
@@ -274,7 +277,7 @@ function displayLearningSetting(){
         };
         // Ajax通信
         $.ajax({
-            url:'./../../php/planCreate/postSetting.php',
+            url:'./../../php/main/postSetting.php',
             type:'POST',
             data: data,
             dataType: 'json'       
@@ -376,7 +379,7 @@ function displayHistoryDetail(settingId){
                 // 学習履歴の編集
                 // Ajax通信
                 $.ajax({
-                    url:'./../../php/planCreate/updateSetting.php',
+                    url:'./../../php/main/updateSetting.php',
                     type:'POST',
                     data: editData,
                     dataType: 'json'       
@@ -1026,7 +1029,7 @@ function displayLearningRecordDetail(id){
                     alert('既に追加された記録と被ります．');
                 }else{                    
                     $.ajax({
-                        url:'./../../php/learningRecord/updateRecord.php',
+                        url:'./../../php/main/updateRecord.php',
                         type:'POST',
                         data:{
                             'recordId': id,
@@ -1053,7 +1056,7 @@ function displayLearningRecordDetail(id){
             // 削除ボタン押されたら
             $('.learning-record-detail-modal-wrapper .learning-delete-button').off('click').one("click", function () {
                 $.ajax({
-                    url:'./../../php/learningRecord/deleteRecord.php',
+                    url:'./../../php/main/deleteRecord.php',
                     type:'POST',
                     data:{
                         'recordId': id
@@ -1366,7 +1369,7 @@ function getCalenderItem(){
  */
 function postPlan(plan){
     $.ajax({
-        url:'./../../php/planCreate/postPlan.php',
+        url:'./../../php/main/postPlan.php',
         type:'POST',
         data:{
             'planId': plan.id,
@@ -1399,7 +1402,7 @@ function postPlan(plan){
  */
 function updatePlan(editPlan, id, i){
     $.ajax({
-        url:'./../../php/planCreate/postPlan.php',
+        url:'./../../php/main/postPlan.php',
         type:'POST',
         data:{
             'planId': editPlan.id,
@@ -1417,7 +1420,7 @@ function updatePlan(editPlan, id, i){
     .done( (data) => {
         // 編集された計画に編集フラグを立てる
         $.ajax({
-            url:'./../../php/planCreate/updatePlan.php',
+            url:'./../../php/main/updatePlan.php',
             type:'POST',
             data:{
                 'planId': id,
@@ -1446,7 +1449,7 @@ function updatePlan(editPlan, id, i){
  */
 function deletePlan(deletePlan, id, i){
     $.ajax({
-        url:'./../../php/planCreate/deletePlan.php',
+        url:'./../../php/main/deletePlan.php',
         type:'POST',
         data:{
             'planId': id
@@ -1468,7 +1471,7 @@ function deletePlan(deletePlan, id, i){
 function postRecord(record){
     // Ajax通信
     $.ajax({
-        url:'./../../php/learningRecord/postRecord.php',
+        url:'./../../php/main/postRecord.php',
         type:'POST',
         data:{
             'recordId': record.id,

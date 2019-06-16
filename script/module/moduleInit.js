@@ -20,6 +20,7 @@ module.exports = {
         require('./../../lib/material.min.css');
         require('./../../lib/bootstrap.min.css');
         require('./../../lib/propeller.min.css');
+        require('./../../lib/jquery-ui.css');
         require('./../../css/login.css');
         require('./../../css/main.css');
         require('./../../css/calender.css');

@@ -4,11 +4,6 @@ modules = modules.loginSet();
 
 $(function(){
 
-    // ユーザ情報があれば廃棄
-    if(window.sessionStorage.getItem(['userId']) !== null){
-        window.sessionStorage.clear();
-    }
-
     // ログインボタンが押されたら
     $('.sign-button').click(function (){
 
@@ -25,7 +20,6 @@ $(function(){
         // Ajaxリクエストが成功した時発動
         .done( (data) => {
             // ユーザ情報セッション保存
-            window.sessionStorage.setItem(['userId'], data.userId);
             window.location.href = './../view/main/index.php';
 
         })

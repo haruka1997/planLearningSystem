@@ -11,7 +11,7 @@
   <body>
     <div class="mdl-layout mdl-js-layout">
       <!-- ヘッダ -->
-      <?php include ('./../common/header.php'); ?>
+      <?php include ('./header.php'); ?>
       <!-- コンテンツ -->
       <main class="mdl-layout__content">
         <div class="learning-history-content">
@@ -67,23 +67,23 @@
         </div>
       </main>
       <!-- 学習計画追加モーダル -->
-      <?php include ('./../planCreate/learningPlanCreateModal.php'); ?>
+      <?php include ('./learningPlanCreateModal.php'); ?>
       <!-- プライベートの予定追加モーダル -->
-      <?php include ('./../planCreate/privatePlanCreateModal.php'); ?>
+      <?php include ('./privatePlanCreateModal.php'); ?>
       <!-- 学習記録追加モーダル -->
-      <?php include ('./../learningRecord/learningRecordCreateModal.php'); ?>
+      <?php include ('./learningRecordCreateModal.php'); ?>
       <!-- 学習計画詳細モーダル -->
-      <?php include ('./../planCreate/learningPlanDetailModal.php'); ?>
+      <?php include ('./learningPlanDetailModal.php'); ?>
        <!-- プライベート予定詳細モーダル -->
-       <?php include ('./../planCreate/privatePlanDetailModal.php'); ?>
+       <?php include ('./privatePlanDetailModal.php'); ?>
       <!-- 学習記録詳細モーダル -->
-      <?php include ('./../learningRecord/learningRecordDetailModal.php'); ?>
+      <?php include ('./learningRecordDetailModal.php'); ?>
       <!-- 目標の設定モーダル -->
-      <?php include ('./../main/learningSettingModal.php'); ?>
+      <?php include ('./learningSettingModal.php'); ?>
       <!-- 学習履歴の詳細モーダル -->
-      <?php include ('./../main/historyDetailModal.php'); ?>
+      <?php include ('./historyDetailModal.php'); ?>
       <!-- 統計情報のモーダル -->
-      <?php include ('./../main/statisticsModal.php'); ?>
+      <?php include ('./statisticsModal.php'); ?>
     </div>
   </body>
 </html>
