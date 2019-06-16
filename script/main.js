@@ -32,9 +32,6 @@ $(function(){
  */
 function initDOM(){
 
-    // カレンダー入力ライブラリ
-    // $("#datepicker").datepicker();
-
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
         if(selectSettingId !== $(this).attr('id')){
@@ -234,6 +231,10 @@ function displayCalender(){
 function displayLearningSetting(){
 
     $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+
+    $(".learning-setting-modal-wrapper #classDate").datepicker({
+        dateFormat: 'yy-mm-dd',
+    });
 
     // モーダルを閉じる処理
     let exit = function(){
@@ -1176,36 +1177,42 @@ function calcCalenderDate(){
 
 function calenderDoubleBookingCheck(item, id){
     let checkId = id.slice(0,1);
-    let doubleBookingFlag = true;
+    let doubleBookingFlag = false;
 
     if(checkId == 'L' || checkId == 'P'){
-
-        for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
-            if(id !== displayItems.plans[learningIndex].id){
-                if(displayItems.plans[learningIndex].date == item.date){
-                    if((displayItems.plans[learningIndex].time.start > item.time.start) && (displayItems.plans[learningIndex].time.start > item.time.end)
-                    || (displayItems.plans[learningIndex].time.end < item.time.start) && (displayItems.plans[learningIndex].time.end < item.time.end)){
-                        doubleBookingFlag = false;
-                        break;
+        
+        if(displayItems.plans.length>0){
+            for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
+                if(id !== displayItems.plans[learningIndex].id){
+                    if(displayItems.plans[learningIndex].date == item.date){
+                        if(!(displayItems.plans[learningIndex].time.start >= item.time.start) && (displayItems.plans[learningIndex].time.start >= item.time.end)
+                        || !(displayItems.plans[learningIndex].time.end <= item.time.start) && (displayItems.plans[learningIndex].time.end <= item.time.end)){
+                            doubleBookingFlag = true;
+                            break;
+                        }
                     }
                 }
-            }
-        } 
+            } 
+        }
+        
     }else{
 
-        for(var learningIndex = 0; learningIndex < displayItems.records.length; learningIndex++){
-            if(id !== displayItems.records[learningIndex].id){
-                if(displayItems.records[learningIndex].date == item.date){
-                    // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                    if((displayItems.records[learningIndex].time.start > item.time.start) && (displayItems.records[learningIndex].time.start > item.time.end)
-                    || (displayItems.records[learningIndex].time.end < item.time.start) && (displayItems.records[learningIndex].time.end < item.time.end)){
-                        doubleBookingFlag = true;
-                        break;
+        if(displayItems.records.length>0){
+            for(var learningIndex = 0; learningIndex < displayItems.records.length; learningIndex++){
+                if(id !== displayItems.records[learningIndex].id){
+                    if(displayItems.records[learningIndex].date == item.date){
+                        // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
+                        if(!(displayItems.records[learningIndex].time.start >= item.time.start) && (displayItems.records[learningIndex].time.start >= item.time.end)
+                        || !(displayItems.records[learningIndex].time.end <= item.time.start) && (displayItems.records[learningIndex].time.end <= item.time.end)){
+                            doubleBookingFlag = true;
+                            break;
+                        }
                     }
                 }
-            }
-        } 
+            } 
+        }
     }
+
     return doubleBookingFlag;
 }
 

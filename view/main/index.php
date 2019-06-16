@@ -7,6 +7,7 @@
 <html>
   <head>
   <script type="text/javascript" src="./../../application/dist/main.bundle.js"></script>
+  <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css" />
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">

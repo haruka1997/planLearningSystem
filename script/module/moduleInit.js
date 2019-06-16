@@ -20,13 +20,14 @@ module.exports = {
         require('./../../lib/material.min.css');
         require('./../../lib/bootstrap.min.css');
         require('./../../lib/propeller.min.css');
-        // require('./../../lib/jquery-ui.css');
         require('./../../css/login.css');
         require('./../../css/main.css');
         require('./../../css/calender.css');
     
         // JS
         require('./../../lib/material.min.js');
+        require('./../../lib/jquery-ui.min.js');
+        require('./../../lib/jquery-datepicker-ja.min.js');
     
     
         // カレンダーセットモジュール
