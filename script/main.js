@@ -442,7 +442,6 @@ function displayStatistics(){
     let exit = function(){
         $('.statistics-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
         displayStatisticsFlag = false;
-        statisticsData.timeChart.destroy();
     }
 
     // キャンセルボタン押されたら
@@ -456,6 +455,9 @@ function displayStatistics(){
  */
 function setStatistics(){
 
+    if(statisticsData.timeChart){
+        statisticsData.timeChart.destroy();
+    }
     statisticsData = {};
 
     // 計画学習時間の合計算出
