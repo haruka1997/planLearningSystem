@@ -51,6 +51,7 @@
             <div class="form-group pmd-textfield">       
                 <label class="required">事前テストの目標点数</label>
                 <select class="select-simple form-control pmd-select2 required" id="goal">
+                    <option value="なし">なし</option>
                     <option value="6">6点</option>
                     <option value="7">7点</option>
                     <option value="8">8点</option>

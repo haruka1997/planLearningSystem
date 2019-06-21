@@ -368,7 +368,7 @@ function displayHistoryDetail(settingId){
                 editData.settingId = settingId;
 
                 // 事前テストの点数が入力されたら
-                if(editData.testScore !== null){
+                if(editData.testScore !== null && editData.testScore !== "なし" && selectData.goal !== "なし"){
                     // 目標達成度の算出
                     if(Number(selectData.goal) <= Number(editData.testScore)){
                         editData.achievement = 100;
