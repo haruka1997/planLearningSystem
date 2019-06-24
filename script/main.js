@@ -762,12 +762,19 @@ function displayLearningRecordAdd(){
         // idの設定
         record.id = 'R' + new Date().getTime();
 
+        // 無効な学習記録のチェック
+        let invalidRecordFlag = invalidRecordCheck(record);
         // ダブルブッキングチェック
         let doubleBookingFlag = calenderDoubleBookingCheck(record, record.id);
+        
 
         // エラーがあれば表示、なければ登録処理
-        if(doubleBookingFlag){
-            alert('既に追加された記録と被ります．')
+        if(doubleBookingFlag || invalidRecordFlag){
+            if(doubleBookingFlag){
+                alert('既に追加された記録と被ります．');
+            }else if(invalidRecordFlag){
+                alert('将来の学習記録は登録できません．日時を確認してください．');
+            }
         }else{
             postRecord(record);
         }
@@ -1034,12 +1041,19 @@ function displayLearningRecordDetail(id){
                 editRecord.memo = $('.learning-record-detail-modal-wrapper #detailLearningMemo').val();
 
 
+                // 無効な学習記録のチェック
+                let invalidRecordFlag = invalidRecordCheck(editRecord);
                 // ダブルブッキングチェック
                 let doubleBookingFlag = calenderDoubleBookingCheck(editRecord, id);
+                
 
                 // エラーがあれば表示、なければ登録処理
-                if(doubleBookingFlag){
-                    alert('既に追加された記録と被ります．');
+                if(doubleBookingFlag || invalidRecordFlag){
+                    if(doubleBookingFlag){
+                        alert('既に追加された記録と被ります．');
+                    }else if(invalidRecordFlag){
+                        alert('将来の学習記録は登録できません．日時を確認してください．');
+                    }
                 }else{                    
                     $.ajax({
                         url:'./../../php/main/updateRecord.php',
@@ -1214,6 +1228,29 @@ function calenderDoubleBookingCheck(item, id){
     }
 
     return doubleBookingFlag;
+}
+
+/**
+ * 無効な学習記録の登録チェック(将来の記録)
+ */
+function invalidRecordCheck(record){
+    let currentTime = new Date().getTime();
+    let invalidRecordFlag = false;
+
+    let recordDateArray = record.date.split("-").map(Number);
+    let recordTimeArray = record.time.end.split(":").map(Number);
+    let recordTime = new Date(recordDateArray[0], recordDateArray[1]-1, recordDateArray[2], recordTimeArray[0], recordTimeArray[1]).getTime();
+    console.log(recordTime)
+    console.log(currentTime);
+
+    // 現在と学習記録の日時比較
+    // 現在よりも将来の学習記録の場合は無効とする
+    if(currentTime < recordTime){
+        invalidRecordFlag = true;
+    }
+
+    return invalidRecordFlag;
+
 }
 
 function updateExecuting(){
