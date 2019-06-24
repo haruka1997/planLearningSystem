@@ -51,30 +51,30 @@
             <div class="form-group pmd-textfield">       
                 <label class="required">事前テストの目標点数</label>
                 <select class="select-simple form-control pmd-select2 required" id="goal">
-                    <option value="なし">なし</option>
-                    <option value="6">6点</option>
-                    <option value="7">7点</option>
-                    <option value="8">8点</option>
-                    <option value="9">9点</option>
                     <option value="10">10点</option>
+                    <option value="9">9点</option>
+                    <option value="8">8点</option>
+                    <option value="7">7点</option>
+                    <option value="6">6点</option>
+                    <option value="なし">なし</option>
                 </select>
             </div>
             <!--事前テストの結果 -->
             <div class="form-group pmd-textfield">
                 <label>事前テストの点数</label>
                 <select class="select-simple form-control pmd-select2 learning-content" id="testScore">
-                    <option value="なし">なし</option>
-                    <option value="0">0点</option>
-                    <option value="1">1点</option>
-                    <option value="2">2点</option>
-                    <option value="3">3点</option>
-                    <option value="4">4点</option>
-                    <option value="5">5点</option>
-                    <option value="6">6点</option>
-                    <option value="7">7点</option>
-                    <option value="8">8点</option>
-                    <option value="9">9点</option>
                     <option value="10">10点</option>
+                    <option value="9">9点</option>
+                    <option value="8">8点</option>
+                    <option value="7">7点</option>
+                    <option value="6">6点</option>
+                    <option value="5">5点</option>
+                    <option value="4">4点</option>
+                    <option value="3">3点</option>
+                    <option value="2">2点</option>
+                    <option value="1">1点</option>
+                    <option value="0">0点</option>
+                    <option value="なし">なし</option>
                 </select>
             </div>
             <!--学習満足度 -->
