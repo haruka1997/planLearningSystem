@@ -251,8 +251,8 @@ function displayLearningSetting(){
     // フォームの入力項目チェック
     // 必須項目が入力されていたら「登録」ボタンのdisable化を解除
     $('.learning-setting-modal-wrapper input.required').on('change', function(){
+        let disabled = false;
         $('.learning-setting-modal-wrapper input.required').each(function() {
-            let disabled = false;
             if($(this).val() === ''){
                 disabled = true;
             }
@@ -323,9 +323,9 @@ function displayHistoryDetail(settingId){
     });
 
     // フォームの入力項目チェック
-    $('.history-detail-modal-wrapper input.required').on('change', function(){
+    $('.history-detail-modal-wrapper input.required').on('input', function(){
+        let disabled = false;
         $('.history-detail-modal-wrapper input.required').each(function() {
-            let disabled = false;
             if($(this).val() === ''){
                 disabled = true;
             }
@@ -558,12 +558,14 @@ function displayLearningPlanAdd(){
     }
 
     // フォームの必須項目が入力されたら
-    $('.learning-plan-create-modal-wrapper input.required').on('change', function(){
+    $('.learning-plan-create-modal-wrapper input.required').on('input', function(){
+        let disabled = false;
         $('.learning-plan-create-modal-wrapper input.required').each(function() {
-            let disabled = false;
             if($(this).val() === ''){
                 disabled = true;
             }
+
+            console.log(disabled);
 
             $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', disabled);
         });
@@ -634,7 +636,7 @@ function displayPrivatePlanAdd(){
     }
 
     // フォームの必須項目が入力されたら
-    $('.private-plan-create-modal-wrapper input.required').on('change', function(){
+    $('.private-plan-create-modal-wrapper input.required').on('input', function(){
         let disabled = false;
         $('.private-plan-create-modal-wrapper input.required').each(function() {
             if($(this).val() === ''){
@@ -730,13 +732,13 @@ function displayLearningRecordAdd(){
     };
 
     // フォームの必須項目が入力されたら
-    $('.learning-record-create-modal-wrapper input.required').on('change', function(){
+    $('.learning-record-create-modal-wrapper input.required').on('input', function(){
         $('.learning-record-create-modal-wrapper input.required').each(function() {
            formErrorCheck($(this).val());
         });
     });
 
-    $('.learning-record-create-modal-wrapper select.required').on('change', function(){
+    $('.learning-record-create-modal-wrapper select.required').on('input', function(){
         $('.learning-record-create-modal-wrapper input.required').each(function() {
             formErrorCheck($(this).val());
         });
@@ -814,7 +816,7 @@ function displayLearningPlanDetail(id){
             }
         
             // フォームの必須項目が入力されたら
-            $('.learning-plan-detail-modal-wrapper input.required').on('change', function(){
+            $('.learning-plan-detail-modal-wrapper input.required').on('input', function(){
                 let disabled = false;
                 $('.learning-plan-detail-modal-wrapper input.required').each(function() {
                     if($(this).val() === ''){
@@ -917,7 +919,7 @@ function displayPrivatePlanDetail(id){
             }
 
             // フォームの必須項目が入力されたら
-            $('.private-plan-detail-modal-wrapper input.required').on('change', function(){
+            $('.private-plan-detail-modal-wrapper input.required').on('input', function(){
                 let disabled = false;
                 $('.private-plan-detail-modal-wrapper input.required').each(function() {
                     if($(this).val() === ''){
@@ -1007,7 +1009,7 @@ function displayLearningRecordDetail(id){
             }
 
             // フォームの必須項目が入力されたら
-            $('.learning-record-detail-modal-wrapper input.required').on('change', function(){
+            $('.learning-record-detail-modal-wrapper input.required').on('input', function(){
                 let disabled = false;
                 $('.learning-record-detail-modal-wrapper input.required').each(function() {
                     if($(this).val() === ''){
