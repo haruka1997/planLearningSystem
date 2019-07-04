@@ -839,12 +839,17 @@ function displayLearningPlanDetail(id){
                 let record = JSON.parse(JSON.stringify(selectPlan));
                 record.id = 'R' + new Date().getTime();
 
+                // 無効な学習記録のチェック
+                let invalidRecordFlag = invalidRecordCheck(record);
                 // ダブルブッキングチェック
                 let doubleBookingFlag = calenderDoubleBookingCheck(record, record.id);
 
-                // エラーがあれば表示、なければ登録処理
-                if(doubleBookingFlag){
-                    alert('既に追加された記録と被ります．')
+                if(doubleBookingFlag || invalidRecordFlag){
+                    if(doubleBookingFlag){
+                        alert('既に追加された記録と被ります．');
+                    }else if(invalidRecordFlag){
+                        alert('将来の学習記録は登録できません．日時を確認してください．');
+                    }
                 }else{
                     postRecord(record);
                 }
