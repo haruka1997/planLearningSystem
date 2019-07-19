@@ -25,8 +25,8 @@
                     <option value="10">第10回 ベクトル⑥（作問演習）</option>
                     <option value="11">第11回 行列①（行列の相等と成分，行列の和・差・実数倍，零行列と列ベクトル行ベクトル，行列の積，対角行列と単位行列，行列の積の性質，ケーリー・ハミルトン）</option>
                     <option value="12">第12回 行列②（逆行列，連立1次方程式の解法）</option>
-                    <option value="13" selected>第13回 行列③（作問演習）</option>
-                    <option value="14">第14回 総合演習 </option>
+                    <option value="13">第13回 行列③（作問演習）</option>
+                    <option value="14" selected>第14回 総合演習 </option>
                     <option value="15">第15回 期末試験 </option>
                 </select>
             </div>
@@ -35,7 +35,7 @@
                 <label class="control-label required">
                     選択した授業日
                 </label>
-                <input type="text" id="classDate" class="form-control required" value="2019-07-12" disabled>
+                <input type="text" id="classDate" class="form-control required" value="2019-07-26" disabled>
                 <!-- <input type="date" id="classDate" class="form-control required"> -->
             </div>
            <!-- 理解度 -->
