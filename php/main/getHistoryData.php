@@ -11,7 +11,7 @@
         // MySQL ネイティブの静的プレースホルダを使用する
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId ORDER BY coverage ASC'); 
+        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId'); 
         $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
 
         $stmt->execute();
