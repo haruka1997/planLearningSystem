@@ -38,19 +38,29 @@
             <button class="new-plan-create-button mdl-button mdl-js-button mdl-button--raised">授業回の登録</button>
           </div>
           <div class="calender-display-content">
-            <div class="calender-switch">
-              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="計画" checked>
-                <span class="mdl-radio__label">計画</span>
-              </label>
-              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-                <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="記録">
-                <span class="mdl-radio__label">記録</span>
-              </label>
-              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
-                <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="計画と記録">
-                <span class="mdl-radio__label">計画と記録</span>
-              </label>
+            <div class="calender-display-header">
+              <div class="calender-select">
+                <button class="mdl-button mdl-js-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                </button>
+                <button class="mdl-button mdl-js-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                </button>
+              </div>
+              <div class="calender-switch">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                  <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="計画" checked>
+                  <span class="mdl-radio__label">計画</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                  <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="記録">
+                  <span class="mdl-radio__label">記録</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+                  <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="計画と記録">
+                  <span class="mdl-radio__label">計画と記録</span>
+                </label>
+              </div>
             </div>
             <!-- 計画・記録追加ボタン -->
             <div class="floating-action-button">

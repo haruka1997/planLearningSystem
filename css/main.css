@@ -257,11 +257,6 @@ body{
     padding: 10px;
 }
 
-.calender-switch{
-    float: right;
-    padding: 0 30px 10px 0;
-}
-
 .calender-display-content{
     display: none;
 }
@@ -270,11 +265,25 @@ body{
     display: initial;
 }
 
-.calender-switch .mdl-radio__label{
+.calender-display-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.calender-display-header .calender-select{
+    float:left;
+}
+
+.calender-display-header .calender-switch{
+    float: right;
+    padding: 0 30px 10px 0;
+}
+
+.calender-display-header .calender-switch .mdl-radio__label{
     font-weight: initial !important;
 }
 
-.calender-switch .mdl-radio{
+.calender-display-header .calender-switch .mdl-radio{
     margin: 0 10px 0 0;
 }
 
