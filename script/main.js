@@ -12,6 +12,7 @@ let displayItems = {
 let historyData = [];
 let selectHistoryData = {};
 let selectSettingId = undefined;
+let displayCalenderDate = '';
 let calenderDate = [];
 let statisticsData = {};
 let setStatisticsFlag = false;
@@ -217,12 +218,10 @@ function displayCalender(){
 
     let displayItem = [];
     if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
-        displayItems.plans = displayItemCheck(displayItems.plans);
-        displayItem = displayItems.plans;
+        displayItem = displayItemCheck(displayItems.plans);
         $('.add-plan-button').css('display', '');
     }else if(selectButton == '記録'){
-        displayItems.records = displayItemCheck(displayItems.records);
-        displayItem = displayItems.records;
+        displayItem = displayItemCheck(displayItems.records);
         $('.add-record-button').css('display', '');
     }else{   // 計画と記録をカレンダーにセット
         displayItem = displayItems.plans.concat(displayItems.records);
@@ -574,8 +573,6 @@ function displayLearningPlanAdd(){
             if($(this).val() === ''){
                 disabled = true;
             }
-
-            console.log(disabled);
 
             $('.learning-plan-create-modal-wrapper .learning-add-button').attr('disabled', disabled);
         });
@@ -1189,7 +1186,7 @@ function calcCalenderDate(){
     let dayText = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
     // 授業日までの1週間の日付を取得
     for(let beforeDate=6; beforeDate>=0; beforeDate--){
-        let classDate = new Date(Number(selectHistoryData.classDate)); // 授業日を取得
+        let classDate = new Date(Number(displayCalenderDate)); // 授業日を取得
         classDate.setDate(classDate.getDate() - beforeDate);
         let month = classDate.getMonth()+1;
         let date = classDate.getDate();
@@ -1257,8 +1254,6 @@ function invalidRecordCheck(record){
     let recordDateArray = record.date.split("-").map(Number);
     let recordTimeArray = record.time.end.split(":").map(Number);
     let recordTime = new Date(recordDateArray[0], recordDateArray[1]-1, recordDateArray[2], recordTimeArray[0], recordTimeArray[1]).getTime();
-    console.log(recordTime)
-    console.log(currentTime);
 
     // 現在と学習記録の日時比較
     // 現在よりも将来の学習記録の場合は無効とする
@@ -1342,7 +1337,7 @@ function setLearningContentList(){
  * カレンダーの週表示変更
  */
 function changeCalenderWeek(select){
-    let classDate = new Date(Number(selectHistoryData.classDate));
+    let classDate = new Date(Number(displayCalenderDate));
     if(select == 'last'){   // もし左ボタン(先週)が押されたら
         // 1週間前の日付に設定する
         classDate.setDate(classDate.getDate() - 7);
@@ -1351,7 +1346,7 @@ function changeCalenderWeek(select){
         classDate.setDate(classDate.getDate() + 7);
     }
 
-    selectHistoryData.classDate = classDate;
+    displayCalenderDate = classDate;
     displayCalender();
 }
 
@@ -1373,6 +1368,7 @@ function getHistoryData(){
             selectHistoryData = data.slice(-1)[0];
             displayHistoryTable();
             getCalenderItem();
+            displayCalenderDate = selectHistoryData.classDate;  // 初期のカレンダー表示は授業までの1週間分にする
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -1435,6 +1431,19 @@ function getCalenderItem(){
                 displayItems.records[record].date = displayItems.records[record].recordDate;
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
+
+            // 授業の予定を登録
+            let classDate = new Date(Number(selectHistoryData.classDate));
+            classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
+            displayItems.plans.push({
+                content: "第" + selectHistoryData.coverage + "回 基礎数B",
+                date: classDate,
+                time: {
+                    start: "14:40",
+                    end: "16:10"
+                },
+                id: "C" + new Date().getTime()
+            });
 
             // カレンダー表示
             displayCalender();
