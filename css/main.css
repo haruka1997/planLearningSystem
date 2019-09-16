@@ -272,6 +272,7 @@ body{
 
 .calender-display-header .calender-select{
     float:left;
+    margin-left: 15px;
 }
 
 .calender-display-header .calender-switch{
@@ -296,5 +297,10 @@ body{
 .history-statistics-button.mdl-button{
     height: auto;
     line-height: 1;
+}
+
+label{
+    font-weight: normal;
+    font-size: 17px;
 }
 

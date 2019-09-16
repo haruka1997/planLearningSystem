@@ -34,5 +34,16 @@ module.exports.init = function(calenderDateArray, selectButton, escape){
                 $(this).css('color', '#F44336');
             }
         });
+
+        // カレンダーの月表示設定
+        let start = calenderDateArray[0].year + '年' + calenderDateArray[0].month + '月';
+        let end = '';
+        if(calenderDateArray[0].year !== calenderDateArray[6].year){
+            end = '〜' + calenderDateArray[6].year + '年' + calenderDateArray[6].month + '月';    
+        }else if(calenderDateArray[0].month !== calenderDateArray[6].month){
+            end = '〜' + calenderDateArray[6].month + '月';    
+        }
+
+        $('.calender-month').text(start + end);
     }
 }
