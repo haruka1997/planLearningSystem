@@ -105,6 +105,16 @@ function initDOM(){
     $('#add-learning-record').click(function (){
         displayLearningRecordAdd();
     });
+
+    // 次週のボタンを押されたら
+    $('#select-next-week').click(function (){
+        changeCalenderWeek('next');
+    });
+
+    // 先週のボタンを押されたら
+    $('#select-last-week').click(function (){
+        changeCalenderWeek('last');
+    });
 }
 
 /**
@@ -1326,6 +1336,23 @@ function setLearningContentList(){
         }
     }
     $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
+}
+
+/**
+ * カレンダーの週表示変更
+ */
+function changeCalenderWeek(select){
+    let classDate = new Date(Number(selectHistoryData.classDate));
+    if(select == 'last'){   // もし左ボタン(先週)が押されたら
+        // 1週間前の日付に設定する
+        classDate.setDate(classDate.getDate() - 7);
+    }else{  // 右ボタン(次週)が押されたら
+        // 1週間後の日付に設定する
+        classDate.setDate(classDate.getDate() + 7);
+    }
+
+    selectHistoryData.classDate = classDate;
+    displayCalender();
 }
 
 
