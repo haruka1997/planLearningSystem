@@ -40,6 +40,7 @@ function initDOM(){
             for(let data of historyData){
                 if(data.settingId == selectSettingId){
                     selectHistoryData = data;
+                    displayCalenderDate = selectHistoryData.classDate;
                 }
             }
             changeTableColor(); // 選択した項目の背景色変更
@@ -1371,9 +1372,9 @@ function getHistoryData(){
             historyData = data;
             selectSettingId = data.slice(-1)[0].settingId;
             selectHistoryData = data.slice(-1)[0];
+            displayCalenderDate = selectHistoryData.classDate;
             displayHistoryTable();
             getCalenderItem();
-            displayCalenderDate = selectHistoryData.classDate;  // 初期のカレンダー表示は授業までの1週間分にする
         }
     })
     // Ajaxリクエストが失敗した時発動
@@ -1449,7 +1450,6 @@ function getCalenderItem(){
                 },
                 id: "C" + new Date().getTime()
             });
-
             // カレンダー表示
             displayCalender();
 
