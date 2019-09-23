@@ -49,6 +49,11 @@ function initDOM(){
         }
     });
 
+    // テーブルの登録するボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .history-regist-button", function () {
+        displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
+    });
+
     // テーブルの詳細ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
         displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
@@ -141,7 +146,7 @@ function displayHistoryTable(){
         }else if(historyData[i].achievement == 0){
             historyData[i].achievementText = '未達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
         }else{
-            historyData[i].achievementText = '未登録';
+            historyData[i].achievementText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';
         }
 
         // 学習満足度の表示
@@ -151,16 +156,16 @@ function displayHistoryTable(){
             case '50': historyData[i].satisfactionText = 'どちらともいえない'; break;
             case '75': historyData[i].satisfactionText = 'まあ満足している'; break;
             case '100': historyData[i].satisfactionText = '満足している'; break;
-            default: historyData[i].satisfactionText = '未登録';                         
+            default: historyData[i].satisfactionText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';                         
         }
 
         let tableText = {
-            settingId: escape(historyData[i].settingId),
-            coverage: escape(historyData[i].coverage) + '回  (' + Number(new Date(Number(historyData[i].classDate)).getMonth()+1) + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
-            understanding: escape(historyData[i].understanding),
-            executing: escape(historyData[i].executingText),
-            achievement: escape(historyData[i].achievementText),
-            satisfaction: escape(historyData[i].satisfactionText)
+            settingId: historyData[i].settingId,
+            coverage: historyData[i].coverage + '回  (' + Number(new Date(Number(historyData[i].classDate)).getMonth()+1) + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
+            understanding: historyData[i].understanding,
+            executing: historyData[i].executingText,
+            achievement: historyData[i].achievementText,
+            satisfaction: historyData[i].satisfactionText
         }
 
         // テーブル内容の表示
