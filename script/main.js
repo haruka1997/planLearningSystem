@@ -202,13 +202,13 @@ function displayCalender(){
     $('.add-plan-button').css('display', 'none');
     $('.add-record-button').css('display', 'none');
 
-    let classDate = calenderDate[0];  // カレンダーの起点日を取得
+    let startDate = calenderDate[0];  // カレンダーの起点日を取得
 
     // カレンダーに表示するアイテムの検査
     let displayItemCheck = function(items){
         let lastDate = calenderDate[6]; // カレンダーの最終日を取得
         let checkedItems = [];
-        let prepareUnixTime = new Date(classDate.year, Number(classDate.month), Number(classDate.date)).getTime();
+        let prepareUnixTime = new Date(startDate.year, Number(startDate.month), Number(startDate.date)).getTime();
         let lastUnixTime = new Date(lastDate.year, Number(lastDate.month), Number(lastDate.date)).getTime();
 
         for(item of items){
@@ -221,6 +221,19 @@ function displayCalender(){
         }
         return checkedItems;
     }
+
+    // 授業の予定を登録
+    let classDate = new Date(Number(selectHistoryData.classDate));
+    classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
+    displayItems.plans.push({
+        content: "第" + selectHistoryData.coverage + "回 基礎数B",
+        date: classDate,
+        time: {
+            start: "14:40",
+            end: "16:10"
+        },
+        id: "C" + new Date().getTime()
+    });
 
     let displayItem = [];
     if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
@@ -304,6 +317,7 @@ function displayLearningSetting(){
             selectSettingId = settingId;
             historyData.push(data);
             selectHistoryData = data;
+            displayCalenderDate = selectHistoryData.classDate;
             displayItems = {
                 plans: [],
                 records: []
@@ -430,10 +444,16 @@ function displayHistoryDetail(settingId){
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( () => {
-                    historyData.splice(data, 1);
-                    selectSettingId = historyData[historyData.length-1].settingId;
-                    selectHistoryData = historyData[historyData.length-1];
-                    displayCalenderDate = selectHistoryData.classDate;
+                    if(historyData.length > 1){
+                        historyData.splice(data, 1);
+                        selectSettingId = historyData[historyData.length-1].settingId;
+                        selectHistoryData = historyData[historyData.length-1];
+                        displayCalenderDate = selectHistoryData.classDate;
+                    }else{
+                        historyData = [];
+                        // カレンダー非表示
+
+                    }
                     displayHistoryTable();
                     getCalenderItem();
 
@@ -1439,18 +1459,6 @@ function getCalenderItem(){
                 displayItems.records[record].time = JSON.parse(displayItems.records[record].recordTime);
             }
 
-            // 授業の予定を登録
-            let classDate = new Date(Number(selectHistoryData.classDate));
-            classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
-            displayItems.plans.push({
-                content: "第" + selectHistoryData.coverage + "回 基礎数B",
-                date: classDate,
-                time: {
-                    start: "14:40",
-                    end: "16:10"
-                },
-                id: "C" + new Date().getTime()
-            });
             // カレンダー表示
             displayCalender();
 
