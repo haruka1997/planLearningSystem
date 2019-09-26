@@ -28,7 +28,8 @@
             </div>
             </form>
             <div class="form-footer">
-            <p><a href="">共通基盤教育のユーザID,パスワードで設定しています</a></p>
+            <p><a>共通基盤教育のユーザID,パスワードで設定しています</a></p>
+            <p><a>対応ブラウザはFirefoxとGoogle Chromeです</a></p>
             </div>
         </div>
       </main>

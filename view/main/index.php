@@ -24,7 +24,7 @@
                       <th>授業回</th>
                       <th>理解度</th>
                       <th>計画実施率</th>
-                      <th>目標達成度</th>
+                      <th>目標達成度(事後/事前)</th>
                       <th>学習満足度</th>
                       <th width="15%"></th>
                   </tr>
@@ -50,7 +50,7 @@
               </div>
               <div class="calender-switch">
                 <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                  <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="計画" checked>
+                  <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="計画">
                   <span class="mdl-radio__label">計画</span>
                 </label>
                 <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
@@ -58,7 +58,7 @@
                   <span class="mdl-radio__label">記録</span>
                 </label>
                 <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
-                  <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="計画と記録">
+                  <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="計画と記録" checked>
                   <span class="mdl-radio__label">計画と記録</span>
                 </label>
               </div>

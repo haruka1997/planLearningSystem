@@ -4,7 +4,7 @@ modules = modules.mainSet();
 
 const escape = modules.htmlescape.escape;   //htmlエスケープモジュール
 
-let selectButton = '計画';
+let selectButton = '計画と記録';
 let displayItems = {
     plans: [],
     records: []
@@ -433,6 +433,7 @@ function displayHistoryDetail(settingId){
                     historyData.splice(data, 1);
                     selectSettingId = historyData[historyData.length-1].settingId;
                     selectHistoryData = historyData[historyData.length-1];
+                    displayCalenderDate = selectHistoryData.classDate;
                     displayHistoryTable();
                     getCalenderItem();
 
