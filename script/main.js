@@ -267,7 +267,7 @@ function displayLearningSetting(){
     // モーダルを閉じる処理
     let exit = function(){
         $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);    // 登録ボタンのdisable化
+        // $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);    // 登録ボタンのdisable化
         // $('.learning-setting-modal-wrapper').find('input').val(""); // input項目の初期化
     }
 
