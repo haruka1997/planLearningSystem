@@ -68,9 +68,9 @@
               <button class="mdl-button mdl-js-button mdl-button--fab add-plan-button" id="add-learning-plan" type="button" title="学習の計画追加">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>
               </button>
-              <button class="mdl-button mdl-js-button mdl-button--fab add-plan-button" id="add-private-plan" type="button" title="プライベートの予定追加">
+              <!-- <button class="mdl-button mdl-js-button mdl-button--fab add-plan-button" id="add-private-plan" type="button" title="プライベートの予定追加">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>                
-              </button>
+              </button> -->
               <button class="mdl-button mdl-js-button mdl-button--fab add-record-button" id="add-learning-record" type="button" title="学習の記録追加" style="display:none;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>              
               </button>

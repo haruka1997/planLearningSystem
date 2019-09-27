@@ -16,8 +16,6 @@ let displayCalenderDate = '';
 let calenderDate = [];
 let statisticsData = {};
 let setStatisticsFlag = false;
-let selectTag = "red";
-
 
 $(function(){
 
@@ -81,8 +79,6 @@ function initDOM(){
             let category = id.slice(0,1);   // IDの先頭文字を取得(L:学習計画, P:プライベートの予定, R:学習記録)
             if(category === 'L'){   // 学習記録詳細表示
                 displayLearningPlanDetail(id);
-            }else if(category === 'P'){
-                displayPrivatePlanDetail(id);   // プライベート予定詳細表示
             }else{
                 displayLearningRecordDetail(id);   // 学習記録詳細表示
             }
@@ -99,12 +95,6 @@ function initDOM(){
     // TODO: クラス名見直し
     $('#add-learning-plan').click(function (){
         displayLearningPlanAdd();
-    });
-
-    // プライベートの予定追加ボタンを押されたら
-    // TODO: クラス名見直し
-    $('#add-private-plan').click(function (){
-        displayPrivatePlanAdd();
     });
 
     // 学習の記録追加ボタンを押されたら
@@ -267,8 +257,6 @@ function displayLearningSetting(){
     // モーダルを閉じる処理
     let exit = function(){
         $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        // $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', true);    // 登録ボタンのdisable化
-        // $('.learning-setting-modal-wrapper').find('input').val(""); // input項目の初期化
     }
 
     // キャンセルボタンが押されたら
@@ -471,7 +459,7 @@ function displayHistoryDetail(settingId){
 }
 
 /**
- * 統計情報の設定
+ * 統計情報の表示
  */
 function displayStatistics(){
     $('.statistics-modal-wrapper').addClass('is-visible');    //統計情報モーダルの表示
@@ -488,7 +476,7 @@ function displayStatistics(){
 }
 
 /**
- * 統計情報の表示
+ * 統計情報の設定
  */
 function setStatistics(){
 
@@ -634,84 +622,6 @@ function displayLearningPlanAdd(){
         }
 
         exit();
-    });
-}
-
-/**
- * プライベートの予定追加処理
- */
-function displayPrivatePlanAdd(){
-    $('.private-plan-create-modal-wrapper').addClass('is-visible');    //プライベートの予定モーダル表示
-
-    let exit = function(){
-        $('.private-plan-create-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-        $('.tag').removeClass('active');// タグ選択状態を全解除
-        $('#red').addClass('active'); //選択したタグを選択状態にセット
-        $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', true);
-        $('.private-plan-create-modal-wrapper').find('input').val("");
-    }
-    // キャンセルボタン押されたら
-    $('.header-cansel-button').click(function () {
-        exit();
-    });
-
-    // タグボタンを押されたら
-    $('.tag').click(function (){
-        selectTag =  $(this).attr("id");    //選択されたタグ色取得
-        $('.tag').removeClass('active'); //タグ選択状態を全解除
-        $(this).addClass('active'); //選択したタグを選択状態にセット
-    });
-
-    // 学習日のリスト表示
-    $('.private-plan-create-modal-wrapper #privateDate').html('');
-    for(let date of calenderDate){
-        let value = date.year + '-' + date.month + '-' + date.date;
-        $('<option value="' + escape(value) + '">' + escape(value) + escape(date.day) + '</option>').appendTo('.private-plan-create-modal-wrapper #privateDate');
-    }
-
-    // フォームの必須項目が入力されたら
-    $('.private-plan-create-modal-wrapper input.required').on('input', function(){
-        let disabled = false;
-        $('.private-plan-create-modal-wrapper input.required').each(function() {
-            if($(this).val() === ''){
-                disabled = true;
-            }
-        });
-
-        $('.private-plan-create-modal-wrapper .private-add-button').attr('disabled', disabled);
-    });
-
-
-    // 追加ボタン押されたら
-    $('.private-add-button').off('click').one('click', function () {
-
-        let plan = {};
-        plan.time = {};
-        let doubleBookingFlag = false;
-
-        //  入力内容の取得
-        plan.content = "";
-        plan.date = $('.private-plan-create-modal-wrapper #privateDate').val();
-        plan.time.start = $('.private-plan-create-modal-wrapper #privateTimeStart').val();
-        plan.time.end = $('.private-plan-create-modal-wrapper #privateTimeEnd').val();
-        plan.tag = selectTag;
-        plan.memo = $('.private-plan-create-modal-wrapper #privateMemo').val();
-        plan.learningFlag = false;
-
-        // idの設定
-        plan.id = 'P' + new Date().getTime();  
-
-        // ダブルブッキングチェック
-        doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
-
-        // エラーがあれば表示、なければ登録処理
-        if(doubleBookingFlag){
-            alert('既に追加された予定と被ります．空いている時間に変更しましょう．')
-        }else{
-            // Ajax通信 計画情報をDBに追加
-            postPlan(plan);
-        }
-        exit();      
     });
 }
 
@@ -928,101 +838,6 @@ function displayLearningPlanDetail(id){
     }
 }
 
-/**
- * プライベートの予定詳細表示
- * @param {String} id 
- */
-function displayPrivatePlanDetail(id){
-    for(var i=0; i<displayItems.plans.length; i++){
-        if(displayItems.plans[i].id == id){ //選択した計画データ一致
-            let selectPlan = displayItems.plans[i];
-            $('.private-plan-detail-modal-wrapper').addClass('is-visible');    //プライベートの予定詳細モーダル表示
-
-            let exit = function(){
-                 $('.tag').removeClass('active');// タグ選択状態を全解除
-                 $('.private-plan-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
-                 $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', false);
-                 $('.modal-error').text('');
-             }
-
-            // キャンセルボタン押されたら
-            $('.header-cansel-button').click(function () {
-                exit();
-            });
-
-            // 学習日のリスト表示
-            $('.private-plan-detail-modal-wrapper #detailPrivateDate').html('');
-            for(let date of calenderDate){
-                let value = date.year + '-' + date.month + '-' + date.date;
-                $('<option value="' + escape(value) + '">' + escape(value) + escape(date.day) + '</option>').appendTo('.private-plan-detail-modal-wrapper #detailPrivateDate');
-            }
-
-            // フォームの必須項目が入力されたら
-            $('.private-plan-detail-modal-wrapper input.required').on('input', function(){
-                let disabled = false;
-                $('.private-plan-detail-modal-wrapper input.required').each(function() {
-                    if($(this).val() === ''){
-                        disabled = true;
-                    }
-
-                    $('.private-plan-detail-modal-wrapper .private-edit-button').attr('disabled', disabled);
-
-                });
-            });
-
-            // フォームの値セット
-            $('.private-plan-detail-modal-wrapper #detailPrivateDate').val(selectPlan.date);
-            $('.private-plan-detail-modal-wrapper #detailPrivateTimeStart').val(selectPlan.time.start);
-            $('.private-plan-detail-modal-wrapper #detailPrivateTimeEnd').val(selectPlan.time.end);
-            $('.private-plan-detail-modal-wrapper #detailPrivateMemo').val(selectPlan.memo);
-
-            // タグボタンを押されたら
-            $('.tag').click(function (){
-                selectTag =  $(this).attr("id");    //選択されたタグ色取得
-                $('.tag').removeClass('active');// タグ選択状態を全解除
-                $(this).addClass('active'); //選択したタグを選択状態にセット
-            });
-
-            // 編集ボタン押されたら
-            $('.private-plan-detail-modal-wrapper .private-edit-button').off("click").one("click", function () {
-
-                let editPlan = {};
-                editPlan.time = {};
-
-                //  入力内容の取得
-                editPlan.content = "";
-                editPlan.date = $('.private-plan-detail-modal-wrapper #detailPrivateDate').val();
-                editPlan.time.start = $('.private-plan-detail-modal-wrapper #detailPrivateTimeStart').val();
-                editPlan.time.end = $('.private-plan-detail-modal-wrapper #detailPrivateTimeEnd').val();
-                editPlan.memo = $('.private-plan-detail-modal-wrapper #detailPrivateMemo').val();
-                editPlan.tag = selectTag;
-                editPlan.learningFlag = false;
-                editPlan.settingId = selectPlan.settingId;
-
-                // ダブルブッキングチェック
-                let doubleBookingFlag = calenderDoubleBookingCheck(editPlan, id);
-
-                // エラーがあれば表示、なければ登録処理
-                if(doubleBookingFlag){
-                    alert('既に追加された予定と被ります．空いている時間に変更しましょう');
-                }else{
-                    editPlan.id = 'P' + new Date().getTime();
-                    updatePlan(editPlan, id, i);
-                }
-                exit();     
-            });
-
-            // プライベートの予定の削除ボタンを押されたら
-            $('.private-plan-detail-modal-wrapper .private-delete-button').off('click').one("click", function () {
-                deletePlan(selectPlan, id, i);
-                exit();
-            });
-
-            break;
-        }
-    }
-}
-
 function displayLearningRecordDetail(id){
     for(var i=0; i<displayItems.records.length; i++){
         if(displayItems.records[i].id == id){ //選択した計画データ一致
@@ -1151,7 +966,7 @@ function displayLearningRecordDetail(id){
 function calenderDataSet(item, editFlag, deleteFlag){
     let id = item.id.slice(0,1);
 
-    if(id == 'L' || id == 'P'){  // 計画データ
+    if(id == 'L'){  // 計画データ
 
         var afterPlans = JSON.parse(JSON.stringify(displayItems.plans));
         if(editFlag !== false){
@@ -1166,14 +981,10 @@ function calenderDataSet(item, editFlag, deleteFlag){
 
         displayItems.plans = JSON.parse(JSON.stringify(afterPlans));
 
-        // calcTotalLearningTime();    // 合計学習時間の算出
-
         if(editFlag === false && deleteFlag === false){
             $('.learning-plan-create-modal-wrapper').removeClass('is-visible');
-            $('.private-plan-create-modal-wrapper').removeClass('is-visible');
         }else{
             $('.learning-plan-detail-modal-wrapper').removeClass('is-visible');
-            $('.private-plan-detail-modal-wrapper').removeClass('is-visible');
         }
 
     }else{  // 記録データ
@@ -1189,9 +1000,7 @@ function calenderDataSet(item, editFlag, deleteFlag){
             afterRecords.push(item);
         }
         
-
         displayItems.records = JSON.parse(JSON.stringify(afterRecords));
-        // calcTotalLearningTime();    // 合計学習時間の算出
 
         if(editFlag === false && deleteFlag === false){
             $('.learning-record-create-modal-wrapper').removeClass('is-visible');
@@ -1234,7 +1043,7 @@ function calenderDoubleBookingCheck(item, id){
     let checkId = id.slice(0,1);
     let doubleBookingFlag = false;
 
-    if(checkId == 'L' || checkId == 'P'){
+    if(checkId == 'L'){
         
         if(displayItems.plans.length>0){
             for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
