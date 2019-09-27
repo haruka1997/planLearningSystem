@@ -1049,8 +1049,8 @@ function calenderDoubleBookingCheck(item, id){
             for(var learningIndex = 0; learningIndex < displayItems.plans.length; learningIndex++){
                 if(id !== displayItems.plans[learningIndex].id){
                     if(displayItems.plans[learningIndex].date == item.date){
-                        if(!(displayItems.plans[learningIndex].time.start >= item.time.start) && (displayItems.plans[learningIndex].time.start >= item.time.end)
-                        || !(displayItems.plans[learningIndex].time.end <= item.time.start) && (displayItems.plans[learningIndex].time.end <= item.time.end)){
+                        if(!((displayItems.plans[learningIndex].time.start >= item.time.start) && (displayItems.plans[learningIndex].time.start >= item.time.end)
+                        || (displayItems.plans[learningIndex].time.end <= item.time.start) && (displayItems.plans[learningIndex].time.end <= item.time.end))){
                             doubleBookingFlag = true;
                             break;
                         }
@@ -1066,8 +1066,8 @@ function calenderDoubleBookingCheck(item, id){
                 if(id !== displayItems.records[learningIndex].id){
                     if(displayItems.records[learningIndex].date == item.date){
                         // 開始時間が既に作成された予定とダブる または　終了時間が既に作成された予定とダブる
-                        if(!(displayItems.records[learningIndex].time.start >= item.time.start) && (displayItems.records[learningIndex].time.start >= item.time.end)
-                        || !(displayItems.records[learningIndex].time.end <= item.time.start) && (displayItems.records[learningIndex].time.end <= item.time.end)){
+                        if(!((displayItems.records[learningIndex].time.start >= item.time.start) && (displayItems.records[learningIndex].time.start >= item.time.end)
+                        || (displayItems.records[learningIndex].time.end <= item.time.start) && (displayItems.records[learningIndex].time.end <= item.time.end))){
                             doubleBookingFlag = true;
                             break;
                         }
