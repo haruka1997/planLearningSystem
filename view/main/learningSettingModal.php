@@ -13,8 +13,8 @@
             <div class="form-group pmd-textfield">       
                 <label class="required">予習する授業範囲</label>
                 <select class="select-simple form-control pmd-select2 required" id="coverage" disabled>
-                    <option value="2" selected>第2回 順列①（和の法則，積の法則，順列の総数，順列の公式，円順列，重複順列）</option>
-                    <option value="3">第3回 順列②（和の法則，積の法則，順列の応用問題）</option>
+                    <option value="2">第2回 順列①（和の法則，積の法則，順列の総数，順列の公式，円順列，重複順列）</option>
+                    <option value="3" selected>第3回 順列②（和の法則，積の法則，順列の応用問題）</option>
                     <option value="4">第4回 順列③（作問演習/個別面談）</option>
                     <option value="5">第5回 組合せ①（組合せの公式，組み分け，同じものを含む順列，重複組合せ，二項定理）</option>
                     <option value="6">第6回 組合せ②（組合わせの応用問題）</option>
@@ -34,7 +34,7 @@
                 <label class="control-label required">
                     選択した授業日
                 </label>
-                <input type="text" id="classDate" class="form-control required" value="2019-10-03">
+                <input type="text" id="classDate" class="form-control required" value="2019-10-10">
                 <!-- <input type="date" id="classDate" class="form-control required"> -->
             </div>
            <!-- 理解度 -->
