@@ -306,3 +306,12 @@ label{
     font-size: 17px;
 }
 
+.learning-plan-create-modal-wrapper .header-title,
+.learning-plan-detail-modal-wrapper .header-title{
+    color: #0288D1;
+}
+
+.learning-record-create-modal-wrapper .header-title,
+.learning-record-detail-modal-wrapper .header-title{
+    color: #FB8C00;
+}

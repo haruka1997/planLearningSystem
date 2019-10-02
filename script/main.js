@@ -82,6 +82,19 @@ function initDOM(){
             }else{
                 displayLearningRecordDetail(id);   // 学習記録詳細表示
             }
+        }else{
+            if(selectButton == '計画'){
+                displayLearningPlanAdd();
+            }else if(selectButton == '記録'){
+                displayLearningRecordAdd();
+            }else{
+                // 計画の列が選択されたら
+                if($(this).hasClass('plan-col')){
+                    displayLearningPlanAdd();
+                }else{ // 記録の列が選択されたら
+                    displayLearningRecordAdd();
+                }
+            }
         }
     });
 

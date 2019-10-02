@@ -122,6 +122,10 @@
     border-right: dotted 0.3px #e4e3e3;
 }
 
+.calender-content{
+    cursor: pointer;
+}
+
 .calender-table tbody tr{
     height: 20px;
 }

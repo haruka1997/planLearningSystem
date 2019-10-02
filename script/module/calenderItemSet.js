@@ -76,7 +76,7 @@ module.exports.set = function(displayItems, selectHistoryData, selectButton, esc
 
             var calenderContent = $('.calender-table tbody tr:' + trNthChild[0])[0].childNodes;
             for(var i=1; i<calenderContent.length; i++){
-                if(calenderContent[i].classList[1] == nthDay){
+                if(calenderContent[i].classList[2] == nthDay){
                     if(selectButton !== '計画と記録'){ // singleCalenderの場合
                         tdNthChild = 'nth-child(' + Number(i+1) + ')';
                     }else{ // doubleCalenderの場合
