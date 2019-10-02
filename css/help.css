@@ -1,10 +1,46 @@
+.help-page{
+    width: 90%;
+    margin: 3%;
+}
+.toc{
+    background: #ffffff;
+    padding: 0;
+    border: solid 2px #7db4e6;
+    margin-bottom: 2em;
+}
+.toc h1{
+    margin: -1px;
+    background: #7db4e6;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+}
 .toc ol{
-    background: #fcfcfc;/*背景色*/
-    padding: 0.5em 0.5em 0.5em 2em;/*ボックス内の余白*/
-    border: solid 3px gray;/*線の種類 太さ 色*/
+    list-style: decimal;
 }
 
 .toc ol li{
     line-height: 1.5; /*文の行高*/
-    padding: 0.5em 0; /*前後の文との余白*/
+    padding: 0.2em 0; /*前後の文との余白*/
+}
+
+.toc ol li a{
+    color: #333333;
+    display: block;
+    text-decoration: none;
+    transition: all ease-in-out .3s;
+    cursor: pointer;
+}
+
+.toc ol li a:hover{
+    opacity: .5;
+}
+
+h1, h2{
+    padding: 0.4em 0.5em;/*文字の上下 左右の余白*/
+    color: #494949;/*文字色*/
+    background: #f4f4f4;/*背景色*/
+    border-left: solid 5px #7db4e6;/*左線*/
+    border-bottom: solid 3px #d7d7d7;/*下線*/
+    font-size: 20px;
 }
