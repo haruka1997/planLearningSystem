@@ -295,7 +295,8 @@ body{
 
 .history-detail-button.mdl-button,
 .history-regist-button.mdl-button,
-.history-statistics-button.mdl-button{
+.history-statistics-button.mdl-button,
+.history-chatbot-button.mdl-button{
     height: auto;
     line-height: 1;
     font-size: 1rem;

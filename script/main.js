@@ -53,6 +53,12 @@ function initDOM(){
         displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
     });
 
+    // テーブルの振り返りボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .history-chatbot-button", function () {
+        displayChatbotSystem($(this).attr('id'));  // 学習履歴の詳細表示
+    });
+
+
     // テーブルの詳細ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
         displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
@@ -174,7 +180,7 @@ function displayHistoryTable(){
 
         // テーブル内容の表示
         $('.learning-history-tbody').append(
-            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
         );
     }
 
@@ -333,6 +339,18 @@ function displayLearningSetting(){
            alert('学習の設定情報の登録に失敗しました');
         });
     });
+}
+
+/**
+ * チャットボットの表示
+ * @param {*} settingId 
+ */
+function displayChatbotSystem(coverage){
+    // 選択した授業回を取得
+    let selectCoverage = coverage;
+
+    // 別タブでリンク表示
+    window.open('http://153.126.193.128/chatbot/page/Login.php');
 }
 
 /**
