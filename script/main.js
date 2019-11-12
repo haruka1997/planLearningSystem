@@ -350,7 +350,7 @@ function displayChatbotSystem(coverage){
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('http://153.126.193.128/chatbot/page/Login.php');
+    window.open('https://takagi-lab.tk/chatbot/page/lesson/2019b/bot_page/' + Number(selectCoverage) + '.php');
 }
 
 /**
