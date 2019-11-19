@@ -47,7 +47,7 @@
                 </select>
             </div>
             <!-- 目標点数 -->
-            <div class="form-group pmd-textfield">       
+            <!-- <div class="form-group pmd-textfield">       
                 <label class="required">事前テストの目標点数</label>
                 <select class="select-simple form-control pmd-select2 required" id="goal">
                     <option value="10">10点</option>
@@ -57,7 +57,7 @@
                     <option value="6">6点</option>
                     <option value="なし">なし</option>
                 </select>
-            </div>
+            </div> -->
             <!-- 追加ボタン -->
             <div class="plan-modal-footer-button">
                 <button class="learning-setting-regist-button mdl-button mdl-js-button mdl-button--raised">登録</button>
