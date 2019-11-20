@@ -48,8 +48,8 @@
             </div>
             <!-- 目標点数 -->
             <div class="form-group pmd-textfield">       
-                <label class="required">事前テストの目標点数</label>
-                <select class="select-simple form-control pmd-select2 required" id="goal">
+                <label>事前テストの目標点数</label>
+                <select class="select-simple form-control pmd-select2" id="goal">
                     <option value="10">10点</option>
                     <option value="9">9点</option>
                     <option value="8">8点</option>
