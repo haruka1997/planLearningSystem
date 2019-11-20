@@ -308,7 +308,6 @@ function displayLearningSetting(){
             'coverage': $('#coverage').val(),
             'classDate': classDate,
             'understanding': $('#understanding').val(),
-            'goal': $('#goal').val(),
             'insertTime': new Date().getTime()
         };
         // Ajax通信
@@ -1229,10 +1228,30 @@ function getHistoryData(){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        if(data.length>0) {
-            historyData = data;
-            selectSettingId = data.slice(-1)[0].settingId;
-            selectHistoryData = data.slice(-1)[0];
+        if(data) {
+            historyData = data.history;
+            // chatbotのテスト点数を格納
+            if(data.chatbot){
+                // NOTE: 目標達成度がNULLならchatbotからデータを持ってきて格納する
+                for(let i=0; i<historyData.length; i++){
+                    if(historyData[i].achievement == null || historyData[i].achievement == ''){
+                        for(let j=0; j<data.chatbot.length; j++){
+                            if(historyData[i].settingId == data.chatbot[j].settingId){
+                                historyData[i].goal = data.chatbot[j].goal;
+                                historyData[i].testScore = data.chatbot[j].testScore;
+                                if(historyData[i].goal <= historyData[i].testScore){
+                                    historyData[i].achievement = 100;
+                                }else{
+                                    historyData[i].achievement = 0;
+                                }
+                                updateSetting(historyData[i]);
+                            }
+                        }
+                    }
+                } 
+            }
+            selectSettingId = data.history.slice(-1)[0].settingId;
+            selectHistoryData = data.history.slice(-1)[0];
             displayCalenderDate = selectHistoryData.classDate;
             displayHistoryTable();
             getCalenderItem();
@@ -1308,6 +1327,24 @@ function getCalenderItem(){
     .fail( (data) => {
        
     });
+}
+
+// 目標設定の更新
+function updateSetting(historyData){
+    $.ajax({
+        url:'./../../php/main/updateSetting.php',
+        type:'POST',
+        data: historyData,
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        console.log('更新完了');
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        alert('更新に失敗しました');
+    })
 }
 
 
