@@ -5,7 +5,7 @@
     if($_SESSION['userId'] !== undefined){
         header('Location: ./view/main/index.php');
     }else{
-        header('Location: /view/login.php');
+        header('Location: https://takagi-lab.tk/chatbot/page/Login.php');
     }
 
 ?>

@@ -4,7 +4,7 @@
     <div class="mdl-layout-spacer"></div>
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link" target="_blank" href="./../help.html">ヘルプ</a>
-      <a class="mdl-navigation__link" href="./../login.php">ログアウト</a>
+      <a class="mdl-navigation__link" href="https://takagi-lab.tk/chatbot/page/Login.php">ログアウト</a>
     </nav>
   </div>
 </header>

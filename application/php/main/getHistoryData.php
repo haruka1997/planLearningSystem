@@ -4,8 +4,8 @@
 
     //エラー処理
     try {
-        $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system;charset=utf8', 'localhost', 'localhost');
-        // $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
+        // $dbh = new PDO('mysql:host=localhost; dbname=plan_learning_system;charset=utf8', 'localhost', 'localhost');
+        $dbh = new PDO('mysql:host=localhost; dbname=g031o008; charset=utf8;', 'g031o008', 'GRwd44v7');
 
         // プリペアドステートメントのエミュレーションを無効にして、
         // MySQL ネイティブの静的プレースホルダを使用する
@@ -28,7 +28,7 @@
                 if ($row2 = $stmt2->fetchAll(PDO::FETCH_ASSOC)) { 
                     $return = array(
                         "history" => $row,
-                         "chatbot" => $row2
+                        "chatbot" => $row2
                     );
                     echo json_encode($return);
                     exit();  // 処理終了
