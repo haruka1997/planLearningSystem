@@ -11,14 +11,36 @@
         // MySQL ネイティブの静的プレースホルダを使用する
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId ORDER BY coverage ASC'); 
+        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId'); 
+
         $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
 
         $stmt->execute();
     
-        if ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) { 
-            echo json_encode($row);
-            exit();  // 処理終了
+        if ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+            try {
+                $stmt2 = $dbh->prepare('SELECT history.settingId, history.userId, history.classDate, history.executing, history.understanding, history.coverage, history.achievement, history.satisfaction, history.insertTime, chatbot.goal, chatbot.testScore FROM history INNER JOIN chatbot ON history.userId = chatbot.userId AND history.classDate = chatbot.classDate where history.userId = :userId');
+        
+                $stmt2->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
+        
+                $stmt2->execute();
+            
+                if ($row2 = $stmt2->fetchAll(PDO::FETCH_ASSOC)) { 
+                    $return = array(
+                        "history" => $row,
+                         "chatbot" => $row2
+                    );
+                    echo json_encode($return);
+                    exit();  // 処理終了
+                }else{
+                    $return = array(
+                        "history" => $row
+                    );
+                    echo json_encode($return);
+                    exit();  // 処理終了
+                }
+            } catch (PDOException $e) {
+            } 
         }else{
             // echo $stmt->execute();
         }
