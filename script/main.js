@@ -1232,11 +1232,11 @@ function getHistoryData(){
             historyData = data.history;
             // chatbotのテスト点数を格納
             if(data.chatbot){
-                // NOTE: 目標達成度がNULLならchatbotからデータを持ってきて格納する
                 for(let i=0; i<historyData.length; i++){
-                    if(historyData[i].achievement == null || historyData[i].achievement == ''){
-                        for(let j=0; j<data.chatbot.length; j++){
-                            if(historyData[i].settingId == data.chatbot[j].settingId){
+                    for(let j=0; j<data.chatbot.length; j++){
+                        if(historyData[i].settingId == data.chatbot[j].settingId){
+                            // 目標達成度がNULLだったらチャットボットから点数を持ってくる
+                            if(historyData[i].achievement == null || historyData[i].achievement == ''){
                                 historyData[i].goal = data.chatbot[j].goal;
                                 historyData[i].testScore = data.chatbot[j].testScore;
                                 if(historyData[i].goal <= historyData[i].testScore){
@@ -1246,16 +1246,21 @@ function getHistoryData(){
                                 }
                                 updateSetting(historyData[i]);
                             }
+                            // 学習満足度がNULLだったら...
+                            if(historyData[i].satisfaction == null || historyData[i].satisfaction == ''){
+                                historyData[i].satisfaction = data.chatbot[j].satisfaction;
+                                updateSetting(historyData[i]);
+                            }
                         }
                     }
-                } 
-            }
-            selectSettingId = data.history.slice(-1)[0].settingId;
-            selectHistoryData = data.history.slice(-1)[0];
-            displayCalenderDate = selectHistoryData.classDate;
-            displayHistoryTable();
-            getCalenderItem();
+                }
+            } 
         }
+        selectSettingId = data.history.slice(-1)[0].settingId;
+        selectHistoryData = data.history.slice(-1)[0];
+        displayCalenderDate = selectHistoryData.classDate;
+        displayHistoryTable();
+        getCalenderItem();
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
