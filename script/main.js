@@ -308,6 +308,7 @@ function displayLearningSetting(){
             'coverage': $('#coverage').val(),
             'classDate': classDate,
             'understanding': $('#understanding').val(),
+            'goal': $('#goal').val(),
             'insertTime': new Date().getTime()
         };
         // Ajax通信
@@ -1237,7 +1238,7 @@ function getHistoryData(){
                         if(historyData[i].settingId == data.chatbot[j].settingId){
                             // 目標達成度がNULLだったらチャットボットから点数を持ってくる
                             if(historyData[i].achievement == null || historyData[i].achievement == ''){
-                                historyData[i].goal = data.chatbot[j].goal;
+                                // historyData[i].goal = data.chatbot[j].goal;
                                 historyData[i].testScore = data.chatbot[j].testScore;
                                 if(historyData[i].goal <= historyData[i].testScore){
                                     historyData[i].achievement = 100;

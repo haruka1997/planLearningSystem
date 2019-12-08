@@ -13,12 +13,13 @@
 
         
 
-        $stmt = $dbh->prepare('INSERT INTO history (settingId, userId, coverage, classDate, understanding, insertTime) VALUES(:settingId, :userId, :coverage, :classDate, :understanding, :insertTime)'); 
+        $stmt = $dbh->prepare('INSERT INTO history (settingId, userId, coverage, classDate, understanding, goal, insertTime) VALUES(:settingId, :userId, :coverage, :classDate, :understanding, :goal, :insertTime)'); 
         $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
         $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
         $stmt->bindParam(':coverage', $_POST['coverage'], PDO::PARAM_STR);
         $stmt->bindParam(':classDate', $_POST['classDate'], PDO::PARAM_STR);
         $stmt->bindParam(':understanding', $_POST['understanding'], PDO::PARAM_STR);
+        $stmt->bindParam(':goal', $_POST['goal'], PDO::PARAM_STR);
         $stmt->bindParam(':insertTime', $_POST['insertTime'], PDO::PARAM_STR);
 
         $flag = $stmt->execute();
