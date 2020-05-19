@@ -110,6 +110,11 @@ function initDOM(){
         displayLearningSetting(); // 目標の設定表示
     });
 
+    // 振り返り履歴ボタンを押されたら
+    $('.chatbot-history-button').click(function (){
+        window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
+    });
+
     // 学習の計画追加ボタンを押されたら
     // TODO: クラス名見直し
     $('#add-learning-plan').click(function (){
@@ -372,7 +377,7 @@ function displayChatbotSystem(coverage){
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('https://takagi-lab.tk/chatbot/page/lesson/2019b/bot_page/' + Number(selectCoverage) + '.php');
+    window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/bot/' + Number(selectCoverage) + '.php');
 }
 
 /**

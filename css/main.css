@@ -293,6 +293,10 @@ body{
     text-align: center;
 }
 
+.new-plan-create button{
+    margin: 10px;
+}
+
 .history-detail-button.mdl-button,
 .history-regist-button.mdl-button,
 .history-statistics-button.mdl-button,

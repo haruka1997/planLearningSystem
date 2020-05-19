@@ -34,9 +34,10 @@
                 </tbody>
               </table>
           </div>
-          <!-- 新規計画作成ボタン -->
+          <!-- ボタン -->
           <div class="new-plan-create">
             <button class="new-plan-create-button mdl-button mdl-js-button mdl-button--raised">授業回の登録</button>
+            <button class="chatbot-history-button mdl-button mdl-js-button mdl-button--raised">振り返り履歴</button>
           </div>
           <div class="calender-display-content">
             <div class="calender-display-header">
