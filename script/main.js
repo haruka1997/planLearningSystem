@@ -305,44 +305,61 @@ function displayLearningSetting(){
         // 授業回,授業日の取得
         let coverageInfo = $('#coverage').val().split(',');
 
-        // POSTデータの生成
-        let data = {
-            'settingId': settingId,
-            'coverage': coverageInfo[0],
-            'classDate': coverageInfo[1],
-            'understanding': $('#understanding').val(),
-            'goal': $('#goal').val(),
-            'insertTime': new Date().getTime(),
-            'recordTime': 0
-        };
-        // Ajax通信
-        $.ajax({
-            url:'./../../php/main/postSetting.php',
-            type:'POST',
-            data: data,
-            dataType: 'json'       
-        })
-        // Ajaxリクエストが成功した時発動
-        .done( () => {
-            // 作成した授業回をテーブルに表示
-            selectSettingId = settingId;
-            historyData.push(data);
-            selectHistoryData = data;
-            displayCalenderDate = selectHistoryData.classDate;
-            displayItems = {
-                plans: [],
-                records: []
+        // 既に登録された授業回ではないかチェック
+        let duplicateFlag = false;
+        for(let data of historyData){
+            if(data.coverage === coverageInfo[0]){
+            duplicateFlag = true
+            }
+        }
+        if(!duplicateFlag){ //既に登録された授業と重複しなければ登録処理する
+            // POSTデータの生成
+            let data = {
+                'settingId': settingId,
+                'coverage': coverageInfo[0],
+                'classDate': coverageInfo[1],
+                'understanding': $('#understanding').val(),
+                'goal': $('#goal').val(),
+                'insertTime': new Date().getTime(),
+                'recordTime': 0,
+                'subjects': '2020年基礎数学C' //前期用固定値[要検討]
             };
-            displayHistoryTable();
-            displayCalender();
-            
-            exit();
-        })
-        // Ajaxリクエストが失敗した時発動
-        .fail( (data) => {
-            console.log(data);
-           alert('学習の設定情報の登録に失敗しました');
-        });
+            // Ajax通信
+            $.ajax({
+                url:'./../../php/main/postSetting.php',
+                type:'POST',
+                data: data,
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( () => {
+                // 作成した授業回をテーブルに表示
+                selectSettingId = settingId;
+                // グラフ表示のため計画実施率などを初期化
+                data.executing = null;
+                data.achievement = null;
+                data.satisfaction = null;
+                historyData.push(data);
+                selectHistoryData = data;
+                displayCalenderDate = selectHistoryData.classDate;
+                displayItems = {
+                    plans: [],
+                    records: []
+                };
+                // displayChartHistory();
+                // setSelectClass();
+                displayHistoryTable();
+                displayCalender();
+                
+                exit();
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+            alert('学習の設定情報の登録に失敗しました');
+            });
+        }else{　//既に登録された授業と重複したらアラートを表示
+            alert('既に該当する授業が登録されています');
+        }
     });
 }
 
