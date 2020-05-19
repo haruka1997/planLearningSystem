@@ -235,7 +235,7 @@ function displayCalender(){
     let classDate = new Date(Number(selectHistoryData.classDate));
     classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
     displayItems.plans.push({
-        content: "第" + selectHistoryData.coverage + "回 基礎数B",
+        content: "第" + selectHistoryData.coverage + "回 基礎数C",
         date: classDate,
         time: {
             start: "14:40",
@@ -300,16 +300,20 @@ function displayLearningSetting(){
     $('.learning-setting-regist-button').off('click').on('click', function(){
         let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);   // settingIdの生成
         // 予習開始日の入力値をunixTimeに変換
-        let prepareDateArray = $('#classDate').val().split('-');
-        let classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+        // let prepareDateArray = $('#classDate').val().split('-');
+        // let classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+        // 授業回,授業日の取得
+        let coverageInfo = $('#coverage').val().split(',');
+
         // POSTデータの生成
         let data = {
             'settingId': settingId,
-            'coverage': $('#coverage').val(),
-            'classDate': classDate,
+            'coverage': coverageInfo[0],
+            'classDate': coverageInfo[1],
             'understanding': $('#understanding').val(),
             'goal': $('#goal').val(),
-            'insertTime': new Date().getTime()
+            'insertTime': new Date().getTime(),
+            'recordTime': 0
         };
         // Ajax通信
         $.ajax({
@@ -336,6 +340,7 @@ function displayLearningSetting(){
         })
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
+            console.log(data);
            alert('学習の設定情報の登録に失敗しました');
         });
     });
@@ -389,15 +394,15 @@ function displayHistoryDetail(settingId){
             selectData = historyData[data];
 
             // 予習日入力値用に変換
-            let today = new Date(Number(selectData.classDate));
-            let month = today.getMonth()+1;
-            month = (month < 10) ? '0'+month : month;
-            let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
-            classDate = today.getFullYear() + '-' + month + '-' + date;
+            // let today = new Date(Number(selectData.classDate));
+            // let month = today.getMonth()+1;
+            // month = (month < 10) ? '0'+month : month;
+            // let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
+            // classDate = today.getFullYear() + '-' + month + '-' + date;
 
             // フォームに値をセット
-            $('.history-detail-modal-wrapper #coverage').val(selectData.coverage);
-            $('.history-detail-modal-wrapper #classDate').val(classDate);
+            let setCoverage = selectData.coverage + ',' + selectData.classDate;
+            $('.history-detail-modal-wrapper #coverage').val(setCoverage);
             $('.history-detail-modal-wrapper #understanding').val(selectData.understanding);
             $('.history-detail-modal-wrapper #goal').val(selectData.goal);
             $('.history-detail-modal-wrapper #learningSatisfaction').val(selectData.satisfaction);
@@ -406,14 +411,19 @@ function displayHistoryDetail(settingId){
             // 編集ボタンが押されたら
             $('.history-detail-modal-wrapper .history-edit-button').off('click').on('click', function(){
                 let editData = {};
-                editData.coverage = $('.history-detail-modal-wrapper #coverage').val();
-                let prepareDateArray = $('.history-detail-modal-wrapper #classDate').val().split('-');
-                editData.classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+                // editData.coverage = $('.history-detail-modal-wrapper #coverage').val();
+                // let prepareDateArray = $('.history-detail-modal-wrapper #classDate').val().split('-');
+                // editData.classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
+                // 授業回,授業日の取得
+                let coverageInfo = $('.history-detail-modal-wrapper #coverage').val().split(',');
+                editData.coverage = coverageInfo[0];
+                editData.classDate = coverageInfo[1];
                 editData.understanding = $('.history-detail-modal-wrapper #understanding').val();
                 editData.goal = $('.history-detail-modal-wrapper #goal').val();
                 editData.satisfaction = $('.history-detail-modal-wrapper #learningSatisfaction').val();
                 editData.testScore = $('.history-detail-modal-wrapper #testScore').val();
                 editData.settingId = settingId;
+                editData.recordTime = selectData.recordTime;
 
                 // 事前テストの点数が入力されたら
                 if(editData.testScore !== null && editData.testScore !== "なし" && selectData.goal !== "なし"){
@@ -753,7 +763,27 @@ function displayLearningRecordAdd(){
                 alert('将来の学習記録は登録できません．日時を確認してください．');
             }
         }else{
-            postRecord(record);
+
+            // 学習時間の加算
+            let start = record.time.start.split(':') // 開始時の取得
+            let end = record.time.end.split(':') // 最後時の取得
+            let addRecordTime = (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+            selectHistoryData.recordTime += addRecordTime;
+
+            $.ajax({
+                url:'./../../php/main/updateSetting.php',
+                type:'POST',
+                data: selectHistoryData,
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                postRecord(record);
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+            });
+            
         }
 
         exit();
@@ -826,7 +856,27 @@ function displayLearningPlanDetail(id){
                         alert('将来の学習記録は登録できません．日時を確認してください．');
                     }
                 }else{
-                    postRecord(record);
+
+                    // 学習時間の算出
+                    let selectStart = selectPlan.time.start.split(':') // 開始時の取得
+                    let selectEnd = selectPlan.time.end.split(':') // 最後時の取得
+                    let selectRecordTime = (Number(selectEnd[0]) * 60 + Number(selectEnd[1])) - (Number(selectStart[0]) * 60 + Number(selectStart[1]));
+                    selectHistoryData.recordTime = Number(selectHistoryData.recordTime) + selectRecordTime;
+
+                    $.ajax({
+                        url:'./../../php/main/updateSetting.php',
+                        type:'POST',
+                        data: selectHistoryData,
+                        dataType: 'json'       
+                    })
+                    // Ajaxリクエストが成功した時発動
+                    .done( (data) => {
+                        postRecord(record);
+                    })
+                    // Ajaxリクエストが失敗した時発動
+                    .fail( (data) => {
+                    });
+                    
                 }
                 exit();
             });
