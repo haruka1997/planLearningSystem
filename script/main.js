@@ -1023,7 +1023,32 @@ function displayLearningRecordDetail(id){
                     })
                     // Ajaxリクエストが成功した時発動
                     .done( (data) => {
-                        calenderDataSet(editRecord, i, false);
+                        // 合計学習時間の編集
+                        // 選択した学習時間の算出
+                        let selectStart = selectRecord.time.start.split(':') // 開始時の取得
+                        let selectEnd = selectRecord.time.end.split(':') // 最後時の取得
+                        let selectRecordTime = (Number(selectEnd[0]) * 60 + Number(selectEnd[1])) - (Number(selectStart[0]) * 60 + Number(selectStart[1]));
+                        // 編集した学習時間の算出
+                        let editStart = editRecord.time.start.split(':') // 開始時の取得
+                        let editEnd = editRecord.time.end.split(':') // 最後時の取得
+                        let editRecordTime = (Number(editEnd[0]) * 60 + Number(editEnd[1])) - (Number(editStart[0]) * 60 + Number(editStart[1]));
+                        // 選択した学習時間と編集した学習時間の差分を算出
+                        let diffRecordTime = selectRecordTime - editRecordTime;
+                        selectHistoryData.recordTime = Number(selectHistoryData.recordTime) - diffRecordTime;
+                        
+                        $.ajax({
+                            url:'./../../php/main/updateSetting.php',
+                            type:'POST',
+                            data: selectHistoryData,
+                            dataType: 'json'       
+                        })
+                        // Ajaxリクエストが成功した時発動
+                        .done( (data) => {
+                            calenderDataSet(editRecord, i, false);
+                        })
+                        // Ajaxリクエストが失敗した時発動
+                        .fail( (data) => {
+                        });
                     })
                     // Ajaxリクエストが失敗した時発動
                     .fail( (data) => {
@@ -1046,7 +1071,26 @@ function displayLearningRecordDetail(id){
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( (data) => {
-                    calenderDataSet(selectRecord, false, i);
+                    // 削除した分の学習時間を算出
+                    let selectStart = selectRecord.time.start.split(':') // 開始時の取得
+                    let selectEnd = selectRecord.time.end.split(':') // 最後時の取得
+                    let selectRecordTime = (Number(selectEnd[0]) * 60 + Number(selectEnd[1])) - (Number(selectStart[0]) * 60 + Number(selectStart[1]));
+                    selectHistoryData.recordTime = Number(selectHistoryData.recordTime) - selectRecordTime;
+
+                    $.ajax({
+                        url:'./../../php/main/updateSetting.php',
+                        type:'POST',
+                        data: selectHistoryData,
+                        dataType: 'json'       
+                    })
+                    // Ajaxリクエストが成功した時発動
+                    .done( (data) => {
+                        calenderDataSet(selectRecord, false, i);
+                    })
+                    // Ajaxリクエストが失敗した時発動
+                    .fail( (data) => {
+                    });
+                    
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
