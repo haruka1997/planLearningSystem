@@ -156,9 +156,9 @@ function displayHistoryTable(){
         }
 
         // 目標達成率の表示
-        if(historyData[i].achievement == 100){
+        if(historyData[i].achievement == "100"){
             historyData[i].achievementText = '達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
-        }else if(historyData[i].achievement == 0){
+        }else if(historyData[i].achievement == "0"){
             historyData[i].achievementText = '未達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
         }else{
             historyData[i].achievementText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';
