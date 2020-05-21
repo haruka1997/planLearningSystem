@@ -144,7 +144,7 @@ function initDOM(){
 function displayHistoryTable(){
 
     // テーブル内容の初期化(第1回のみ表示)
-    $('.learning-history-tbody').html('<tr><td class="coverage">1回(5/22)</td><td colspan=4></td> <td><button id="1" class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button><td><td></td></tr>'); 
+    $('.learning-history-tbody').html(''); 
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -185,9 +185,15 @@ function displayHistoryTable(){
         }
 
         // テーブル内容の表示
-        $('.learning-history-tbody').append(
-            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
-        );
+        if(tableText.settingId){
+            $('.learning-history-tbody').append(
+                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+            );
+        }else{  // 第1回のデータ
+            $('.learning-history-tbody').append(
+                '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button></td><td></td></tr>'
+            );
+        }
     }
 
     changeTableColor();
@@ -1350,11 +1356,24 @@ function getHistoryData(){
     .done( (data) => {
         if(data) {
             historyData = data.history;
+            
             // chatbotのテスト点数を格納
             if(data.chatbot){
+                // 第1回のデータを取得
+                for(let chatbot of data.chatbot){
+                    if(chatbot.classDate == "1590073200000"){  //第1回のデータ
+                        historyData.unshift({
+                            coverage: "1",
+                            classDate: chatbot.classDate,
+                            goal: chatbot.goal,
+                            testScore: chatbot.testScore,
+                            satisfaction: chatbot.satisfaction
+                        });
+                    }
+                }
                 for(let i=0; i<historyData.length; i++){
                     for(let j=0; j<data.chatbot.length; j++){
-                        if(historyData[i].settingId == data.chatbot[j].settingId){
+                        if(historyData[i].classDate == data.chatbot[j].classDate){
                             // 目標達成度がNULLだったらチャットボットから点数を持ってくる
                             if(historyData[i].achievement == null || historyData[i].achievement == ''){
                                 // historyData[i].goal = data.chatbot[j].goal;
