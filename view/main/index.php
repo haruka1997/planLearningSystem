@@ -30,7 +30,7 @@
                       <th width="15%"></th>
                   </tr>
                 </thead>
-                <tbody class="learning-history-tbody">
+                <tbody class="learning-history-tbody">  
                 </tbody>
               </table>
           </div>

@@ -143,7 +143,8 @@ function initDOM(){
  */
 function displayHistoryTable(){
 
-    $('.learning-history-tbody').html(''); // テーブル内容の初期化
+    // テーブル内容の初期化(第1回のみ表示)
+    $('.learning-history-tbody').html('<tr><td class="coverage">1回(5/22)</td><td colspan=4></td> <td><button id="1" class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button><td><td></td></tr>'); 
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -197,8 +198,10 @@ function displayHistoryTable(){
  */
 function changeTableColor(){
     let selectTr = $('.learning-history-tbody').find('#' + selectSettingId);
-    $('.learning-history-tbody tr').removeClass('select');
-    $(selectTr).addClass('select');
+    if(selectTr.length>0){  // settingIdがある＝第1回でなければテーブル色を変更する
+        $('.learning-history-tbody tr').removeClass('select');
+        $(selectTr).addClass('select');
+    }
 }
 
 /**
