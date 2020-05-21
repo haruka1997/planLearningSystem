@@ -191,7 +191,7 @@ body{
 
 .learning-history-table{
     position: relative;
-    width: 98%;
+    width: 40%;
     margin-top: 10px;
     background-color: #ffffff;
     margin-left: 1%;
@@ -319,4 +319,15 @@ label{
 .learning-record-create-modal-wrapper .header-title,
 .learning-record-detail-modal-wrapper .header-title{
     color: #FB8C00;
+}
+
+
+.learning-history-chart{
+    /* display: flex; */
+    /* justify-content: space-around; */
+    width: 70%;
+}
+
+.learning-history-chart-item{
+    width: 100%;
 }

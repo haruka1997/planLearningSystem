@@ -149,48 +149,49 @@ function displayHistoryTable(){
     for(var i in historyData){
 
         // 計画実施率の表示
-        if(historyData[i].executing == null){
-            historyData[i].executingText = '未計算';
-        }else{
-            historyData[i].executingText = historyData[i].executing + '%';
-        }
+        // if(historyData[i].executing == null){
+        //     historyData[i].executingText = '未計算';
+        // }else{
+        //     historyData[i].executingText = historyData[i].executing + '%';
+        // }
 
         // 目標達成率の表示
-        if(historyData[i].achievement == "100"){
-            historyData[i].achievementText = '達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
-        }else if(historyData[i].achievement == "0"){
-            historyData[i].achievementText = '未達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
-        }else{
-            historyData[i].achievementText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';
-        }
+        // if(historyData[i].achievement == "100"){
+        //     historyData[i].achievementText = '達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
+        // }else if(historyData[i].achievement == "0"){
+        //     historyData[i].achievementText = '未達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
+        // }else{
+        //     historyData[i].achievementText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';
+        // }
 
         // 学習満足度の表示
-        switch(historyData[i].satisfaction){
-            case '0': historyData[i].satisfactionText = '満足していない'; break;
-            case '25': historyData[i].satisfactionText = 'あまり満足していない'; break;
-            case '50': historyData[i].satisfactionText = 'どちらともいえない'; break;
-            case '75': historyData[i].satisfactionText = 'まあ満足している'; break;
-            case '100': historyData[i].satisfactionText = '満足している'; break;
-            default: historyData[i].satisfactionText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';                         
-        }
+        // switch(historyData[i].satisfaction){
+        //     case '0': historyData[i].satisfactionText = '満足していない'; break;
+        //     case '25': historyData[i].satisfactionText = 'あまり満足していない'; break;
+        //     case '50': historyData[i].satisfactionText = 'どちらともいえない'; break;
+        //     case '75': historyData[i].satisfactionText = 'まあ満足している'; break;
+        //     case '100': historyData[i].satisfactionText = '満足している'; break;
+        //     default: historyData[i].satisfactionText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';                         
+        // }
 
         let tableText = {
             settingId: historyData[i].settingId,
             coverage: historyData[i].coverage + '回  (' + Number(new Date(Number(historyData[i].classDate)).getMonth()+1) + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
             understanding: historyData[i].understanding,
-            executing: historyData[i].executingText,
-            achievement: historyData[i].achievementText,
-            satisfaction: historyData[i].satisfactionText
+            // executing: historyData[i].executingText,
+            // achievement: historyData[i].achievementText,
+            // satisfaction: historyData[i].satisfactionText
         }
 
         // テーブル内容の表示
         $('.learning-history-tbody').append(
-            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>'
         );
     }
 
     changeTableColor();
 }
+
 
 /**
  * テーブル色の変更
@@ -200,6 +201,58 @@ function changeTableColor(){
     $('.learning-history-tbody tr').removeClass('select');
     $(selectTr).addClass('select');
 }
+
+/**
+ * グラフ表示
+ */
+function displayChartHistory(){
+    // グラフがすでにセットされているか確認
+    if(chartData.chartSetting){
+        if(chartData.chartSetting.executing || chartData.chartSetting.achievement || chartData.chartSetting.satisfaction || chartData.chartSetting.recordTime){
+            chartData.chartSetting.executing.destroy();
+            chartData.chartSetting.achievement.destroy();
+            chartData.chartSetting.satisfaction.destroy();
+            chartData.chartSetting.recordTime.destroy();
+        }
+    }
+
+    // グラフ用のデータセット
+    chartData = {
+        executing: [],
+        achievement: {
+            goal: [],
+            testScore: []
+        }, 
+        satisfaction: [],
+        recordTime: [],
+        chartSetting: {}
+    };
+
+    // 配列初期化
+    for(let index=0; index<14; index++){
+        chartData.executing[index] = 0;
+        chartData.achievement.goal[index] = 0;
+        chartData.achievement.testScore[index] = 0;
+        chartData.satisfaction[index] = 0;
+        chartData.recordTime[index] = 0;
+    }
+
+    // 
+    for(let i in historyData){
+        let coverage = Number(historyData[i].coverage);
+        chartData.executing[coverage-2] = Number(historyData[i].executing);
+        chartData.achievement.goal[coverage-2] = Number(historyData[i].goal);
+        chartData.achievement.testScore[coverage-2] = Number(historyData[i].testScore);
+        chartData.satisfaction[coverage-2] = Number(historyData[i].satisfaction);
+        // 合計学習時間の算出
+       
+        chartData.recordTime[coverage-2] = Number(historyData[i].recordTime);
+    }
+
+    let chartSetting = modules.setChartItem.set(modules, chartData);
+    chartData.chartSetting = chartSetting;
+}
+
 
 /**
  * カレンダーの表示

@@ -16,23 +16,33 @@
       <!-- コンテンツ -->
       <main class="mdl-layout__content">
         <div class="learning-history-content">
-          <!-- 学習履歴テーブル -->
-          <div class="learning-history-table">
-              <table class="table">
-                <thead>
-                  <tr id="table-header">
-                      <th>授業回</th>
-                      <th>理解度</th>
-                      <th>計画実施率</th>
-                      <th>目標達成度(実際/目標)</th>
-                      <th>学習満足度</th>
-                      <th>振り返り</th>
-                      <th width="15%"></th>
-                  </tr>
-                </thead>
-                <tbody class="learning-history-tbody">
-                </tbody>
-              </table>
+          <div style="display:flex;">
+            <!-- 学習履歴テーブル -->
+            <div class="learning-history-table">
+                <table class="table">
+                  <thead>
+                    <tr id="table-header">
+                        <th>授業回</th>
+                        <th>理解度</th>
+                        <th>振り返り</th>
+                        <th width="15%"></th>
+                    </tr>
+                  </thead>
+                  <tbody class="learning-history-tbody">
+                  </tbody>
+                </table>
+            </div>
+            <!-- 学習履歴グラフ -->
+            <div class="learning-history-chart">
+              <div style="display:flex;align-content: space-between;">
+                <div class="learning-history-chart-item"><canvas id="executing"></canvas></div>
+                <div class="learning-history-chart-item"><canvas id="achievement"></canvas></div>
+              </div>
+              <div style="display:flex;align-content: space-between;">
+                <div class="learning-history-chart-item"><canvas id="satisfaction"></canvas></div>
+                <div class="learning-history-chart-item"><canvas id="recordTime"></canvas></div>
+              </div>
+            </div>
           </div>
           <!-- ボタン -->
           <div class="new-plan-create">
