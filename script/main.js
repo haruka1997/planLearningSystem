@@ -33,7 +33,7 @@ function initDOM(){
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
-        if(selectSettingId !== $(this).attr('id')){
+        if(selectSettingId !== $(this).attr('id') && $(this).attr('id') !== undefined){
             selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
             for(let data of historyData){
                 if(data.settingId == selectSettingId){
@@ -204,10 +204,10 @@ function displayHistoryTable(){
  */
 function changeTableColor(){
     let selectTr = $('.learning-history-tbody').find('#' + selectSettingId);
-    if(selectTr.length>0){  // settingIdがある＝第1回でなければテーブル色を変更する
-        $('.learning-history-tbody tr').removeClass('select');
-        $(selectTr).addClass('select');
-    }
+    // if(selectTr.length>0){  // settingIdがある＝第1回でなければテーブル色を変更する
+    $('.learning-history-tbody tr').removeClass('select');
+    $(selectTr).addClass('select');
+    // }
 }
 
 /**
