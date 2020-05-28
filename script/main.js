@@ -143,8 +143,13 @@ function initDOM(){
  */
 function displayHistoryTable(){
 
-    // テーブル内容の初期化(第1回のみ表示)
+    // テーブル内容の初期化
     $('.learning-history-tbody').html(''); 
+
+    // 第1回の列の生成と初期化
+    $('.learning-history-tbody').append(
+        '<tr><td class="coverage">1回(5/22)</td><td colspan="2"></td><td>未登録</td><td>未登録</td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+    );
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -190,7 +195,7 @@ function displayHistoryTable(){
                 '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
             );
         }else{  // 第1回のデータ
-            $('.learning-history-tbody').append(
+            $('.learning-history-tbody').eq(0).html(
                 '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button></td><td></td></tr>'
             );
         }
@@ -1403,7 +1408,9 @@ function getHistoryData(){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
-       
+        $('.learning-history-tbody').append(
+            '<tr><td class="coverage">1回(5/22)</td><td colspan="2"></td><td>未登録</td><td>未登録</td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+        );    
     });
 }
 
