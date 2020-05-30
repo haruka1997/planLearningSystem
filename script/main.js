@@ -1361,6 +1361,14 @@ function getHistoryData(){
     .done( (data) => {
         if(data) {
             historyData = data.history;
+
+            // 授業回昇順にソート
+            for(let history of historyData){
+                history.coverage = Number(history.coverage);
+            }
+            historyData.sort(function (a, b) {
+                return a.coverage - b.coverage;
+            });
             
             // chatbotのテスト点数を格納
             if(data.chatbot){
