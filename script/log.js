@@ -23,6 +23,12 @@ function initDOM(){
             getLog();  // ログデータの取得
         }
     });
+
+     // テーブルの振り返りボタンをクリックされたら
+     $(document).on("click", ".send-comment-button", function () {
+        let settingId = $(this).attr('id');
+        sendComment(settingId);
+    });
 }
 
 /**
@@ -81,7 +87,38 @@ function displayLog(){
 
         $('.log-table tbody').append(
             '<tr><td class="mdl-data-table__cell--non-numeric">' + data.userId + '</td><td>' + data.executing + '%</td><td>' + data.achievementText + '</td><td>' + data.satisfactionText + '</td><td>' + data.recordTime + '</td>'
-            + '<td><input type="text" size="50"/><button>送信</button></td></tr>'
+            + '<td><input type="text" size="50" class="comment"/><button class="send-comment-button" id=' + data.settingId + '>送信</button></td></tr>'
         );
+    }
+}
+
+function sendComment(settingId){
+    let comment = $('.comment').val();
+
+    for(let data of log){
+        if(data.settingId == settingId){
+            if(data.comment == null){
+                data.comment = comment;
+            }else{
+                data.comment += comment;
+            }
+
+            $.ajax({
+                url:'./../../php/log/postComment.php',
+                type:'POST',
+                data: data,
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                console.log(data);
+                alert('コメントを送信しました');
+                $('.comment').val("");
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+                alert('コメントの送信に失敗しました');
+            });
+        }
     }
 }
