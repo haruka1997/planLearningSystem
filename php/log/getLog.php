@@ -12,7 +12,7 @@
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 
-        $stmt = $dbh->prepare('SELECT history.userId, history.executing, history.achievement, history.satisfaction, history.goal, history.testScore, history.settingId, history.recordTime FROM history WHERE history.coverage = :coverage ORDER BY history.userId'); 
+        $stmt = $dbh->prepare('SELECT history.userId, history.executing, history.achievement, history.satisfaction, history.goal, history.testScore, history.settingId, history.recordTime FROM history WHERE history.coverage = :coverage AND history.subjects = "2020年基礎数学C" ORDER BY history.userId'); 
         $stmt->bindParam(':coverage', $_POST['coverage'], PDO::PARAM_STR);
         // $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
         // $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
