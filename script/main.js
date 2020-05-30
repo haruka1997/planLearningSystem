@@ -55,6 +55,11 @@ function initDOM(){
         displayChatbotSystem($(this).attr('id'));  // 学習履歴の詳細表示
     });
 
+    // テーブルのTAコメントボタンが押されたら
+    $(document).on("click", ".learning-history-tbody td .display-comment-button", function () {
+        displayComment($(this).attr('id'));  // コメントの表示
+    });
+
 
     // テーブルの詳細ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
@@ -183,7 +188,7 @@ function displayHistoryTable(){
         if(tableText.settingId){
             $('.learning-history-tbody').append(
                 '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button>'
-                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">コメント</button>'
+                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">TAコメント</button>'
                 + '<button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button>'
                 + '</td></tr>'
             );
@@ -437,6 +442,22 @@ function displayChatbotSystem(coverage){
 
     // 別タブでリンク表示
     window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/bot/' + Number(selectCoverage) + '.php');
+}
+
+/**
+ * コメントの表示
+ * @param {*} settingId 
+ */
+function displayComment(settingId){
+    for(let data of historyData){
+        if(data.settingId == settingId){
+            if(data.comment !== null){
+                alert(data.comment);
+            }else{
+                alert('コメントは届いていません');
+            }
+        }
+    }
 }
 
 /**
