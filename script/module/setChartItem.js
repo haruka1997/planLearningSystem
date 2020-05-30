@@ -8,10 +8,10 @@ module.exports.set = function(modules, chartData){
     var achievementChart = document.getElementById("achievement").getContext('2d');
     var satisfactionChart = document.getElementById("satisfaction").getContext('2d');
     var recordTimeChart = document.getElementById("recordTime").getContext('2d');
-    executingChart.canvas.heigth = 200;
-    achievementChart.canvas.heigth = 200;
-    satisfactionChart.canvas.heigth = 200;
-    recordTimeChart.canvas.heigth = 200;
+    executingChart.canvas.height = 150;
+    achievementChart.canvas.heigth = 150;
+    satisfactionChart.canvas.heigth = 150;
+    recordTimeChart.canvas.heigth = 150;
 
     let chart1 = new modules.Chart(executingChart, {
         type: 'line',

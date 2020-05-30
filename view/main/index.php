@@ -34,11 +34,11 @@
             </div>
             <!-- 学習履歴グラフ -->
             <div class="learning-history-chart">
-              <div style="display:flex;align-content: space-between;">
+              <div class="learning-history-chart-div">
                 <div class="learning-history-chart-item"><canvas id="executing"></canvas></div>
                 <div class="learning-history-chart-item"><canvas id="achievement"></canvas></div>
               </div>
-              <div style="display:flex;align-content: space-between;">
+              <div class="learning-history-chart-div">
                 <div class="learning-history-chart-item"><canvas id="satisfaction"></canvas></div>
                 <div class="learning-history-chart-item"><canvas id="recordTime"></canvas></div>
               </div>
