@@ -25,7 +25,7 @@
                         <th>授業回</th>
                         <th>理解度</th>
                         <th>振り返り</th>
-                        <th width="15%"></th>
+                        <th width="30%"></th>
                     </tr>
                   </thead>
                   <tbody class="learning-history-tbody">

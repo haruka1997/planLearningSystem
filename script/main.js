@@ -182,7 +182,10 @@ function displayHistoryTable(){
         // テーブル内容の表示
         if(tableText.settingId){
             $('.learning-history-tbody').append(
-                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>'
+                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button>'
+                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">コメント</button>'
+                + '<button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button>'
+                + '</td></tr>'
             );
         }else{  // 第1回のデータ
             $('.learning-history-tbody').eq(0).html(

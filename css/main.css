@@ -205,6 +205,7 @@ body{
     padding: 10px 0;
     line-height: 1;
     vertical-align: middle;
+    font-size: 15px;
 }
 
 .learning-history-table table{
@@ -300,10 +301,11 @@ body{
 .history-detail-button.mdl-button,
 .history-regist-button.mdl-button,
 .history-statistics-button.mdl-button,
-.history-chatbot-button.mdl-button{
+.history-chatbot-button.mdl-button,
+.display-comment-button.mdl-button{
     height: auto;
     line-height: 1;
-    font-size: 1rem;
+    font-size: 14px;;
 }
 
 label{
