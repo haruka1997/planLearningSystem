@@ -143,7 +143,7 @@ function displayHistoryTable(){
 
     // 第1回の列の生成と初期化
     $('.learning-history-tbody').append(
-        '<tr><td class="coverage">1回(5/22)</td><td colspan="2"></td><td>未登録</td><td>未登録</td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+        '<tr><td class="coverage">1回(5/22)</td><td></td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
     );
 
     // 取得した学習履歴をにテーブルに表示
@@ -1388,7 +1388,7 @@ function getHistoryData(){
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
         $('.learning-history-tbody').append(
-            '<tr><td class="coverage">1回(5/22)</td><td colspan="2"></td><td>未登録</td><td>未登録</td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+            '<tr><td class="coverage">1回(5/22)</td><td></td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
         );    
     });
 }

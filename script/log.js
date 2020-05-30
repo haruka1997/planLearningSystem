@@ -87,17 +87,17 @@ function displayLog(){
 
         $('.log-table tbody').append(
             '<tr><td class="mdl-data-table__cell--non-numeric">' + data.userId + '</td><td>' + data.executing + '%</td><td>' + data.achievementText + '</td><td>' + data.satisfactionText + '</td><td>' + data.recordTime + '</td>'
-            + '<td><input type="text" size="50" class="comment"/><button class="send-comment-button" id=' + data.settingId + '>送信</button></td></tr>'
+            + '<td><input type="text" size="50" class="comment" id=' + data.settingId + ' /><button class="send-comment-button" id=' + data.settingId + '>送信</button></td></tr>'
         );
     }
 }
 
 function sendComment(settingId){
-    let comment = $('.comment').val();
+    let comment = $('.comment#' + settingId).val();
 
     for(let data of log){
         if(data.settingId == settingId){
-            if(data.comment == null){
+            if(data.comment == null || data.comment == undefined){
                 data.comment = comment;
             }else{
                 data.comment += comment;
