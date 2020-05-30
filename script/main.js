@@ -33,7 +33,7 @@ function initDOM(){
 
     // テーブル内を選択されたら
     $(document).on("click", ".learning-history-tbody tr", function () {
-        if(selectSettingId !== $(this).attr('id')){
+        if(selectSettingId !== $(this).attr('id') && $(this).attr('id') !== undefined){
             selectSettingId = $(this).attr('id'); // 選択した項目のsettingIdを取得
             for(let data of historyData){
                 if(data.settingId == selectSettingId){
@@ -143,7 +143,13 @@ function initDOM(){
  */
 function displayHistoryTable(){
 
-    $('.learning-history-tbody').html(''); // テーブル内容の初期化
+    // テーブル内容の初期化
+    $('.learning-history-tbody').html(''); 
+
+    // 第1回の列の生成と初期化
+    $('.learning-history-tbody').append(
+        '<tr><td class="coverage">1回(5/22)</td><td colspan="2"></td><td>未登録</td><td>未登録</td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+    );
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -184,9 +190,15 @@ function displayHistoryTable(){
         }
 
         // テーブル内容の表示
-        $('.learning-history-tbody').append(
-            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button></td></tr>'
-        );
+        if(tableText.settingId){
+            $('.learning-history-tbody').append(
+                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+            );
+        }else{  // 第1回のデータ
+            $('.learning-history-tbody').eq(0).html(
+                '<tr><td class="coverage">' + tableText.coverage + '</td><td></td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button></td><td></td></tr>'
+            );
+        }
     }
 
     changeTableColor();
@@ -198,8 +210,10 @@ function displayHistoryTable(){
  */
 function changeTableColor(){
     let selectTr = $('.learning-history-tbody').find('#' + selectSettingId);
+    // if(selectTr.length>0){  // settingIdがある＝第1回でなければテーブル色を変更する
     $('.learning-history-tbody tr').removeClass('select');
     $(selectTr).addClass('select');
+    // }
 }
 
 /**
@@ -1400,11 +1414,32 @@ function getHistoryData(){
     .done( (data) => {
         if(data) {
             historyData = data.history;
+
+            // 授業回昇順にソート
+            for(let history of historyData){
+                history.coverage = Number(history.coverage);
+            }
+            historyData.sort(function (a, b) {
+                return a.coverage - b.coverage;
+            });
+            
             // chatbotのテスト点数を格納
             if(data.chatbot){
+                // 第1回のデータを取得
+                for(let chatbot of data.chatbot){
+                    if(chatbot.classDate == "1590073200000"){  //第1回のデータ
+                        historyData.unshift({
+                            coverage: "1",
+                            classDate: chatbot.classDate,
+                            goal: chatbot.goal,
+                            testScore: chatbot.testScore,
+                            satisfaction: chatbot.satisfaction
+                        });
+                    }
+                }
                 for(let i=0; i<historyData.length; i++){
                     for(let j=0; j<data.chatbot.length; j++){
-                        if(historyData[i].settingId == data.chatbot[j].settingId){
+                        if(historyData[i].classDate == data.chatbot[j].classDate){
                             // 目標達成度がNULLだったらチャットボットから点数を持ってくる
                             if(historyData[i].achievement == null || historyData[i].achievement == ''){
                                 // historyData[i].goal = data.chatbot[j].goal;
@@ -1434,7 +1469,9 @@ function getHistoryData(){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
-       
+        $('.learning-history-tbody').append(
+            '<tr><td class="coverage">1回(5/22)</td><td colspan="2"></td><td>未登録</td><td>未登録</td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+        );    
     });
 }
 
