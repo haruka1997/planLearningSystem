@@ -15,7 +15,8 @@ let selectSettingId = undefined;
 let displayCalenderDate = '';
 let calenderDate = [];
 let statisticsData = {};
-let setStatisticsFlag = false;
+let chartData = {};
+// let setStatisticsFlag = false;
 
 $(function(){
 
@@ -44,7 +45,7 @@ function initDOM(){
             changeTableColor(); // 選択した項目の背景色変更
             getCalenderItem();  // カレンダーに表示するアイテムの取得
         }else{
-            setStatistics();
+            // setStatistics();
         }
     });
 
@@ -65,11 +66,11 @@ function initDOM(){
     });
 
     // テーブルの統計ボタンをクリックされたら
-    $(document).on("click", ".learning-history-tbody td .history-statistics-button", function () {
-        if(setStatisticsFlag){
-            displayStatistics();
-        }
-    });
+    // $(document).on("click", ".learning-history-tbody td .history-statistics-button", function () {
+    //     if(setStatisticsFlag){
+    //         displayStatistics();
+    //     }
+    // });
 
     // ラジオボタン切り替え
     // TODO: DOM要素の見直し(クラスで指定するなど)
@@ -331,7 +332,7 @@ function displayCalender(){
     }
 
     modules.calenderItemSet.set(displayItem, selectHistoryData, selectButton, escape);
-    setStatistics();
+    // setStatistics();
 }
 
 /**
@@ -418,7 +419,7 @@ function displayLearningSetting(){
                     plans: [],
                     records: []
                 };
-                // displayChartHistory();
+                displayChartHistory();
                 // setSelectClass();
                 displayHistoryTable();
                 displayCalender();
@@ -538,6 +539,7 @@ function displayHistoryDetail(settingId){
                     historyData[data].executing = selectData.executing;
                     selectHistoryData = historyData[data];
                     displayHistoryTable();
+                    displayChartHistory();
 
                     if(selectData.classDate != editData.classDate){
                         updateExecuting();
@@ -608,84 +610,84 @@ function displayStatistics(){
 /**
  * 統計情報の設定
  */
-function setStatistics(){
+// function setStatistics(){
 
-    if(statisticsData.timeChart){
-        statisticsData.timeChart.destroy();
-    }
-    statisticsData = {};
+//     if(statisticsData.timeChart){
+//         statisticsData.timeChart.destroy();
+//     }
+//     statisticsData = {};
 
-    // 計画学習時間の合計算出
-    let totalPlanTime = 0;
-    for(let plan of displayItems.plans){
-        if(plan.learningFlag){
-            let start = plan.time.start.split(':') // 開始時の取得
-            let end = plan.time.end.split(':') // 最後時の取得
-            totalPlanTime += (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
-        }
-    }
+//     // 計画学習時間の合計算出
+//     let totalPlanTime = 0;
+//     for(let plan of displayItems.plans){
+//         if(plan.learningFlag){
+//             let start = plan.time.start.split(':') // 開始時の取得
+//             let end = plan.time.end.split(':') // 最後時の取得
+//             totalPlanTime += (Number(end[0]) * 60 + Number(end[1])) - (Number(start[0]) * 60 + Number(start[1]));
+//         }
+//     }
 
-    // 実際学習時間と学習時間帯の分布の算出
-    let totalRecordTime = 0;
-    let timezone = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0};
-    for(let record of displayItems.records){
-        let start = record.time.start.split(':') // 開始時の取得
-        let end = record.time.end.split(':') // 最後時の取得
-        let startTimeHour = Number(start[0]);
-        let startTimeMinute = Number(start[1]);
-        let endTimeHour = Number(end[0]);
-        let endTimeMinute = Number(end[1]);
+//     // 実際学習時間と学習時間帯の分布の算出
+//     let totalRecordTime = 0;
+//     let timezone = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0};
+//     for(let record of displayItems.records){
+//         let start = record.time.start.split(':') // 開始時の取得
+//         let end = record.time.end.split(':') // 最後時の取得
+//         let startTimeHour = Number(start[0]);
+//         let startTimeMinute = Number(start[1]);
+//         let endTimeHour = Number(end[0]);
+//         let endTimeMinute = Number(end[1]);
     
-        // 実際学習時間の合計算出
-        let diffTime = (endTimeHour * 60 + endTimeMinute) - (startTimeHour * 60 + startTimeMinute);
-        totalRecordTime += diffTime;
+//         // 実際学習時間の合計算出
+//         let diffTime = (endTimeHour * 60 + endTimeMinute) - (startTimeHour * 60 + startTimeMinute);
+//         totalRecordTime += diffTime;
 
-        // 学習時間帯の分布を算出
-        // 開始時と終了時が同一の場合は処理の流れを別にする
-        if (startTimeHour === endTimeHour) {
-            timezone[startTimeHour] += endTimeMinute - startTimeMinute;
-        }
+//         // 学習時間帯の分布を算出
+//         // 開始時と終了時が同一の場合は処理の流れを別にする
+//         if (startTimeHour === endTimeHour) {
+//             timezone[startTimeHour] += endTimeMinute - startTimeMinute;
+//         }
 
-        // 開始時と終了時が異なる場合は以下の通り計算する
-        for (let currentHour = startTimeHour; currentHour <= endTimeHour; currentHour++) {
-            if (currentHour === startTimeHour) {
-                timezone[currentHour] += 60 - startTimeMinute;
-            } 
-            else if (currentHour === endTimeHour) { 
-                timezone[currentHour] += endTimeMinute;
-            }
-            else {
-                timezone[currentHour] += 60;
-            }
-        }
-    }
+//         // 開始時と終了時が異なる場合は以下の通り計算する
+//         for (let currentHour = startTimeHour; currentHour <= endTimeHour; currentHour++) {
+//             if (currentHour === startTimeHour) {
+//                 timezone[currentHour] += 60 - startTimeMinute;
+//             } 
+//             else if (currentHour === endTimeHour) { 
+//                 timezone[currentHour] += endTimeMinute;
+//             }
+//             else {
+//                 timezone[currentHour] += 60;
+//             }
+//         }
+//     }
 
-    // 1回あたりの平均学習時間
-    let averageRecordTime = 0;
-    if(totalRecordTime !== 0){
-        averageRecordTime = Math.round(totalRecordTime / displayItems.records.length);
-    }
+//     // 1回あたりの平均学習時間
+//     let averageRecordTime = 0;
+//     if(totalRecordTime !== 0){
+//         averageRecordTime = Math.round(totalRecordTime / displayItems.records.length);
+//     }
 
-    // テーブル内容のセット
-    $('#totalPlanTime td').text(escape(totalPlanTime) + '分');
-    $('#totalRecordTime td').text(escape(totalRecordTime) + '分');
-    $('#averageRecordTime td').text(escape(averageRecordTime) + '分');
+//     // テーブル内容のセット
+//     $('#totalPlanTime td').text(escape(totalPlanTime) + '分');
+//     $('#totalRecordTime td').text(escape(totalRecordTime) + '分');
+//     $('#averageRecordTime td').text(escape(averageRecordTime) + '分');
     
-    // グラフのセット
-    let timeChart = modules.setChartItem.set(modules, timezone);
+//     // グラフのセット
+//     let timeChart = modules.setChartItem.set(modules, timezone);
 
-    statisticsData = {
-        totalPlanTime: totalPlanTime,
-        totalRecordTime: totalRecordTime,
-        averageRecordTime: averageRecordTime,
-        timeChart: timeChart
-    };
+//     statisticsData = {
+//         totalPlanTime: totalPlanTime,
+//         totalRecordTime: totalRecordTime,
+//         averageRecordTime: averageRecordTime,
+//         timeChart: timeChart
+//     };
 
-    statisticsData.timeChart.update();
+//     statisticsData.timeChart.update();
 
-    setStatisticsFlag = true;
+//     setStatisticsFlag = true;
 
-}
+// }
 /**
  * 学習の計画追加処理
  */
@@ -1362,6 +1364,7 @@ function updateExecuting(){
     .done( (data) => {
         selectHistoryData.executing = executing;
         displayHistoryTable();
+        displayChartHistory();
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
@@ -1465,6 +1468,7 @@ function getHistoryData(){
         selectHistoryData = data.history.slice(-1)[0];
         displayCalenderDate = selectHistoryData.classDate;
         displayHistoryTable();
+        displayChartHistory();
         getCalenderItem();
     })
     // Ajaxリクエストが失敗した時発動

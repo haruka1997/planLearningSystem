@@ -136,7 +136,7 @@ module.exports.set = function(modules, chartData){
             datasets: [
                 {
                     label: '学習時間',
-                    data: data[0],
+                    data: data[3],
                     borderColor: "#0288D1",
                     pointBorderColor: "#0288D1",
                     lineTension: 0,
