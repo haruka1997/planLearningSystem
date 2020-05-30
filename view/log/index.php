@@ -43,6 +43,7 @@
             <th class="mdl-data-table__cell--non-numeric">目標達成度(実際/目標)</th>
             <th class="mdl-data-table__cell--non-numeric">学習満足度</th>
             <th>学習時間(分)</th>
+            <th>コメント</th>
           </thead>
           <tbody>
           </tbody>

@@ -80,7 +80,8 @@ function displayLog(){
         }
 
         $('.log-table tbody').append(
-            '<tr><td class="mdl-data-table__cell--non-numeric">' + data.userId + '</td><td>' + data.executing + '%</td><td>' + data.achievementText + '</td><td>' + data.satisfactionText + '</td><td>' + data.recordTime + '</td></tr>'
+            '<tr><td class="mdl-data-table__cell--non-numeric">' + data.userId + '</td><td>' + data.executing + '%</td><td>' + data.achievementText + '</td><td>' + data.satisfactionText + '</td><td>' + data.recordTime + '</td>'
+            + '<td><input type="text" size="50"/><button>送信</button></td></tr>'
         );
     }
 }

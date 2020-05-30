@@ -335,3 +335,8 @@ label{
 .learning-history-chart-item{
     width: 100%;
 }
+
+.log-table thead th,
+.log-table tbody tr td{
+    text-align: center;
+}
