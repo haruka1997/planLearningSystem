@@ -116,9 +116,9 @@ function initDOM(){
     });
 
     // 振り返り履歴ボタンを押されたら
-    $('.chatbot-history-button').click(function (){
-        window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
-    });
+    // $('.chatbot-history-button').click(function (){
+    //     window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
+    // });
 
     // 学習の計画追加ボタンを押されたら
     // TODO: クラス名見直し
