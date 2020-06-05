@@ -58,6 +58,11 @@ function initDOM(){
         displayChatbotSystem($(this).attr('id'));  // 学習履歴の詳細表示
     });
 
+    // テーブルの振り返り済みをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .chatbot-history-comp-button", function () {
+        window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
+    });
+
 
     // テーブルの詳細ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
@@ -191,13 +196,27 @@ function displayHistoryTable(){
 
         // テーブル内容の表示
         if(tableText.settingId){
-            $('.learning-history-tbody').append(
-                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
-            );
+            // チャットボット未振り返り
+            if(!historyData[i].chatbotFlag){
+                $('.learning-history-tbody').append(
+                    '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+                );           
+            // チャットボット振り返り済み
+            }else{
+                $('.learning-history-tbody').append(
+                    '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td>' + tableText.executing + '</td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button class="chatbot-history-comp-button mdl-button mdl-js-button">振り返り済み</button><td><button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button><button class="history-statistics-button mdl-button mdl-js-button">統計</button></td></tr>'
+                );
+            }
         }else{  // 第1回のデータ
-            $('.learning-history-tbody').eq(0).html(
-                '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button></td><td></td></tr>'
-            );
+            if(!historyData[i].chatbotFlag){
+                $('.learning-history-tbody').eq(0).html(
+                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button></td><td></td></tr>'
+                );
+            }else{
+                $('.learning-history-tbody').eq(0).html(
+                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button class="chatbot-history-comp-button mdl-button mdl-js-button">振り返り済み</button></td><td></td></tr>'
+                );
+            }
         }
     }
 
@@ -1385,8 +1404,10 @@ function getHistoryData(){
                     }
                 }
                 for(let i=0; i<historyData.length; i++){
+                    historyData[i].chatbotFlag = false;
                     for(let j=0; j<data.chatbot.length; j++){
-                        if(historyData[i].classDate == data.chatbot[j].classDate){
+                        if(Number(historyData[i].classDate) == data.chatbot[j].classDate){
+                            historyData[i].chatbotFlag = true;
                             // 目標達成度がNULLだったらチャットボットから点数を持ってくる
                             if(historyData[i].achievement == null || historyData[i].achievement == ''){
                                 // historyData[i].goal = data.chatbot[j].goal;
