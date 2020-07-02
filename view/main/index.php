@@ -1,7 +1,7 @@
 <?php
   session_start();
   if(!isset($_SESSION['userId'])){
-    header('Location: https://takagi-lab.tk/chatbot/page/Login.php');
+    header('Location: https://tkg-lab.tk/chatbot/page/Login.php');
   }
 ?>
 <html>
@@ -13,7 +13,7 @@
   <script>
     var userAgent = window.navigator.userAgent.toLowerCase();
     if(!(userAgent.indexOf('chrome') != -1 || userAgent.indexOf('firefox') != -1)) {
-        alert('推奨ブラウザはFirefoxとGoogle Chromeです。お使いのブラウザだと正常に表示できない可能性があります。');
+        alert('推奨ブラウザはFirefoxとGoogle Chromeです。お使いのブラウザは正常に表示できない可能性があります。');
     }
   </script>
   </head>
