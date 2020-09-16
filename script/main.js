@@ -168,75 +168,54 @@ function displayHistoryTable(){
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
 
-        // 計画実施率の表示
-        // if(historyData[i].executing == null){
-        //     historyData[i].executingText = '未計算';
-        // }else{
-        //     historyData[i].executingText = historyData[i].executing + '%';
-        // }
-
-        // 目標達成率の表示
-        // if(historyData[i].achievement == "100"){
-        //     historyData[i].achievementText = '達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
-        // }else if(historyData[i].achievement == "0"){
-        //     historyData[i].achievementText = '未達成 (' + historyData[i].testScore + '/' + historyData[i].goal + ')';
-        // }else{
-        //     historyData[i].achievementText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';
-        // }
-
-        // 学習満足度の表示
-        // switch(historyData[i].satisfaction){
-        //     case '0': historyData[i].satisfactionText = '満足していない'; break;
-        //     case '25': historyData[i].satisfactionText = 'あまり満足していない'; break;
-        //     case '50': historyData[i].satisfactionText = 'どちらともいえない'; break;
-        //     case '75': historyData[i].satisfactionText = 'まあ満足している'; break;
-        //     case '100': historyData[i].satisfactionText = '満足している'; break;
-        //     default: historyData[i].satisfactionText = '<button id="' + historyData[i].settingId + '" class="history-regist-button mdl-button mdl-js-button">登録する</button>';                         
-        // }
-
         let tableText = {
             settingId: historyData[i].settingId,
             coverage: historyData[i].coverage + '回  (' + Number(new Date(Number(historyData[i].classDate)).getMonth()+1) + '/' + new Date(Number(historyData[i].classDate)).getDate() + ')',
             understanding: historyData[i].understanding,
-            // executing: historyData[i].executingText,
-            // achievement: historyData[i].achievementText,
-            // satisfaction: historyData[i].satisfactionText
+            plan: '',
+            record: '',
+            history: ''
         }
+
+        // 学習計画の項目
+        if(historyData[i].planFlag){
+            tableText.plan = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>'
+        }else{
+            tableText.plan = '<button id="' + historyData[i].classDate + '" class="regist-plan-button mdl-button mdl-js-button">登録</button>'
+        }
+
+        // 学習記録の項目
+        if(historyData[i].recordFlag){
+            tableText.record = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>'
+        }else{
+            tableText.record = '<button id="' + historyData[i].classDate + '" class="regist-record-button mdl-button mdl-js-button">登録</button>'
+        }
+
+        // 振り返りの項目
+        if(historyData[i].chatbotFlag){
+            tableText.history = '<button class="chatbot-history-button mdl-button mdl-js-button">履歴を見る</button>'
+        }else{
+            tableText.history = '<button id="' + historyData[i].classDate + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+        }
+
 
         // テーブル内容の表示
         if(tableText.settingId){
-           
-            // チャットボット未振り返り
-            if(!historyData[i].chatbotFlag){
-                $('.learning-history-tbody').append(
-                    '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
-                    + '<td><button id="' + historyData[i].classDate + '" class="regist-plan-button mdl-button mdl-js-button">登録</button>'
-                    + '<td><button id="' + historyData[i].classDate + '" class="regist-record-button mdl-button mdl-js-button">登録</button>'
-                    + '<td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
-                    + '</td></tr>'
-                );           
-            // チャットボット振り返り済み
-            }else{
+
+            $('.learning-history-tbody').append(
                 '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
-                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">登録</button>'
-                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">登録</button>'
-                + '<td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+                + '<td>' + tableText.plan
+                + '<td>' + tableText.record
+                + '<td>' + tableText.history
                 + '</td></tr>'
-        }
+            );   
+           
         }else{
-            if(!historyData[i].chatbotFlag){
-                $('.learning-history-tbody').eq(0).html(
-                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
-                    + '<td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
-                    + '</td></tr>'
-                );
-            }else{
-                $('.learning-history-tbody').eq(0).html(
-                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
-                    + '<td><button id=' + historyData[i].coverage + ' class="history-comp-button mdl-button mdl-js-button">登録</button>'
-                    + '</td></tr>'
-                );
-            }
+            $('.learning-history-tbody').eq(0).html(
+                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
+                + '<td>' + tableText.history
+                + '</td></tr>'
+            );
         }
     }
 
@@ -1549,6 +1528,27 @@ function postPlan(plan){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
+        if(displayItems.plans.length == 1){
+            // Ajax通信
+            $.ajax({
+                url:'./../../php/main/updatePlanFlag.php',
+                type:'POST',
+                data:{
+                    'settingId': selectSettingId,
+                    'planFlag': 'true'
+                },
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                selectHistoryData.planFlag = 'true';
+                displayHistoryTable();
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+
+            })
+        }
         calenderDataSet(plan, false, false);
     })
     // Ajaxリクエストが失敗した時発動
@@ -1623,6 +1623,7 @@ function deletePlan(deletePlan, id, i){
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
         calenderDataSet(deletePlan, false, i);
+
         return true;
     })
     // Ajaxリクエストが失敗した時発動
@@ -1649,6 +1650,27 @@ function postRecord(record){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
+        if(displayItems.records.length == 0){
+            // Ajax通信
+            $.ajax({
+                url:'./../../php/main/updateRecordFlag.php',
+                type:'POST',
+                data:{
+                    'settingId': selectSettingId,
+                    'recordFlag': 'true'
+                },
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                selectHistoryData.recordFlag = 'true';
+                displayHistoryTable();
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+
+            })
+        }
         calenderDataSet(record, false, false);
     })
     // Ajaxリクエストが失敗した時発動
