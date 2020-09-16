@@ -309,7 +309,8 @@ body{
 .display-comment-button.mdl-button,
 .chatbot-history-comp-button.mdl-button,
 .regist-plan-button,
-.regist-record-button{
+.regist-record-button,
+.chatbot-history-button{
     height: auto;
     line-height: 1;
     font-size: 14px;;

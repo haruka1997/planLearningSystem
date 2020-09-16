@@ -111,9 +111,9 @@ function initDOM(){
     });
 
     // 振り返り履歴ボタンを押されたら
-    // $('.chatbot-history-button').click(function (){
-    //     window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
-    // });
+    $(document).on("click", ".chatbot-history-button", function () {
+        window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
+    });
 
     // 右下の学習計画作成ボタンをクリックされたら
     $(document).on("click", "#add-learning-plan", function () {
