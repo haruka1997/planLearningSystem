@@ -8,6 +8,14 @@
   <head>
   <script type="text/javascript" src="./../../application/dist/main.bundle.js"></script>
   <link type="text/css" rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css" />
+
+  <!-- ブラウザ判定 -->
+  <script>
+    var userAgent = window.navigator.userAgent.toLowerCase();
+    if(!(userAgent.indexOf('chrome') != -1 || userAgent.indexOf('firefox') != -1)) {
+        alert('推奨ブラウザはFirefoxとGoogle Chromeです。お使いのブラウザだと正常に表示できない可能性があります。');
+    }
+  </script>
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout">
