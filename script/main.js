@@ -669,8 +669,10 @@ function displayLearningPlanAdd(){
         //  入力内容の取得
         plan.content = $('.learning-plan-create-modal-wrapper #learningContent').val();
         plan.date = $('.learning-plan-create-modal-wrapper #learningDate').val();
-        plan.time.start = $('.learning-plan-create-modal-wrapper #learningTimeStart').val();
-        plan.time.end = $('.learning-plan-create-modal-wrapper #learningTimeEnd').val();
+        // 開始時間のフォーマット形成
+        plan.time.start = $('.learning-plan-create-modal-wrapper #learningTimeStartHour').val() + ':' + $('.learning-plan-create-modal-wrapper #learningTimeStartTime').val();
+        // 終了時間のフォーマット形成
+        plan.time.end = $('.learning-plan-create-modal-wrapper #learningTimeEndHour').val() + ':' + $('.learning-plan-create-modal-wrapper #learningTimeEndTime').val(); 
         plan.memo = $('.learning-plan-create-modal-wrapper #learningMemo').val();
         plan.learningFlag = true;
 
@@ -732,9 +734,9 @@ function displayLearningRecordAdd(){
 
     let formErrorCheck = function(value){
         let disabled = false;
-        let selectContent = $('.learning-record-create-modal-wrapper select.required').val();
+        let selectContent = $('.learning-record-create-modal-wrapper select.select-learning-content.required').val();
         let inputContent = $('.learning-record-create-modal-wrapper #inputLearningContent').val();
-        if(value === '' || selectContent == '学習内容を選択' || (selectContent == 'その他' && inputContent == '')){
+        if(selectContent == '学習内容を選択' || (selectContent == 'その他' && inputContent == '')){
             disabled = true;
         }
 
@@ -768,8 +770,10 @@ function displayLearningRecordAdd(){
             record.content = $('.learning-record-create-modal-wrapper #inputLearningContent').val();
         }
         record.date = $('.learning-record-create-modal-wrapper #learningDate').val();
-        record.time.start = $('.learning-record-create-modal-wrapper #learningTimeStart').val();
-        record.time.end = $('.learning-record-create-modal-wrapper #learningTimeEnd').val();
+        // 開始時間のフォーマット形成
+        record.time.start = $('.learning-record-create-modal-wrapper #learningTimeStartHour').val() + ':' + $('.learning-record-create-modal-wrapper #learningTimeStartTime').val();
+        // 終了時間のフォーマット形成
+        record.time.end = $('.learning-record-create-modal-wrapper #learningTimeEndHour').val() + ':' + $('.learning-record-create-modal-wrapper #learningTimeEndTime').val(); 
         record.memo = $('.learning-record-create-modal-wrapper #learningMemo').val();
 
         // idの設定
