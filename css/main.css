@@ -290,12 +290,15 @@ body{
 }
 
 .new-plan-create{
-    width: 100%;
+    width: 35%;
     text-align: center;
+    position: relative;
+    background-color: #ffffff;
+    padding: 10px;
 }
 
 .new-plan-create button{
-    margin: 10px;
+    margin-bottom: 20px;
 }
 
 .history-detail-button.mdl-button,
