@@ -115,18 +115,30 @@ function initDOM(){
     //     window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
     // });
 
-    // 学習の計画追加ボタンを押されたら
-    // TODO: クラス名見直し
-    $('#add-learning-plan').click(function (){
+    // 右下の学習計画作成ボタンをクリックされたら
+    $(document).on("click", "#add-learning-plan", function () {
         displayLearningPlanAdd();
     });
 
-    // 学習の記録追加ボタンを押されたら
-    // TODO: クラス名見直し
-    $('#add-learning-record').click(function (){
+    //右下の学習記録作成ボタンをクリックされたら
+    $(document).on("click", "#add-learning-record", function () {
         displayLearningRecordAdd();
     });
 
+    //テーブルの学習計画登録ボタンをクリックされたら
+    $(document).on("click", ".regist-plan-button", function () {
+        displayCalenderDate = $(this).attr('id'); // 選択した項目のsettingIdを取得
+        calcCalenderDate();
+        displayLearningPlanAdd();
+    });
+
+     //テーブルの学習記録登録ボタンをクリックされたら
+     $(document).on("click", ".regist-record-button", function () {
+        displayCalenderDate = $(this).attr('id'); // 選択した項目のsettingIdを取得
+        calcCalenderDate();
+        displayLearningRecordAdd();
+    });
+    
     // 次週のボタンを押されたら
     $('#select-next-week').click(function (){
         changeCalenderWeek('next');
@@ -148,8 +160,10 @@ function displayHistoryTable(){
 
     // 第1回の列の生成と初期化
     $('.learning-history-tbody').append(
-        '<tr><td class="coverage">1回(5/22)</td><td></td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
-    );
+        '<tr><td class="coverage">1回</td><td colspan="3"></td>'
+        + '<td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+        + '</td></tr>'
+);
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -195,26 +209,32 @@ function displayHistoryTable(){
             // チャットボット未振り返り
             if(!historyData[i].chatbotFlag){
                 $('.learning-history-tbody').append(
-                    '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button>'
-                    + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">TAコメント</button>'
-                    + '<button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button>'
+                    '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
+                    + '<td><button id="' + historyData[i].classDate + '" class="regist-plan-button mdl-button mdl-js-button">登録</button>'
+                    + '<td><button id="' + historyData[i].classDate + '" class="regist-record-button mdl-button mdl-js-button">登録</button>'
+                    + '<td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
                     + '</td></tr>'
                 );           
             // チャットボット振り返り済み
             }else{
-                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">振り返り済み</button>'
-                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">TAコメント</button>'
-                + '<button id="' + tableText.settingId + '" class="history-detail-button mdl-button mdl-js-button">詳細</button>'
+                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
+                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">登録</button>'
+                + '<td><button id="' + tableText.settingId + '" class="display-comment-button mdl-button mdl-js-button">登録</button>'
+                + '<td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
                 + '</td></tr>'
         }
         }else{
             if(!historyData[i].chatbotFlag){
                 $('.learning-history-tbody').eq(0).html(
-                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">第'+ historyData[i].coverage + '回振り返り</button></td><td></td></tr>'
+                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
+                    + '<td><button id=' + historyData[i].coverage + ' class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+                    + '</td></tr>'
                 );
             }else{
                 $('.learning-history-tbody').eq(0).html(
-                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="2"></td><td>' + tableText.achievement + '</td><td>' + tableText.satisfaction + '</td><td><button class="chatbot-history-comp-button mdl-button mdl-js-button">振り返り済み</button></td><td></td></tr>'
+                    '<tr><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
+                    + '<td><button id=' + historyData[i].coverage + ' class="history-comp-button mdl-button mdl-js-button">登録</button>'
+                    + '</td></tr>'
                 );
             }
         }
@@ -1415,7 +1435,9 @@ function getHistoryData(){
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
         $('.learning-history-tbody').append(
-            '<tr><td class="coverage">1回(5/22)</td><td></td><td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">第1回振り返り</button></td><td></td></tr>'
+            '<tr><td class="coverage">1回</td><td colspan="3"></td>'
+            + '<td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+            + '</td></tr>'
         );    
     });
 }

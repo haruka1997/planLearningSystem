@@ -32,8 +32,9 @@
                     <tr id="table-header">
                         <th>授業回</th>
                         <th>理解度</th>
+                        <th>学習計画</th>
+                        <th>学習記録</th>
                         <th>振り返り</th>
-                        <th width="30%"></th>
                     </tr>
                   </thead>
                   <tbody class="learning-history-tbody">
