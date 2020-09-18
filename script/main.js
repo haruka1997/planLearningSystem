@@ -241,8 +241,8 @@ function changeTableColor(){
 function displayChartHistory(){
     // グラフがすでにセットされているか確認
     if(chartData.chartSetting){
-        if(chartData.chartSetting.executing || chartData.chartSetting.achievement || chartData.chartSetting.satisfaction || chartData.chartSetting.recordTime){
-            chartData.chartSetting.executing.destroy();
+        if(chartData.chartSetting.executingAndCompliting || chartData.chartSetting.achievement || chartData.chartSetting.satisfaction || chartData.chartSetting.recordTime){
+            chartData.chartSetting.executingAndCompliting.destroy();
             chartData.chartSetting.achievement.destroy();
             chartData.chartSetting.satisfaction.destroy();
             chartData.chartSetting.recordTime.destroy();
@@ -251,7 +251,10 @@ function displayChartHistory(){
 
     // グラフ用のデータセット
     chartData = {
-        executing: [],
+        executingAndCompliting :{
+            executing: [],
+            compliting: []
+        },
         achievement: {
             goal: [],
             testScore: []
@@ -263,7 +266,8 @@ function displayChartHistory(){
 
     // 配列初期化
     for(let index=0; index<14; index++){
-        chartData.executing[index] = 0;
+        chartData.executingAndCompliting.executing[index] = 0;
+        chartData.executingAndCompliting.compliting[index] = 0;
         chartData.achievement.goal[index] = 0;
         chartData.achievement.testScore[index] = 0;
         chartData.satisfaction[index] = 0;
@@ -273,12 +277,12 @@ function displayChartHistory(){
     // 
     for(let i in historyData){
         let coverage = Number(historyData[i].coverage);
-        chartData.executing[coverage-2] = Number(historyData[i].executing);
+        chartData.executingAndCompliting.executing[coverage-2] = Number(historyData[i].executing);
+        chartData.executingAndCompliting.compliting[coverage-2] = Number(historyData[i].compliting);
         chartData.achievement.goal[coverage-2] = Number(historyData[i].goal);
         chartData.achievement.testScore[coverage-2] = Number(historyData[i].testScore);
         chartData.satisfaction[coverage-2] = Number(historyData[i].satisfaction);
         // 合計学習時間の算出
-       
         chartData.recordTime[coverage-2] = Number(historyData[i].recordTime);
     }
 
@@ -1291,26 +1295,61 @@ function updateExecuting(){
         executing = Math.round(matchCount / sum * 100);
     }
 
-    // Ajax通信
-    $.ajax({
-        url:'./../../php/main/updateExecuting.php',
-        type:'POST',
-        data:{
-            'settingId': selectSettingId,
-            'executing': executing
-        },
-        dataType: 'json'       
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (data) => {
-        selectHistoryData.executing = executing;
-        displayHistoryTable();
-        displayChartHistory();
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-       
-    })
+    // 学習完了率の算出
+    updateCompliting(executing);
+
+}
+
+/**
+ * 学習完了率の算出
+ */
+function updateCompliting(executing){
+    if(displayItems.plans.length > 0){
+        let match = 0;
+        // 重複無し学習計画の内容リストの作成
+        let planContent = [];
+        for(let plan of displayItems.plans){
+            if(plan.learningFlag){
+                planContent.push(plan.content);
+            }
+        }
+        let noDeplicateContent = Array.from(new Set(planContent));
+
+        // 学習計画と学習記録の学習内容が一致しているかどうか
+        for(let content of noDeplicateContent){
+            for(let record of displayItems.records){
+                if(content == record.content){
+                    match++;
+                    break;
+                }
+            }
+        }
+        let compliting = Math.round(match / noDeplicateContent.length * 100);
+
+        // Ajax通信
+        $.ajax({
+            url:'./../../php/main/updateExecutingAndCompliting.php',
+            type:'POST',
+            data:{
+                'settingId': selectSettingId,
+                'executing': executing,
+                'compliting': compliting
+            },
+            dataType: 'json'       
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            selectHistoryData.executing = executing;
+            selectHistoryData.compliting = compliting;
+            displayHistoryTable();
+            displayChartHistory();
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+        
+        })
+
+    }
 }
 
 /**
@@ -1318,11 +1357,18 @@ function updateExecuting(){
  */
 function setLearningContentList(){
     $('#selectLearningContent').html('<option>学習内容を選択</option>');
-    // 学習内容リストのセット
+    // 学習内容重複無しのリスト作成
+    let planContent = [];
     for(let plan of displayItems.plans){
         if(plan.learningFlag){
-            $('<option value="' + escape(plan.content) + '">' + escape(plan.content) + '</option>').appendTo('#selectLearningContent');
+            planContent.push(plan.content);
         }
+    }
+    let noDeplicateContent = Array.from(new Set(planContent));
+
+    // 学習内容リストのセット
+    for(let content of noDeplicateContent){
+        $('<option value="' + escape(content) + '">' + escape(content) + '</option>').appendTo('#selectLearningContent');
     }
     $('<option value="その他">その他</option>').appendTo('#selectLearningContent');
 }

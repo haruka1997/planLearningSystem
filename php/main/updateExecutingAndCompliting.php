@@ -11,10 +11,12 @@
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 
-        $stmt = $dbh->prepare('UPDATE history SET executing = :executing WHERE settingId = :settingId'); 
+        $stmt = $dbh->prepare('UPDATE history SET executing = :executing, compliting = :compliting WHERE settingId = :settingId'); 
 
         $stmt->bindParam(':executing', $_POST['executing'], PDO::PARAM_STR);
         $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
+        $stmt->bindParam(':compliting', $_POST['compliting'], PDO::PARAM_STR);
+
 
         $flag = $stmt->execute();
 
