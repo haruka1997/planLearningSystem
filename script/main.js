@@ -67,7 +67,7 @@ function initDOM(){
 
 
     // テーブルの詳細ボタンをクリックされたら
-    $(document).on("click", ".learning-history-tbody td .history-detail-button", function () {
+    $(document).on("click", ".learning-history-tbody .history-detail-button", function () {
         displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
     });
 
@@ -207,6 +207,7 @@ function displayHistoryTable(){
                 + '<td>' + tableText.plan
                 + '<td>' + tableText.record
                 + '<td>' + tableText.history
+                + '<td class="history-detail-button" id=' + tableText.settingId + '>' + '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
                 + '</td></tr>'
             );   
            
@@ -214,7 +215,7 @@ function displayHistoryTable(){
             $('.learning-history-tbody').eq(0).html(
                 '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
                 + '<td>' + tableText.history
-                + '</td></tr>'
+                + '</td><td></td></tr>'
             );
         }
     }
