@@ -439,6 +439,8 @@ function displayLearningSetting(){
                 // setSelectClass();
                 displayHistoryTable();
                 displayCalender();
+                // 学習計画作成モーダルの表示
+                displayLearningPlanAdd();
                 
                 exit();
             })

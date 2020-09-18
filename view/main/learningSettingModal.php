@@ -2,7 +2,7 @@
     <div class="plan-modal">
         <!-- ヘッダー -->
         <div id="modal-header">
-            <div class="header-title">授業回の登録</div>
+            <div class="header-title">目標の設定</div>
             <div class="header-cansel-button">×</div>
         </div>
         <!-- コンテンツ -->
@@ -60,7 +60,7 @@
             </div>
             <!-- 追加ボタン -->
             <div class="plan-modal-footer-button">
-                <button class="learning-setting-regist-button mdl-button mdl-js-button mdl-button--raised">登録</button>
+                <button class="learning-setting-regist-button mdl-button mdl-js-button mdl-button--raised">登録して次へ</button>
             </div>
         </div>
     </div>
