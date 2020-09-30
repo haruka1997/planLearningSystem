@@ -11,8 +11,10 @@
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 
-        $stmt = $dbh->prepare('DELETE FROM record WHERE recordId = :recordId'); 
-        $stmt->bindParam(':recordId', $_POST['recordId'] , PDO::PARAM_STR);
+        $stmt = $dbh->prepare('UPDATE history SET recordFlag = :recordFlag WHERE settingId = :settingId'); 
+
+        $stmt->bindParam(':recordFlag', $_POST['recordFlag'], PDO::PARAM_STR);
+        $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
 
         $flag = $stmt->execute();
 
@@ -20,8 +22,9 @@
             echo json_encode($flag);
             exit();  // 処理終了
         }else{
-            // echo $stmt->execute();
+            echo json_encode($stmt->execute());
         }
     } catch (PDOException $e) {
+        echo json_encode($e);
     }
 ?>
