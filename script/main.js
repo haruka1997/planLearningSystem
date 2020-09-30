@@ -20,6 +20,8 @@ $(function(){
 
     // テーブルに表示するデータの取得
     getHistoryData();
+    // グラフ表示
+    displayChartHistory();
 
     // DOMの初期設定
     initDOM();
@@ -162,8 +164,8 @@ function displayHistoryTable(){
     $('.learning-history-tbody').append(
         '<tr><td class="coverage">1回</td><td colspan="3"></td>'
         + '<td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
-        + '</td></tr>'
-);
+        + '</td><td></td></tr>'
+    );
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -330,7 +332,7 @@ function displayCalender(){
     let classDate = new Date(Number(selectHistoryData.classDate));
     classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
     displayItems.plans.push({
-        content: "第" + selectHistoryData.coverage + "回 基礎数C",
+        content: "第" + selectHistoryData.coverage + "回 基礎数B",
         date: classDate,
         time: {
             start: "14:40",
@@ -416,7 +418,7 @@ function displayLearningSetting(){
                 'goal': $('#goal').val(),
                 'insertTime': new Date().getTime(),
                 'recordTime': 0,
-                'subjects': '2020年基礎数学C' //前期用固定値[要検討]
+                'subjects': '2020年基礎数学B' //前期用固定値[要検討]
             };
             // Ajax通信
             $.ajax({
@@ -553,6 +555,8 @@ function displayHistoryDetail(settingId){
                 editData.testScore = $('.history-detail-modal-wrapper #testScore').val();
                 editData.settingId = settingId;
                 editData.recordTime = selectData.recordTime;
+                editData.planFlag = selectData.planFlag;
+                editData.recordFlag = selectData.recordFlag;
 
                 // 事前テストの点数が入力されたら
                 if(editData.testScore !== null && editData.testScore !== "なし" && selectData.goal !== "なし"){
@@ -614,6 +618,7 @@ function displayHistoryDetail(settingId){
 
                     }
                     displayHistoryTable();
+                    displayChartHistory();
                     getCalenderItem();
 
                     exit();
@@ -706,7 +711,6 @@ function displayLearningPlanAdd(){
 function displayLearningRecordAdd(){
 
     $('.learning-record-create-modal-wrapper').addClass('is-visible');    //学習記録作成モーダル表示
-
     setLearningContentList();
 
     let exit = function(){
@@ -1462,11 +1466,13 @@ function getHistoryData(){
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
+        // 学習履歴がない（初めてのログイン）の時
         $('.learning-history-tbody').append(
             '<tr><td class="coverage">1回</td><td colspan="3"></td>'
             + '<td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
-            + '</td></tr>'
-        );    
+            + '</td><td></td></tr>'
+        ); 
+        alert('「新規学習計画の作成」ボタンから学習計画を作成しましょう')
     });
 }
 
