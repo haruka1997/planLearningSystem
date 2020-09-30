@@ -64,7 +64,7 @@ function initDOM(){
 
     // テーブルの振り返り済みをクリックされたら
     $(document).on("click", ".learning-history-tbody td .chatbot-history-comp-button", function () {
-        window.open('https://tkg-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
+        window.open('https://tkg-lab.tk/chatbot/page/lesson/2020b/history/index.php');　// 振り返り履歴画面に遷移
     });
 
 
@@ -162,9 +162,8 @@ function displayHistoryTable(){
 
     // 第1回の列の生成と初期化
     $('.learning-history-tbody').append(
-        '<tr><td class="coverage">1回</td><td colspan="3"></td>'
-        + '<td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
-        + '</td><td></td></tr>'
+        '<tr><td class="coverage">1回(10/1)</td><td colspan="5"></td>'
+        + '</td></tr>'
     );
 
     // 取得した学習履歴をにテーブルに表示
@@ -470,7 +469,7 @@ function displayChatbotSystem(coverage){
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('https://tkg-lab.tk/chatbot/page/lesson/2020c/bot/' + Number(selectCoverage) + '.php');
+    window.open('https://tkg-lab.tk/chatbot/page/lesson/2020b/bot/' + Number(selectCoverage) + '.php');
 }
 
 /**
@@ -1421,7 +1420,7 @@ function getHistoryData(){
             if(data.chatbot){
                 // 第1回のデータを取得
                 for(let chatbot of data.chatbot){
-                    if(chatbot.classDate == "1590073200000"){  //第1回のデータ
+                    if(chatbot.classDate == "1601478000000"){  //第1回のデータ
                         historyData.unshift({
                             coverage: "1",
                             classDate: chatbot.classDate,
@@ -1468,9 +1467,8 @@ function getHistoryData(){
     .fail( (data) => {
         // 学習履歴がない（初めてのログイン）の時
         $('.learning-history-tbody').append(
-            '<tr><td class="coverage">1回</td><td colspan="3"></td>'
-            + '<td><button id=1 class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
-            + '</td><td></td></tr>'
+            '<tr><td class="coverage">1回(10/1)</td><td colspan="5"></td>'
+            + '</td></tr>'
         ); 
         alert('「新規学習計画の作成」ボタンから学習計画を作成しましょう')
     });
