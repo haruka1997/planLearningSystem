@@ -310,18 +310,6 @@ function displayCalender(){
         return checkedItems;
     }
 
-    // 授業の予定を登録
-    let classDate = new Date(Number(selectHistoryData.classDate));
-    classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
-    displayItems.plans.push({
-        content: "第" + selectHistoryData.coverage + "回 基礎数B",
-        date: classDate,
-        time: {
-            start: "14:40",
-            end: "16:10"
-        },
-        id: "C" + new Date().getTime()
-    });
 
     let displayItem = [];
     if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
@@ -1040,6 +1028,27 @@ function displayLearningRecordDetail(id){
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( (data) => {
+                    if(displayItems.records.length == 1){
+                        // Ajax通信
+                        $.ajax({
+                            url:'./../../php/main/updateRecordFlag.php',
+                            type:'POST',
+                            data:{
+                                'settingId': selectSettingId,
+                                'recordFlag': 'false'
+                            },
+                            dataType: 'json'       
+                        })
+                        // Ajaxリクエストが成功した時発動
+                        .done( (data) => {
+                            selectHistoryData.recordFlag = 'false';
+                            displayHistoryTable();
+                        })
+                        // Ajaxリクエストが失敗した時発動
+                        .fail( (data) => {
+            
+                        })
+                    }
                     // 削除した分の学習時間を算出
                     let selectStart = selectRecord.time.start.split(':') // 開始時の取得
                     let selectEnd = selectRecord.time.end.split(':') // 最後時の取得
@@ -1556,7 +1565,7 @@ function postPlan(plan){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        if(displayItems.plans.length == 1){
+        if(displayItems.plans.length == 0){
             // Ajax通信
             $.ajax({
                 url:'./../../php/main/updatePlanFlag.php',
@@ -1650,6 +1659,28 @@ function deletePlan(deletePlan, id, i){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
+        if(displayItems.plans.length == 1){ //授業と削除対象の学習計画しか登録されていなかった場合、学習計画欄の「登録」ボタンを復活
+            // Ajax通信
+            $.ajax({
+                url:'./../../php/main/updatePlanFlag.php',
+                type:'POST',
+                data:{
+                    'settingId': selectSettingId,
+                    'planFlag': 'false'
+                },
+                dataType: 'json'       
+            })
+            // Ajaxリクエストが成功した時発動
+            .done( (data) => {
+                console.log(data)
+                selectHistoryData.planFlag = 'false';
+                displayHistoryTable();
+            })
+            // Ajaxリクエストが失敗した時発動
+            .fail( (data) => {
+
+            })
+        }
         calenderDataSet(deletePlan, false, i);
 
         return true;

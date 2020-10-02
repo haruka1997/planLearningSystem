@@ -3,17 +3,17 @@ module.exports.set = function(displayItems, selectHistoryData, selectButton, esc
     let classDate = new Date(Number(selectHistoryData.classDate));
     let items = JSON.parse(JSON.stringify(displayItems));
 
-    // let classItem = {   // テストデータ
-    //     content: "第" + selectHistoryData.coverage + "回 基礎数B",
-    //     date: classDate,
-    //     time: {
-    //         start: "14:40",
-    //         end: "16:10"
-    //     },
-    //     id: "C" + new Date().getTime()
-    // };
+    let classItem = {   // テストデータ
+        content: "第" + selectHistoryData.coverage + "回 基礎数B",
+        date: classDate,
+        time: {
+            start: "14:40",
+            end: "16:10"
+        },
+        id: "C" + new Date().getTime()
+    };
 
-    // items.push(classItem);
+    items.push(classItem);
     
 
     let classDay = classDate.getDay();
