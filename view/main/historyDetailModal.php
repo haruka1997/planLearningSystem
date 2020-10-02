@@ -12,7 +12,7 @@
             <!--授業回 -->
             <div class="form-group pmd-textfield">       
                 <label class="required">予習する授業範囲</label>
-                <select class="select-simple form-control pmd-select2 required" id="coverage">
+                <select class="select-simple form-control pmd-select2 required" id="coverage" disabled>
                     <!-- <option value="1,1590073200000">第1回 命題論理・集合1(命題,条件,否定,必要条件・十分条件逆・裏・対偶,背理法,集合の表し方,和集合,積集合,部分集合,集合が 3 つの場合の和集合と積集合,補集合,ド・モルガンの法則)</option> -->
                     <option value="2, 1602082800000">第2回 順列①（和の法則，積の法則，順列の総数，順列の公式，円順列，重複順列）</option>
                     <option value="3, 1602687600000">第3回 順列②（和の法則・積の法則・順列の応用問題）</option>
