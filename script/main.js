@@ -48,9 +48,9 @@ function initDOM(){
     });
 
     // テーブルの登録するボタンをクリックされたら
-    $(document).on("click", ".learning-history-tbody td .history-regist-button", function () {
-        displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
-    });
+    // $(document).on("click", ".learning-history-tbody td .history-regist-button", function () {
+    //     displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
+    // });
 
     // テーブルの振り返りボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-chatbot-button", function () {
@@ -58,9 +58,9 @@ function initDOM(){
     });
 
     // テーブルのTAコメントボタンが押されたら
-    $(document).on("click", ".learning-history-tbody td .display-comment-button", function () {
-        displayComment($(this).attr('id'));  // コメントの表示
-    });
+    // $(document).on("click", ".learning-history-tbody td .display-comment-button", function () {
+    //     displayComment($(this).attr('id'));  // コメントの表示
+    // });
 
     // テーブルの振り返り済みをクリックされたら
     $(document).on("click", ".learning-history-tbody td .chatbot-history-comp-button", function () {
@@ -84,7 +84,7 @@ function initDOM(){
     $(document).on("click", ".calender-content", function () {
         let id = $(this).attr("id"); // 選択されたアイテムのIDを取得
         if(id !== undefined){
-            let category = id.slice(0,1);   // IDの先頭文字を取得(L:学習計画, P:プライベートの予定, R:学習記録)
+            let category = id.slice(0,1);   // IDの先頭文字を取得(L:学習計画, R:学習記録)
             if(category === 'L'){   // 学習記録詳細表示
                 displayLearningPlanDetail(id);
             }else{
@@ -110,11 +110,6 @@ function initDOM(){
     // TODO: クラス名見直し
     $('.new-plan-create-button').click(function (){
         displayLearningSetting(); // 目標の設定表示
-    });
-
-    // 振り返り履歴ボタンを押されたら
-    $(document).on("click", ".chatbot-history-button", function () {
-        window.open('https://takagi-lab.tk/chatbot/page/lesson/2020c/history/index.php');　// 振り返り履歴画面に遷移
     });
 
     // 右下の学習計画作成ボタンをクリックされたら
@@ -199,26 +194,16 @@ function displayHistoryTable(){
             tableText.history = '<button id="' + historyData[i].classDate + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
         }
 
-
         // テーブル内容の表示
-        if(tableText.settingId){
+        $('.learning-history-tbody').append(
+            '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
+            + '<td>' + tableText.plan
+            + '<td>' + tableText.record
+            + '<td>' + tableText.history
+            + '<td class="history-detail-button" id=' + tableText.settingId + '>' + '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
+            + '</td></tr>'
+        );  
 
-            $('.learning-history-tbody').append(
-                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
-                + '<td>' + tableText.plan
-                + '<td>' + tableText.record
-                + '<td>' + tableText.history
-                + '<td class="history-detail-button" id=' + tableText.settingId + '>' + '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
-                + '</td></tr>'
-            );   
-           
-        }else{
-            $('.learning-history-tbody').eq(0).html(
-                '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td colspan="3"></td>'
-                + '<td>' + tableText.history
-                + '</td><td></td></tr>'
-            );
-        }
     }
 
     changeTableColor();
@@ -230,10 +215,8 @@ function displayHistoryTable(){
  */
 function changeTableColor(){
     let selectTr = $('.learning-history-tbody').find('#' + selectSettingId);
-    // if(selectTr.length>0){  // settingIdがある＝第1回でなければテーブル色を変更する
     $('.learning-history-tbody tr').removeClass('select');
     $(selectTr).addClass('select');
-    // }
 }
 
 /**
@@ -378,32 +361,16 @@ function displayLearningSetting(){
         exit();
     });
 
-    // フォームの入力項目チェック
-    // 必須項目が入力されていたら「登録」ボタンのdisable化を解除
-    $('.learning-setting-modal-wrapper input.required').on('change', function(){
-        let disabled = false;
-        $('.learning-setting-modal-wrapper input.required').each(function() {
-            if($(this).val() === ''){
-                disabled = true;
-            }
-            $('.learning-setting-modal-wrapper .learning-setting-regist-button').attr('disabled', disabled);
-        });
-    });
-
-
     // 登録ボタンが押されたら
     $('.learning-setting-regist-button').off('click').on('click', function(){
         let settingId = new Date().getTime().toString(16)  + Math.floor(1000*Math.random()).toString(16);   // settingIdの生成
-        // 予習開始日の入力値をunixTimeに変換
-        // let prepareDateArray = $('#classDate').val().split('-');
-        // let classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
         // 授業回,授業日の取得
         let coverageInfo = $('#coverage').val().split(',');
 
         // 既に登録された授業回ではないかチェック
         let duplicateFlag = false;
         for(let data of historyData){
-            if(data.coverage === coverageInfo[0]){
+            if(Number(data.coverage) === Number(coverageInfo[0])){
             duplicateFlag = true
             }
         }
@@ -442,7 +409,6 @@ function displayLearningSetting(){
                     records: []
                 };
                 displayChartHistory();
-                // setSelectClass();
                 displayHistoryTable();
                 displayCalender();
                 // 学習計画作成モーダルの表示
@@ -476,17 +442,17 @@ function displayChatbotSystem(coverage){
  * コメントの表示
  * @param {*} settingId 
  */
-function displayComment(settingId){
-    for(let data of historyData){
-        if(data.settingId == settingId){
-            if(data.comment !== null){
-                alert(data.comment);
-            }else{
-                alert('コメントは届いていません');
-            }
-        }
-    }
-}
+// function displayComment(settingId){
+//     for(let data of historyData){
+//         if(data.settingId == settingId){
+//             if(data.comment !== null){
+//                 alert(data.comment);
+//             }else{
+//                 alert('コメントは届いていません');
+//             }
+//         }
+//     }
+// }
 
 /**
  * 学習履歴の詳細
@@ -505,30 +471,11 @@ function displayHistoryDetail(settingId){
         exit();
     });
 
-    // フォームの入力項目チェック
-    $('.history-detail-modal-wrapper input.required').on('input', function(){
-        let disabled = false;
-        $('.history-detail-modal-wrapper input.required').each(function() {
-            if($(this).val() === ''){
-                disabled = true;
-            }
-
-            $('.history-detail-modal-wrapper .history-edit-button').attr('disabled', disabled);
-        });
-    });
-
     // フォームの値セット
     let selectData = {};
     for(let data=0; data<historyData.length; data++){
         if(historyData[data].settingId == settingId){
             selectData = historyData[data];
-
-            // 予習日入力値用に変換
-            // let today = new Date(Number(selectData.classDate));
-            // let month = today.getMonth()+1;
-            // month = (month < 10) ? '0'+month : month;
-            // let date = (today.getDate() < 10) ? '0'+today.getDate() : today.getDate();
-            // classDate = today.getFullYear() + '-' + month + '-' + date;
 
             // フォームに値をセット
             let setCoverage = selectData.coverage + ',' + selectData.classDate;
@@ -541,9 +488,6 @@ function displayHistoryDetail(settingId){
             // 編集ボタンが押されたら
             $('.history-detail-modal-wrapper .history-edit-button').off('click').on('click', function(){
                 let editData = {};
-                // editData.coverage = $('.history-detail-modal-wrapper #coverage').val();
-                // let prepareDateArray = $('.history-detail-modal-wrapper #classDate').val().split('-');
-                // editData.classDate = new Date(Number(prepareDateArray[0]), Number(prepareDateArray[1])-1, Number(prepareDateArray[2]), 0,0,0,0).getTime();
                 // 授業回,授業日の取得
                 let coverageInfo = $('.history-detail-modal-wrapper #coverage').val().split(',');
                 editData.coverage = coverageInfo[0];
@@ -582,11 +526,6 @@ function displayHistoryDetail(settingId){
                     selectHistoryData = historyData[data];
                     displayHistoryTable();
                     displayChartHistory();
-
-                    if(selectData.classDate != editData.classDate){
-                        updateExecuting();
-                        getCalenderItem();
-                    }
 
                     exit();
                 })
