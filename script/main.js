@@ -630,10 +630,14 @@ function displayLearningPlanAdd(){
 
         // ダブルブッキングチェック
         let doubleBookingFlag = calenderDoubleBookingCheck(plan, plan.id);
+        // 無効値のチェック
+        let invalidPlanFlag = invalidPlanCheck(plan);
 
         // エラーがあれば表示、なければ登録処理
         if(doubleBookingFlag){
             alert('既に追加された予定と被ります．空いている時間に変更しましょう．');
+        }else if(invalidPlanFlag){
+            alert('学習時間が無効値です．再度確認してください．日をまたぐ場合は分割して登録してください．');
         }else{
             // Ajax通信 計画情報をDBに追加
             postPlan(plan);
@@ -738,7 +742,7 @@ function displayLearningRecordAdd(){
             if(doubleBookingFlag){
                 alert('既に追加された記録と被ります．');
             }else if(invalidRecordFlag){
-                alert('将来の学習記録は登録できません．日時を確認してください．');
+                alert('学習日時の値が無効です．再度確認してください．将来の学習記録や日付をまたいだ学習記録は登録できません．');
             }
         }else{
 
@@ -831,7 +835,7 @@ function displayLearningPlanDetail(id){
                     if(doubleBookingFlag){
                         alert('既に追加された記録と被ります．');
                     }else if(invalidRecordFlag){
-                        alert('将来の学習記録は登録できません．日時を確認してください．');
+                        alert('学習日時の値が無効です．再度確認してください．将来の学習記録や日付をまたいだ学習記録は登録できません．');
                     }
                 }else{
 
@@ -875,10 +879,14 @@ function displayLearningPlanDetail(id){
 
                 // ダブルブッキングチェック
                 let doubleBookingFlag = calenderDoubleBookingCheck(editPlan, id);
+                // 無効値のチェック
+                let invalidPlanFlag = invalidPlanCheck(editPlan);
 
                 // エラーがあれば表示、なければ登録処理
                 if(doubleBookingFlag){
-                    alert('既に追加された予定と被ります．空いている時間に変更しましょう')
+                    alert('既に追加された予定と被ります．空いている時間に変更しましょう．');
+                }else if(invalidPlanFlag){
+                    alert('学習時間が無効値です．再度確認してください．日をまたぐ場合は分割して登録してください．');
                 }else{
                     editPlan.id = 'L' + new Date().getTime();
                     updatePlan(editPlan, id, i);
@@ -967,7 +975,7 @@ function displayLearningRecordDetail(id){
                     if(doubleBookingFlag){
                         alert('既に追加された記録と被ります．');
                     }else if(invalidRecordFlag){
-                        alert('将来の学習記録は登録できません．日時を確認してください．');
+                        alert('学習日時の値が無効です．再度確認してください．将来の学習記録や日付をまたいだ学習記録は登録できません．');
                     }
                 }else{                    
                     $.ajax({
@@ -1184,19 +1192,47 @@ function calenderDoubleBookingCheck(item, id){
 }
 
 /**
- * 無効な学習記録の登録チェック(将来の記録)
+ * 無効な学習計画の登録チェック(不適切な時間)
+ * @param {*} plan 
+ */
+function invalidPlanCheck(plan){
+    let invalidPlanFlag = false;
+
+    let planTimeStartArray = plan.time.start.split(":").map(Number); // 開始時間[時, 分]
+    let planTimeEndArray = plan.time.end.split(":").map(Number); //終了時間[時,分]
+
+    // 終了時間が開始時間よりも前であれば無効とする
+    if(planTimeStartArray[0] > planTimeEndArray[0]){
+        invalidPlanFlag = true;
+    }else if(planTimeStartArray[0] == planTimeEndArray[0] && planTimeStartArray[1] >= planTimeEndArray[1]){
+        invalidPlanFlag = true;
+    }
+
+    return invalidPlanFlag;
+}
+
+/**
+ * 無効な学習記録の登録チェック(不適切な時間、将来の記録)
  */
 function invalidRecordCheck(record){
     let currentTime = new Date().getTime();
     let invalidRecordFlag = false;
 
     let recordDateArray = record.date.split("-").map(Number);
-    let recordTimeArray = record.time.end.split(":").map(Number);
-    let recordTime = new Date(recordDateArray[0], recordDateArray[1]-1, recordDateArray[2], recordTimeArray[0], recordTimeArray[1]).getTime();
+    let recordTimeStartArray = record.time.start.split(":").map(Number);
+    let recordTimeEndArray = record.time.end.split(":").map(Number);
+    let recordTime = new Date(recordDateArray[0], recordDateArray[1]-1, recordDateArray[2], recordTimeEndArray[0], recordTimeEndArray[1]).getTime();
 
     // 現在と学習記録の日時比較
     // 現在よりも将来の学習記録の場合は無効とする
     if(currentTime < recordTime){
+        invalidRecordFlag = true;
+    }
+
+    // 終了時間が開始時間よりも前であれば無効とする
+    if(recordTimeStartArray[0] > recordTimeEndArray[0]){
+        invalidRecordFlag = true;
+    }else if(recordTimeStartArray[0] == recordTimeEndArray[0] && recordTimeStartArray[1] >= planTimeEndArray[1]){
         invalidRecordFlag = true;
     }
 
