@@ -310,7 +310,29 @@ function displayCalender(){
         return checkedItems;
     }
 
-
+    // 授業の予定が既に格納されているかチェック
+    let isClassFlag = false;
+    for(let item of displayItems.plans){
+        if(!item.id.indexOf('C')){  //授業の予定が格納されている
+            isClassFlag = true;
+            break;
+        }
+    }
+    // 授業の予定が格納されていなければ授業の予定を登録
+    if(!isClassFlag){
+        let classDate = new Date(Number(selectHistoryData.classDate));
+        classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
+        displayItems.plans.push({
+            content: "第" + selectHistoryData.coverage + "回 基礎数B",
+            date: classDate,
+            time: {
+                start: "14:40",
+                end: "16:10"
+            },
+            id: "C" + new Date().getTime()
+        });
+    }
+    
     let displayItem = [];
     if(selectButton == '計画'){ //計画のラジオボタンが押されていたら
         displayItem = displayItemCheck(displayItems.plans);
@@ -1241,7 +1263,7 @@ function invalidRecordCheck(record){
     // 終了時間が開始時間よりも前であれば無効とする
     if(recordTimeStartArray[0] > recordTimeEndArray[0]){
         invalidRecordFlag = true;
-    }else if(recordTimeStartArray[0] == recordTimeEndArray[0] && recordTimeStartArray[1] >= planTimeEndArray[1]){
+    }else if(recordTimeStartArray[0] == recordTimeEndArray[0] && recordTimeStartArray[1] >= recordTimeEndArray[1]){
         invalidRecordFlag = true;
     }
 
@@ -1565,7 +1587,7 @@ function postPlan(plan){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        if(displayItems.plans.length == 0){
+        if(displayItems.plans.length == 1){
             // Ajax通信
             $.ajax({
                 url:'./../../php/main/updatePlanFlag.php',
@@ -1659,7 +1681,7 @@ function deletePlan(deletePlan, id, i){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        if(displayItems.plans.length == 1){ //授業と削除対象の学習計画しか登録されていなかった場合、学習計画欄の「登録」ボタンを復活
+        if(displayItems.plans.length == 2){ //授業と削除対象の学習計画しか登録されていなかった場合、学習計画欄の「登録」ボタンを復活
             // Ajax通信
             $.ajax({
                 url:'./../../php/main/updatePlanFlag.php',
