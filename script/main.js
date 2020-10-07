@@ -191,7 +191,7 @@ function displayHistoryTable(){
         if(historyData[i].chatbotFlag){
             tableText.history = '<button class="chatbot-history-button mdl-button mdl-js-button">履歴を見る</button>'
         }else{
-            tableText.history = '<button id="' + historyData[i].classDate + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+            tableText.history = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
         }
 
         // テーブル内容の表示
