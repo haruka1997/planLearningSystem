@@ -21,7 +21,7 @@
             try {
                 // $stmt2 = $dbh->prepare('SELECT history.settingId, history.userId, history.classDate, history.executing, history.understanding, history.coverage, history.achievement, history.satisfaction, history.insertTime, history.goal, history.recordTime, chatbot.testScore, chatbot.satisfaction FROM history LEFT OUTER JOIN chatbot ON history.userId = chatbot.userId where history.userId = :userId AND history.subjects = "2020年基礎数学C"');
 
-                $stmt2 = $dbh->prepare('SELECT * FROM chatbot WHERE userId = :userId'); 
+                $stmt2 = $dbh->prepare('SELECT * FROM chatbot WHERE userId = :userId ORDER BY chatbot.classDate'); 
         
                 $stmt2->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
         

@@ -1424,18 +1424,18 @@ function getHistoryData(){
             
             // chatbotのテスト点数を格納
             if(data.chatbot){
-                // 第1回のデータを取得
-                for(let chatbot of data.chatbot){
-                    if(chatbot.classDate == "1601478000000"){  //第1回のデータ
-                        historyData.unshift({
-                            coverage: "1",
-                            classDate: chatbot.classDate,
-                            goal: chatbot.goal,
-                            testScore: chatbot.testScore,
-                            satisfaction: chatbot.satisfaction
-                        });
-                    }
-                }
+                // // 第1回のデータを取得
+                // for(let chatbot of data.chatbot){
+                //     if(chatbot.classDate == "1601478000000"){  //第1回のデータ
+                //         historyData.unshift({
+                //             coverage: "1",
+                //             classDate: chatbot.classDate,
+                //             goal: chatbot.goal,
+                //             testScore: chatbot.testScore,
+                //             satisfaction: chatbot.satisfaction
+                //         });
+                //     }
+                // }
                 for(let i=0; i<historyData.length; i++){
                     historyData[i].chatbotFlag = false;
                     for(let j=0; j<data.chatbot.length; j++){
@@ -1460,6 +1460,10 @@ function getHistoryData(){
                         }
                     }
                 }
+
+                // 振り返り内容の表示
+                let reflection = data.chatbot.slice(-1)[0].reflection;
+                $('.learning-history-reflection #reflection').text(reflection);
             } 
         }
         selectSettingId = data.history.slice(-1)[0].settingId;

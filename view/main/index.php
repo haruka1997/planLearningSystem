@@ -24,6 +24,11 @@
       <!-- コンテンツ -->
       <main class="mdl-layout__content">
         <div class="learning-history-content">
+        <!-- 振り返り内容 -->
+        <div class="learning-history-reflection">
+          <span class="box-title">前回の振り返り</span>
+          <p id="reflection"></p>
+        </div>
           <div style="display:flex;">
             <!-- 学習履歴テーブル -->
             <div class="learning-history-table">

@@ -350,3 +350,29 @@ label{
 .log-table tbody tr td{
     text-align: center;
 }
+
+.learning-history-reflection{
+    position: relative;
+    margin: 10px 1% 10px 2%;
+    padding: 25px 10px 7px;
+    border: solid 1px #0288D1;
+}
+
+.learning-history-reflection .box-title{
+    position: absolute;
+    display: inline-block;
+    top: -2px;
+    left: -2px;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 16px;
+    background: #0288D1;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.learning-history-reflection p{
+    margin: 0; 
+    padding: 0;
+}
