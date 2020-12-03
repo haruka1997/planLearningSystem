@@ -37,9 +37,10 @@
                     <tr id="table-header">
                         <th>授業回</th>
                         <th>理解度</th>
-                        <th>学習計画</th>
-                        <th>学習記録</th>
-                        <th>振り返り</th>
+                        <th>計画</th>
+                        <th>記録</th>
+                        <th>計画の<br>振り返り</th>
+                        <th>学習の<br>振り返り</th>
                         <th>編集</th>
                     </tr>
                   </thead>
