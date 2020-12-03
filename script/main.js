@@ -145,6 +145,7 @@ function initDOM(){
     $('#select-last-week').click(function (){
         changeCalenderWeek('last');
     });
+
 }
 
 /**
@@ -356,7 +357,11 @@ function displayCalender(){
  */
 function displayLearningSetting(){
 
-    $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+    // MEMO[1203]: 前回の振り返りが登録されているかを確認し、
+    // 登録されていなければ振り返り確認モーダルを表示する
+    $('.reflection-confirm-modal-wrapper').addClass('is-visible'); // 振り返り確認モーダルの表示
+
+    // $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
 
     $(".learning-setting-modal-wrapper #classDate").datepicker({
         dateFormat: 'yy-mm-dd',

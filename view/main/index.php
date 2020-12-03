@@ -126,6 +126,8 @@
       <?php include ('./historyDetailModal.php'); ?>
       <!-- 統計情報のモーダル -->
       <?php include ('./statisticsModal.php'); ?>
+      <!-- 振り返り確認モーダル -->
+      <?php include ('./reflectionConfirmModal.php'); ?>
     </div>
   </body>
 </html>
