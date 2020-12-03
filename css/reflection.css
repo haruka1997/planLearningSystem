@@ -1,0 +1,32 @@
+.reflection-page{
+    margin: 20px;
+    font-size: 15px;
+}
+
+.reflection-title{
+    font-size: 20px;
+    color: #0288D1;
+    font-weight: bold;
+}
+
+.reflection-quetion-content{
+    margin: 10px;
+}
+
+.reflection-question{
+    margin: 20px;
+}
+
+.reflection-question span{
+    font-size: 15px;
+}
+
+.reflection-question textarea{
+    width: 470px;
+    height: 51px;
+}
+
+.reflection-modal-footer-button{
+    text-align: center;
+    width: 100%;
+}

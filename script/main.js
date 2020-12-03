@@ -146,6 +146,11 @@ function initDOM(){
         changeCalenderWeek('last');
     });
 
+    // 振り返り画面を開くボタンを押されたら
+    $('.reflection-open-button').click(function (){
+        displayReflection();
+    });
+
 }
 
 /**
@@ -440,6 +445,16 @@ function displayLearningSetting(){
             alert('既に該当する授業が登録されています');
         }
     });
+}
+
+/**
+ * 学習計画の振り返り表示
+ */
+function displayReflection(){
+    // 振り返り確認モーダルを閉じる
+    $('.reflection-confirm-modal-wrapper').removeClass('is-visible');
+    // 新規ウィンドウで学習計画の振り返り画面を表示
+    window.open('./reflection.php', null, 'top=10,left=10,width=500,height=300');
 }
 
 /**
