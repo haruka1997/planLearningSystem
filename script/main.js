@@ -453,8 +453,16 @@ function displayLearningSetting(){
 function displayReflection(){
     // 振り返り確認モーダルを閉じる
     $('.reflection-confirm-modal-wrapper').removeClass('is-visible');
-    // 新規ウィンドウで学習計画の振り返り画面を表示
-    window.open('./reflection.php', null, 'top=10,left=10,width=500,height=300');
+
+    // 前回の授業の計画実施率を取得
+    let lastExecting = historyData[historyData.length-1].executing;
+    if(lastExecting == 100){ // 計画実施率が100%だったら
+        // 新規ウィンドウで学習計画の振り返り画面を表示
+        window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
+    }else if(lastExecting < 100){
+        // 新規ウィンドウで学習計画の振り返り画面を表示
+        window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
+    }
 }
 
 /**

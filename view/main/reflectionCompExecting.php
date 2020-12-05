@@ -12,9 +12,23 @@
     <main class="mdl-layout__content">
         <div class="reflection-page">
             <div class="reflection-title">学習計画の振り返り</div>
-            <div class="reflection-question-content">
+            <!-- 計画実施率が100%だった場合 -->
+            <div class="reflection-question-content" id="comp-execting">
                 <div class="reflection-question">
-                    <div>Q1. 計画通りに行えなかった原因を選択してください</div>
+                    <div>
+                        Q1. 計画を実行するにあたって無理や負担を感じましたか
+                    </div>
+                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-5">
+                        <input type="radio" id="option-5" class="mdl-radio__button" name="options3" value="3">
+                        <span class="mdl-radio__label">はい</span>
+                    </label>
+                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-6">
+                        <input type="radio" id="option-6" class="mdl-radio__button" name="options3" value="4">
+                        <span class="mdl-radio__label">いいえ</span>
+                    </label>
+                </div>
+                <div class="reflection-question">
+                    <div>Q2. Q1で「はい」を選択した方へ、どのような無理や負担を感じましたか</div>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
                         <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input">
                         <span class="mdl-checkbox__label">実行可能性の低い学習計画を立案していた</span>
@@ -47,34 +61,7 @@
                     <br>
                 </div>
                 <div class="reflection-question">
-                    <div>
-                        Q2. 学習を完了させるために途中で計画の変更を行いましたか
-                        <div style="font-size:0.8em; margin-left: 10px;"> 例)1日に学習を詰め込みすぎたので、残りは明日に持ち越した</div>
-                    </div>
-                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                        <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
-                        <span class="mdl-radio__label">はい</span>
-                    </label>
-                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-                        <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="2">
-                        <span class="mdl-radio__label">いいえ</span>
-                    </label>
-                </div>
-                <div class="reflection-question">
-                    <div>
-                        Q3. 学習を完了させることができましたか
-                    </div>
-                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
-                        <input type="radio" id="option-3" class="mdl-radio__button" name="options2" value="3">
-                        <span class="mdl-radio__label">はい</span>
-                    </label>
-                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-4">
-                        <input type="radio" id="option-4" class="mdl-radio__button" name="options2" value="4">
-                        <span class="mdl-radio__label">いいえ</span>
-                    </label>
-                </div>
-                <div class="reflection-question">
-                    <div>Q4. 上記を踏まえて、今後学習計画を立てる際に気をつけいたいことを記入してください</div>
+                    <div>Q3. 上記を踏まえて、今後学習計画を立てる際に気をつけたいことを記入してください</div>
                     <textarea class="form-control" id="learningMemo"></textarea>
                 </div>
                 <div class="reflection-modal-footer-button">
