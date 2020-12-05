@@ -456,6 +456,8 @@ function displayReflection(){
 
     // 前回の授業の計画実施率を取得
     let lastExecting = historyData[historyData.length-1].executing;
+    // settingIdをsessionに保存(別タブからDBに登録データをPOSTする際のキーに使うため)
+    sessionStorage.setItem('settingId', historyData[historyData.length-1].settingId);
     if(lastExecting == 100){ // 計画実施率が100%だったら
         // 新規ウィンドウで学習計画の振り返り画面を表示
         window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');

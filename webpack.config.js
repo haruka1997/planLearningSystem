@@ -9,7 +9,8 @@ module.exports = {
       login: './script/login.js',
       moduleInit: `./script/module/moduleInit.js`,
       main: `./script/main.js`,
-      log: `./script/log.js`
+      log: `./script/log.js`,
+      reflection: `./script/reflection.js`,
     },
     mode: 'development',
    
