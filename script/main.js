@@ -53,7 +53,7 @@ function initDOM(){
     // });
 
     // 計画の振り返りの登録ボタンをクリックされたら
-     $(document).on("click", ".learning-history-tbody td .regists-reflection-button", function () {
+     $(document).on("click", ".learning-history-tbody td .regist-reflection-button", function () {
         displayReflection($(this).attr('id'));  // 計画の振り返り画面表示
     });
 
