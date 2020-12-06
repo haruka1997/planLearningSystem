@@ -64,7 +64,8 @@ function reflectionRegist(category){
         })
         .done( (data) => {
             alert('登録完了しました');
-            // 振り返り画面を閉じる
+            // メイン画面をリロードして振り返り画面を閉じる
+            window.opener.location.reload();
             window.open('','_self').close();
         })
         // Ajaxリクエストが失敗した時発動
