@@ -21,43 +21,43 @@
                         Q1. 計画を実行するにあたって無理や負担を感じましたか
                     </div>
                     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-5">
-                        <input type="radio" id="option-5" class="mdl-radio__button" name="options3" value="はい">
+                        <input type="radio" id="option-5" class="mdl-radio__button" name="Q1" value="はい">
                         <span class="mdl-radio__label">はい</span>
                     </label>
                     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-6">
-                        <input type="radio" id="option-6" class="mdl-radio__button" name="options3" value="いいえ">
+                        <input type="radio" id="option-6" class="mdl-radio__button" name="Q1" value="いいえ">
                         <span class="mdl-radio__label">いいえ</span>
                     </label>
                 </div>
                 <div class="reflection-question">
                     <div>Q2. Q1で「はい」を選択した方へ、どのような無理や負担を感じましたか</div>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
-                        <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input" value="実行可能性の低い学習計画を立案していた">
+                        <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input" name="Q2" value="実行可能性の低い学習計画を立案していた">
                         <span class="mdl-checkbox__label">実行可能性の低い学習計画を立案していた</span>
                     </label>
                     <br>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
-                        <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input" value="学習に必要な時間を誤予測していた">
+                        <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input" name="Q2" value="学習に必要な時間を誤予測していた">
                         <span class="mdl-checkbox__label">学習に必要な時間を誤予測していた</span>
                     </label>
                     <br>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-3">
-                        <input type="checkbox" id="checkbox-3" class="mdl-checkbox__input" value="誘惑や欲求に負けた(眠気や遊びなど)">
+                        <input type="checkbox" id="checkbox-3" class="mdl-checkbox__input" name="Q2" value="誘惑や欲求に負けた(眠気や遊びなど)">
                         <span class="mdl-checkbox__label">誘惑や欲求に負けた(眠気や遊びなど)</span>
                     </label>
                     <br>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-4">
-                        <input type="checkbox" id="checkbox-4" class="mdl-checkbox__input" value="学習途中の飽き、やる気や集中力が低減した">
+                        <input type="checkbox" id="checkbox-4" class="mdl-checkbox__input" name="Q2" value="学習途中の飽き、やる気や集中力が低減した">
                         <span class="mdl-checkbox__label">学習途中の飽き、やる気や集中力が低減した</span>
                     </label>
                     <br>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-5">
-                        <input type="checkbox" id="checkbox-5" class="mdl-checkbox__input" value="計画した日時にやる気が生まれなかった">
+                        <input type="checkbox" id="checkbox-5" class="mdl-checkbox__input" name="Q2" value="計画した日時にやる気が生まれなかった">
                         <span class="mdl-checkbox__label">計画した日時にやる気が生まれなかった</span>
                     </label>
                     <br>
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-6">
-                        <input type="checkbox" id="checkbox-6" class="mdl-checkbox__input" value="その他">
+                        <input type="checkbox" id="checkbox-6" class="mdl-checkbox__input" name="Q2" value="その他">
                         <span class="mdl-checkbox__label">その他</span>
                     </label>
                     <br>

@@ -30,7 +30,7 @@ function reflectionRegist(category){
     };
     if(category == 'non-execting'){ // 計画実施率が100%未満の場合
         $('input:checkbox[name="Q1"]:checked').each(function() {
-			postData.Q1 += ' ' + $(this).val();
+			postData.Q1 +=  $(this).val();
         });
         postData.Q2 = $('input:radio[name="Q2"]:checked').val();
         postData.Q3 = $('input:radio[name="Q3"]:checked').val();
@@ -42,8 +42,6 @@ function reflectionRegist(category){
         });
         postData.Q3 = $('#reflectionText').val();
     }
-
-    console.log(postData);
     
     // DBに登録
     $.ajax({
@@ -53,8 +51,10 @@ function reflectionRegist(category){
         dataType: 'json'       
     })
     // Ajaxリクエストが成功した時発動
-    .done( () => {
-        
+    .done( (data) => {
+        alert('登録完了しました');
+        // 振り返り画面を閉じる
+        window.open('','_self').close();
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
