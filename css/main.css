@@ -195,10 +195,9 @@ body{
 
 .learning-history-table{
     position: relative;
-    margin-top: 10px;
     background-color: #ffffff;
     margin-left: 1%;
-    max-height: 270px;
+    max-height: 285px;
     overflow-y: scroll;
     padding: 10px;
     width: 35%;
@@ -210,7 +209,7 @@ body{
     padding: 10px 0;
     line-height: 1;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .learning-history-table table{
@@ -234,6 +233,10 @@ body{
 
 .learning-history-table table tr.select{
     background-color: #E1F5FE;
+}
+
+.learning-history-table table tr button{
+    font-size: 13px;
 }
 
 #total-learning-time-table{
@@ -299,7 +302,6 @@ body{
     text-align: center;
     position: relative;
     background-color: #ffffff;
-    padding: 10px;
 }
 
 .new-plan-create button{
@@ -314,10 +316,12 @@ body{
 .chatbot-history-comp-button.mdl-button,
 .regist-plan-button,
 .regist-record-button,
-.chatbot-history-button{
+.chatbot-history-button,
+.reflection-history-button,
+.regist-reflection-button{
     height: auto;
     line-height: 1;
-    font-size: 14px;
+    font-size: 13px;
     min-width: 0px;
 }
 
@@ -371,7 +375,7 @@ label{
     padding: 0 9px;
     height: 25px;
     line-height: 25px;
-    font-size: 16px;
+    font-size: 14px;
     background: #0288D1;
     color: #ffffff;
     font-weight: bold;
