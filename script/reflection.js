@@ -19,7 +19,6 @@ function initDOM(){
 }
 
 function reflectionRegist(category){
-    console.log(selectSettingId)
     let postData = {
         settingId: selectSettingId,
         category: category,
@@ -52,9 +51,26 @@ function reflectionRegist(category){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        alert('登録完了しました');
-        // 振り返り画面を閉じる
-        window.open('','_self').close();
+        // 振り返りフラグをtrueにする
+        let updateData = {
+            settingId: selectSettingId,
+            reflectionFlag: true
+        }; 
+        $.ajax({
+            url:'./../../php/main/updateReflectionFlag.php',
+            type:'POST',
+            data: updateData,
+            dataType: 'json'       
+        })
+        .done( (data) => {
+            alert('登録完了しました');
+            // 振り返り画面を閉じる
+            window.open('','_self').close();
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+            alert('登録に失敗しました');
+        });
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
