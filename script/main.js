@@ -193,11 +193,18 @@ function displayHistoryTable(){
             tableText.record = '<button id="' + historyData[i].classDate + '" class="regist-record-button mdl-button mdl-js-button">登録</button>'
         }
 
-        // 振り返りの項目
-        if(historyData[i].chatbotFlag){
-            tableText.history = '<button class="chatbot-history-button mdl-button mdl-js-button">履歴</button>'
+        // 計画の振り返りの項目
+        if(historyData[i].reflectionFlag == 'true'){
+            tableText.reflection = '<button class="reflection-history-button mdl-button mdl-js-button">履歴</button>'
         }else{
-            tableText.history = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+            tableText.reflection = '<button id="' + historyData[i].settingId + '" class="regist-reflection-button mdl-button mdl-js-button">登録</button>'
+        }
+
+        // 学習の振り返りの項目
+        if(historyData[i].chatbotFlag){
+            tableText.chatbot = '<button class="chatbot-history-button mdl-button mdl-js-button">履歴</button>'
+        }else{
+            tableText.chatbot = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
         }
 
         // テーブル内容の表示
@@ -205,8 +212,8 @@ function displayHistoryTable(){
             '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
             + '<td>' + tableText.plan
             + '<td>' + tableText.record
-            + '<td>' + tableText.history //MEMO[1203]: 計画の振り返りリンクに変更する
-            + '<td>' + tableText.history 
+            + '<td>' + tableText.reflection
+            + '<td>' + tableText.chatbot 
             + '<td class="history-detail-button" id=' + tableText.settingId + '>' + '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
             + '</td></tr>'
         );  
@@ -456,14 +463,15 @@ function displayReflection(){
 
     // 前回の授業の計画実施率を取得
     let lastExecting = historyData[historyData.length-1].executing;
+    let win;
     // settingIdをsessionに保存(別タブからDBに登録データをPOSTする際のキーに使うため)
     sessionStorage.setItem('settingId', historyData[historyData.length-1].settingId);
     if(lastExecting == 100){ // 計画実施率が100%だったら
         // 新規ウィンドウで学習計画の振り返り画面を表示
-        window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
+        win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
     }else if(lastExecting < 100){
         // 新規ウィンドウで学習計画の振り返り画面を表示
-        window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
+        win = window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
     }
 }
 
