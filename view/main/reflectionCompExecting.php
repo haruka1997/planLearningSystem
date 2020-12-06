@@ -64,7 +64,7 @@
                 </div>
                 <div class="reflection-question">
                     <div>Q3. 上記を踏まえて、今後学習計画を立てる際に気をつけたいことを記入してください</div>
-                    <textarea class="form-control" id="reflectionText"></textarea>
+                    <textarea class="form-control required" id="reflectionText"></textarea>
                 </div>
                 <div class="reflection-modal-footer-button">
                     <button class="reflection-regist-button mdl-button mdl-js-button mdl-button--raised" id="comp-execting">登録</button>

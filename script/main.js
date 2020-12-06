@@ -382,9 +382,12 @@ function displayLearningSetting(){
 
     // MEMO[1203]: 前回の振り返りが登録されているかを確認し、
     // 登録されていなければ振り返り確認モーダルを表示する
-    $('.reflection-confirm-modal-wrapper').addClass('is-visible'); // 振り返り確認モーダルの表示
+    if(historyData[historyData.length-1].reflectionFlag == 'true'){
+        $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+    }else{
+        $('.reflection-confirm-modal-wrapper').addClass('is-visible'); // 振り返り確認モーダルの表示
 
-    // $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+    }
 
     $(".learning-setting-modal-wrapper #classDate").datepicker({
         dateFormat: 'yy-mm-dd',
@@ -393,6 +396,7 @@ function displayLearningSetting(){
     // モーダルを閉じる処理
     let exit = function(){
         $('.learning-setting-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+        $('.reflection-confirm-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
     }
 
     // キャンセルボタンが押されたら
@@ -1563,9 +1567,32 @@ function getHistoryData(){
                     }
                 }
 
-                // 振り返り内容の表示
-                let reflection = data.chatbot.slice(-1)[0].reflection;
-                $('.learning-history-reflection #reflection').text(reflection);
+                // 直近の振り返り内容の取得
+                $.ajax({
+                    url:'./../../php/main/getReflectionData.php',
+                    type:'POST',
+                    data:{
+                        'settingId': historyData[historyData.length-1].settingId
+                    },
+                    dataType: 'json'       
+                })
+                // Ajaxリクエストが成功した時発動
+                .done( (data) => {
+                    if(data) {
+                        // 直近の振り返り内容の表示
+                        let reflection = '';
+                        if(data[0].category == 'non-execting'){
+                            reflection = data[0].Q4;
+                        }else{
+                            reflection = data[0].Q3;
+                        }
+                        $('.learning-history-reflection #reflection').text(reflection);
+                    }
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                   alert('計画の振り返りの取得を失敗しました');
+                });
             } 
         }
         selectSettingId = data.history.slice(-1)[0].settingId;
