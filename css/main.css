@@ -48,7 +48,8 @@ body{
 .learning-setting-modal-wrapper,
 .history-detail-modal-wrapper,
 .statistics-modal-wrapper,
-.reflection-confirm-modal-wrapper{
+.reflection-confirm-modal-wrapper,
+.reflection-detail-modal-wrapper{
     display: flex;
     justify-content: center;
     overflow: auto;
@@ -72,7 +73,8 @@ body{
 .learning-setting-modal-wrapper.is-visible,
 .history-detail-modal-wrapper.is-visible,
 .statistics-modal-wrapper.is-visible,
-.reflection-confirm-modal-wrapper.is-visible{
+.reflection-confirm-modal-wrapper.is-visible,
+.reflection-detail-modal-wrapper.is-visible{
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s;
@@ -378,4 +380,8 @@ label{
 .learning-history-reflection p{
     margin: 0; 
     padding: 0;
+}
+
+.reflection-answer{
+    margin: 10px;
 }

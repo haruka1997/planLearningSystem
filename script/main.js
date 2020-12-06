@@ -52,7 +52,17 @@ function initDOM(){
     //     displayHistoryDetail($(this).attr('id'));  // 学習履歴の詳細表示
     // });
 
-    // テーブルの振り返りボタンをクリックされたら
+    // 計画の振り返りの登録ボタンをクリックされたら
+     $(document).on("click", ".learning-history-tbody td .regists-reflection-button", function () {
+        displayReflection($(this).attr('id'));  // 計画の振り返り画面表示
+    });
+
+    // 計画の振り返りの履歴ボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .reflection-history-button", function () {
+        displayReflectionDetail($(this).attr('id'));　// 振り返り履歴画面に遷移
+    });
+
+    // 学習の振り返りの登録ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .history-chatbot-button", function () {
         displayChatbotSystem($(this).attr('id'));  // 学習履歴の詳細表示
     });
@@ -62,7 +72,7 @@ function initDOM(){
     //     displayComment($(this).attr('id'));  // コメントの表示
     // });
 
-    // テーブルの振り返り済みをクリックされたら
+    // 学習の振り返りの履歴をクリックされたら
     $(document).on("click", ".learning-history-tbody td .chatbot-history-comp-button", function () {
         window.open('https://tkg-lab.tk/chatbot/page/lesson/2020b/history/index.php');　// 振り返り履歴画面に遷移
     });
@@ -148,7 +158,8 @@ function initDOM(){
 
     // 振り返り画面を開くボタンを押されたら
     $('.reflection-open-button').click(function (){
-        displayReflection();
+        let settingId = historyData[historyData.length-1].settingId;
+        displayReflection(settingId);
     });
 
 }
@@ -195,14 +206,14 @@ function displayHistoryTable(){
 
         // 計画の振り返りの項目
         if(historyData[i].reflectionFlag == 'true'){
-            tableText.reflection = '<button class="reflection-history-button mdl-button mdl-js-button">履歴</button>'
+            tableText.reflection = '<button id="' + historyData[i].settingId + '" class="reflection-history-button mdl-button mdl-js-button">履歴</button>'
         }else{
             tableText.reflection = '<button id="' + historyData[i].settingId + '" class="regist-reflection-button mdl-button mdl-js-button">登録</button>'
         }
 
         // 学習の振り返りの項目
         if(historyData[i].chatbotFlag){
-            tableText.chatbot = '<button class="chatbot-history-button mdl-button mdl-js-button">履歴</button>'
+            tableText.chatbot = '<button class="chatbot-history-comp-button mdl-button mdl-js-button">履歴</button>'
         }else{
             tableText.chatbot = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
         }
@@ -457,7 +468,7 @@ function displayLearningSetting(){
 /**
  * 学習計画の振り返り表示
  */
-function displayReflection(){
+function displayReflection(settingId){
     // 振り返り確認モーダルを閉じる
     $('.reflection-confirm-modal-wrapper').removeClass('is-visible');
 
@@ -465,7 +476,7 @@ function displayReflection(){
     let lastExecting = historyData[historyData.length-1].executing;
     let win;
     // settingIdをsessionに保存(別タブからDBに登録データをPOSTする際のキーに使うため)
-    sessionStorage.setItem('settingId', historyData[historyData.length-1].settingId);
+    sessionStorage.setItem('settingId', settingId);
     if(lastExecting == 100){ // 計画実施率が100%だったら
         // 新規ウィンドウで学習計画の振り返り画面を表示
         win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
@@ -473,6 +484,58 @@ function displayReflection(){
         // 新規ウィンドウで学習計画の振り返り画面を表示
         win = window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
     }
+}
+
+/**
+ * 計画の振り返り履歴画面の表示
+ */
+function displayReflectionDetail(settingId){
+    // 振り返りモーダルの表示
+    $('.reflection-detail-modal-wrapper').addClass('is-visible');    //学習履歴詳細モーダル表示
+
+    // キャンセルボタンが押されたら
+    $('.header-cansel-button').click(function () {
+        $('.reflection-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
+    });
+
+    // 振り返りデータの取得
+    $.ajax({
+        url:'./../../php/main/getReflectionData.php',
+        type:'POST',
+        data:{
+            'settingId': settingId
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            let reflectionData = data[0];
+
+            if(reflectionData.category == 'comp-execting'){ // 計画実施率が100%の振り返りの場合
+                $('#non-execting').hide();  // 100%未満の振り返り内容を非表示
+                let Q2 = reflectionData.Q2.split(/\s+/);
+                $('.Q1').text(reflectionData.Q1);
+                for(let item of Q2){
+                    $('.Q2').append('<div>' + item +  '</div>');
+                }
+                $('.Q3').text(reflectionData.Q3);
+            }else{
+                $('#comp-execting').hide();  // 100%の振り返り内容を非表示
+                let Q1 = reflectionData.Q1.split(/\s+/);
+                for(let item of Q1){
+                    $('.Q1').append('<div>' + item +  '</div>');
+                }
+                $('.Q2').text(reflectionData.Q2);
+                $('.Q3').text(reflectionData.Q3);
+                $('.Q4').text(reflectionData.Q4);
+            }
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       alert('計画の振り返りの取得を失敗しました');
+    });
 }
 
 /**

@@ -128,6 +128,8 @@
       <?php include ('./statisticsModal.php'); ?>
       <!-- 振り返り確認モーダル -->
       <?php include ('./reflectionConfirmModal.php'); ?>
+      <!-- 振り返り履歴モーダル -->
+      <?php include ('./reflectionDetailModal.php'); ?>
     </div>
   </body>
 </html>
