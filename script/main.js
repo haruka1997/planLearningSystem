@@ -1568,11 +1568,18 @@ function getHistoryData(){
                 }
 
                 // 直近の振り返り内容の取得
+                // 一番最新の振り返りがあるsettingIdを取得
+                let selectSettingId;
+                for(let history of historyData){
+                    if(history.reflectionFlag == 'true'){
+                        selectSettingId = history.settingId;
+                    }
+                }
                 $.ajax({
                     url:'./../../php/main/getReflectionData.php',
                     type:'POST',
                     data:{
-                        'settingId': historyData[historyData.length-1].settingId
+                        'settingId': selectSettingId
                     },
                     dataType: 'json'       
                 })
