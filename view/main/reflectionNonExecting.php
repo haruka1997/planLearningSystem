@@ -14,6 +14,7 @@
     <main class="mdl-layout__content">
         <div class="reflection-page">
             <div class="reflection-title">学習計画の振り返り</div>
+            <div>カレンダーを振り返りながら回答しましょう！</div>
             <!-- 計画実施率が100%未満だった場合 -->
             <div class="reflection-question-content">
                 <div class="reflection-question">
@@ -55,7 +56,7 @@
                         <div style="font-size:0.8em; margin-left: 10px;"> 例)1日に学習を詰め込みすぎたので、残りは明日に持ち越した</div>
                     </div>
                     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                        <input type="radio" id="option-1" class="mdl-radio__button" name="Q2" value="はい" checked>
+                        <input type="radio" id="option-1" class="mdl-radio__button" name="Q2" value="はい">
                         <span class="mdl-radio__label">はい</span>
                     </label>
                     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
