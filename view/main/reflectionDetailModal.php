@@ -10,18 +10,22 @@
             <!-- 計画実施率が100%だった場合 -->
             <div class="reflection-question-content" id="comp-execting">
                 <div class="reflection-question">
-                    <div>
-                        Q1. 計画を実行するにあたって無理や負担を感じましたか
-                    </div>
+                    <div>Q1. 今回の学習計画で良かった点や工夫した点を記入してください</div>
                     <div class="Q1 reflection-answer"></div>
                 </div>
                 <div class="reflection-question">
-                    <div>Q2. Q1で「はい」を選択した方へ、どのような無理や負担を感じましたか</div>
+                    <div>
+                        Q2. 計画を実行するにあたって無理や負担を感じましたか
+                    </div>
                     <div class="Q2 reflection-answer"></div>
                 </div>
                 <div class="reflection-question">
-                    <div>Q3. 上記を踏まえて、今後学習計画を立てる際に気をつけたいことを記入してください</div>
+                    <div>Q3. Q1で「はい」を選択した方へ、どのような無理や負担を感じましたか</div>
                     <div class="Q3 reflection-answer"></div>
+                </div>
+                <div class="reflection-question">
+                    <div>Q4. 上記を踏まえて、今後学習計画を立てる際に気をつけたいことを記入してください</div>
+                    <div class="Q4 reflection-answer"></div>
                 </div>
             </div>
 

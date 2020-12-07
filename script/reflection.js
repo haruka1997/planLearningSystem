@@ -35,11 +35,12 @@ function reflectionRegist(category){
         postData.Q3 = $('input:radio[name="Q3"]:checked').val();
         postData.Q4 = $('#reflectionText').val();
     }else{　//計画実施率が100%の場合
-        postData.Q1 = $('input:radio[name="Q1"]:checked').val();
-        $('input:checkbox[name="Q2"]:checked').each(function() {
-			postData.Q2 += ' ' + $(this).val();
+        postData.Q1 = $('#Q1').val();
+        postData.Q2 = $('input:radio[name="Q2"]:checked').val();
+        $('input:checkbox[name="Q3"]:checked').each(function() {
+			postData.Q3 += ' ' + $(this).val();
         });
-        postData.Q3 = $('#reflectionText').val();
+        postData.Q4 = $('#Q4').val();
     }
     
     // DBに登録

@@ -518,12 +518,13 @@ function displayReflectionDetail(settingId){
 
             if(reflectionData.category == 'comp-execting'){ // 計画実施率が100%の振り返りの場合
                 $('#non-execting').hide();  // 100%未満の振り返り内容を非表示
-                let Q2 = reflectionData.Q2.split(/\s+/);
                 $('.Q1').text(reflectionData.Q1);
-                for(let item of Q2){
-                    $('.Q2').append('<div>' + item +  '</div>');
+                $('.Q2').text(reflectionData.Q2);
+                let Q3 = reflectionData.Q3.split(/\s+/);
+                for(let item of Q3){
+                    $('.Q3').append('<div>' + item +  '</div>');
                 }
-                $('.Q3').text(reflectionData.Q3);
+                $('.Q4').text(reflectionData.Q4);
             }else{
                 $('#comp-execting').hide();  // 100%の振り返り内容を非表示
                 let Q1 = reflectionData.Q1.split(/\s+/);
@@ -1587,12 +1588,7 @@ function getHistoryData(){
                 .done( (data) => {
                     if(data) {
                         // 直近の振り返り内容の表示
-                        let reflection = '';
-                        if(data[0].category == 'non-execting'){
-                            reflection = data[0].Q4;
-                        }else{
-                            reflection = data[0].Q3;
-                        }
+                        let reflection = data[0].Q4;
                         $('.learning-history-reflection #reflection').text(reflection);
                     }
                 })
