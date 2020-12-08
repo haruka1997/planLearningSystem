@@ -158,7 +158,7 @@ function initDOM(){
 
     // 振り返り画面を開くボタンを押されたら
     $('.reflection-open-button').click(function (){
-        let settingId = historyData[historyData.length-1].settingId;
+        let settingId = historyData[0].settingId;
         displayReflection(settingId);
     });
 
@@ -173,10 +173,11 @@ function displayHistoryTable(){
     $('.learning-history-tbody').html(''); 
 
     // 第1回の列の生成と初期化
-    $('.learning-history-tbody').append(
-        '<tr><td class="coverage">1回(10/1)</td><td colspan="5"></td>'
-        + '</td></tr>'
-    );
+    // $('.learning-history-tbody').append(
+    //     '<tr><td class="coverage">1回(10/1)</td><td colspan="5"></td>'
+    //     + '</td></tr>'
+    // );
+
 
     // 取得した学習履歴をにテーブルに表示
     for(var i in historyData){
@@ -380,9 +381,9 @@ function displayCalender(){
  */
 function displayLearningSetting(){
 
-    // MEMO[1203]: 前回の振り返りが登録されているかを確認し、
+    // 前回の振り返りが登録されているかを確認し、
     // 登録されていなければ振り返り確認モーダルを表示する
-    if(historyData[historyData.length-1].reflectionFlag == 'true'){
+    if(historyData[0].reflectionFlag == 'true'){
         $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
     }else{
         $('.reflection-confirm-modal-wrapper').addClass('is-visible'); // 振り返り確認モーダルの表示
@@ -444,7 +445,7 @@ function displayLearningSetting(){
                 data.executing = null;
                 data.achievement = null;
                 data.satisfaction = null;
-                historyData.push(data);
+                historyData.unshift(data);
                 selectHistoryData = data;
                 displayCalenderDate = selectHistoryData.classDate;
                 displayItems = {
@@ -477,17 +478,22 @@ function displayReflection(settingId){
     $('.reflection-confirm-modal-wrapper').removeClass('is-visible');
 
     // 前回の授業の計画実施率を取得
-    let lastExecting = historyData[historyData.length-1].executing;
+    let selectExecuting;
+    for(let data of historyData){
+        if(data.settingId == settingId){
+            selectExecuting = data.executing;
+        }
+    }
     let win;
     // settingIdをsessionに保存(別タブからDBに登録データをPOSTする際のキーに使うため)
     sessionStorage.setItem('settingId', settingId);
     // 計画実施率をsessionに保存(振り返り画面に表示させるため)
-    sessionStorage.setItem('executing', lastExecting);
+    sessionStorage.setItem('executing', selectExecuting);
 
-    if(lastExecting == 100){ // 計画実施率が100%だったら
+    if(selectExecuting == 100){ // 計画実施率が100%だったら
         // 新規ウィンドウで学習計画の振り返り画面を表示
         win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
-    }else if(lastExecting < 100){
+    }else if(selectExecuting < 100){
         // 新規ウィンドウで学習計画の振り返り画面を表示
         win = window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
     }
@@ -672,9 +678,10 @@ function displayHistoryDetail(settingId){
                 .done( () => {
                     if(historyData.length > 1){
                         historyData.splice(data, 1);
-                        selectSettingId = historyData[historyData.length-1].settingId;
-                        selectHistoryData = historyData[historyData.length-1];
+                        selectSettingId = historyData[0].settingId;
+                        selectHistoryData = historyData[0];
                         displayCalenderDate = selectHistoryData.classDate;
+                        getReflectionData(selectSettingId);
                     }else{
                         historyData = [];
                         // カレンダー非表示
@@ -1534,7 +1541,7 @@ function getHistoryData(){
                 history.coverage = Number(history.coverage);
             }
             historyData.sort(function (a, b) {
-                return a.coverage - b.coverage;
+                return b.coverage - a.coverage;
             });
             
             // chatbotのテスト点数を格納
@@ -1582,32 +1589,34 @@ function getHistoryData(){
                 for(let history of historyData){
                     if(history.reflectionFlag == 'true'){
                         selectSettingId = history.settingId;
+                        break;
                     }
                 }
-                $.ajax({
-                    url:'./../../php/main/getReflectionData.php',
-                    type:'POST',
-                    data:{
-                        'settingId': selectSettingId
-                    },
-                    dataType: 'json'       
-                })
-                // Ajaxリクエストが成功した時発動
-                .done( (data) => {
-                    if(data) {
-                        // 直近の振り返り内容の表示
-                        let reflection = data[0].Q4;
-                        $('.learning-history-reflection #reflection').text(reflection);
-                    }
-                })
-                // Ajaxリクエストが失敗した時発動
-                .fail( (data) => {
-                   alert('計画の振り返りの取得を失敗しました');
-                });
+                getReflectionData(selectSettingId); // 画面上部の振り返り内容を取得
+                // $.ajax({
+                //     url:'./../../php/main/getReflectionData.php',
+                //     type:'POST',
+                //     data:{
+                //         'settingId': selectSettingId
+                //     },
+                //     dataType: 'json'       
+                // })
+                // // Ajaxリクエストが成功した時発動
+                // .done( (data) => {
+                //     if(data) {
+                //         // 直近の振り返り内容の表示
+                //         let reflection = data[0].Q4;
+                //         $('.learning-history-reflection #reflection').text(reflection);
+                //     }
+                // })
+                // // Ajaxリクエストが失敗した時発動
+                // .fail( (data) => {
+                //    alert('計画の振り返りの取得を失敗しました');
+                // });
             } 
         }
-        selectSettingId = data.history.slice(-1)[0].settingId;
-        selectHistoryData = data.history.slice(-1)[0];
+        selectSettingId = data.history[0].settingId;    // 先頭(最新)のsettingIdをselectSettingに設定
+        selectHistoryData = data.history[0];    // 先頭(最新)のデータをselectHistoryDataに設定
         displayCalenderDate = selectHistoryData.classDate;
         displayHistoryTable();
         displayChartHistory();
@@ -1901,4 +1910,27 @@ function postRecord(record){
     .fail( (data) => {
         alert('登録に失敗しました');
     })
+}
+
+function getReflectionData(settingId){
+    $.ajax({
+        url:'./../../php/main/getReflectionData.php',
+        type:'POST',
+        data:{
+            'settingId': settingId
+        },
+        dataType: 'json'       
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+        if(data) {
+            // 直近の振り返り内容の表示
+            let reflection = data[0].Q4;
+            $('.learning-history-reflection #reflection').text(reflection);
+        }
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+       alert('計画の振り返りの取得を失敗しました');
+    });
 }
