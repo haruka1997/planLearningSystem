@@ -618,7 +618,7 @@ function displayHistoryDetail(settingId){
 
             // 編集ボタンが押されたら
             $('.history-detail-modal-wrapper .history-edit-button').off('click').on('click', function(){
-                let editData = {};
+                let editData = selectData;
                 // 授業回,授業日の取得
                 let coverageInfo = $('.history-detail-modal-wrapper #coverage').val().split(',');
                 editData.coverage = coverageInfo[0];
