@@ -3,6 +3,7 @@ var modules = require('./module/moduleInit.js');
 modules = modules.mainSet();
 
 let selectSettingId = sessionStorage.getItem('settingId');
+let executing = sessionStorage.getItem('executing');
 
 $(function(){
     // DOMの初期設定
@@ -10,6 +11,8 @@ $(function(){
 });
 
 function initDOM(){
+    // 計画実施率を表示
+    $('#execting').text('あなたの計画実施率は' + executing + '%でした');
     // 振り返り画面の登録ボタンをクリックされたら
     $(document).on("click", ".reflection-regist-button", function () {
         let category = $(this).attr('id');

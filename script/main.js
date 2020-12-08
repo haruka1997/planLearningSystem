@@ -481,6 +481,9 @@ function displayReflection(settingId){
     let win;
     // settingIdをsessionに保存(別タブからDBに登録データをPOSTする際のキーに使うため)
     sessionStorage.setItem('settingId', settingId);
+    // 計画実施率をsessionに保存(振り返り画面に表示させるため)
+    sessionStorage.setItem('executing', lastExecting);
+    
     if(lastExecting == 100){ // 計画実施率が100%だったら
         // 新規ウィンドウで学習計画の振り返り画面を表示
         win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');

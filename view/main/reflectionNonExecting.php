@@ -14,6 +14,7 @@
     <main class="mdl-layout__content">
         <div class="reflection-page">
             <div class="reflection-title">学習計画の振り返り</div>
+            <div id="execting"></div>
             <div>カレンダーを振り返りながら回答しましょう！</div>
             <!-- 計画実施率が100%未満だった場合 -->
             <div class="reflection-question-content">
