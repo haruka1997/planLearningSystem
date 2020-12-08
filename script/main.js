@@ -483,7 +483,7 @@ function displayReflection(settingId){
     sessionStorage.setItem('settingId', settingId);
     // 計画実施率をsessionに保存(振り返り画面に表示させるため)
     sessionStorage.setItem('executing', lastExecting);
-    
+
     if(lastExecting == 100){ // 計画実施率が100%だったら
         // 新規ウィンドウで学習計画の振り返り画面を表示
         win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
@@ -502,6 +502,9 @@ function displayReflectionDetail(settingId){
 
     // キャンセルボタンが押されたら
     $('.header-cansel-button').click(function () {
+        // チェックした内容の表示をリセット
+        $('.Q3').empty();
+        $('.Q1').empty();
         $('.reflection-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
     });
 
@@ -521,6 +524,7 @@ function displayReflectionDetail(settingId){
 
             if(reflectionData.category == 'comp-execting'){ // 計画実施率が100%の振り返りの場合
                 $('#non-execting').hide();  // 100%未満の振り返り内容を非表示
+                $('#comp-execting').show();  // 100%の振り返り内容を表示
                 $('.Q1').text(reflectionData.Q1);
                 $('.Q2').text(reflectionData.Q2);
                 let Q3 = reflectionData.Q3.split(/\s+/);
@@ -530,6 +534,7 @@ function displayReflectionDetail(settingId){
                 $('.Q4').text(reflectionData.Q4);
             }else{
                 $('#comp-execting').hide();  // 100%の振り返り内容を非表示
+                $('#non-execting').show();  // 100%未満の振り返り内容を表示
                 let Q1 = reflectionData.Q1.split(/\s+/);
                 for(let item of Q1){
                     $('.Q1').append('<div>' + item +  '</div>');
@@ -1833,7 +1838,6 @@ function deletePlan(deletePlan, id, i){
             })
             // Ajaxリクエストが成功した時発動
             .done( (data) => {
-                console.log(data)
                 selectHistoryData.planFlag = 'false';
                 displayHistoryTable();
             })
