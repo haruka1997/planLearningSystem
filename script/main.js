@@ -349,7 +349,7 @@ function displayCalender(){
         let classDate = new Date(Number(selectHistoryData.classDate));
         classDate = classDate.getFullYear() + '-' + Number(classDate.getMonth()+1) + '-' + classDate.getDate();
         displayItems.plans.push({
-            content: "第" + selectHistoryData.coverage + "回 基礎数B",
+            content: "第" + selectHistoryData.coverage + "回 基礎数C",
             date: classDate,
             time: {
                 start: "14:40",
@@ -383,11 +383,14 @@ function displayLearningSetting(){
 
     // 前回の振り返りが登録されているかを確認し、
     // 登録されていなければ振り返り確認モーダルを表示する
-    if(historyData[0].reflectionFlag == 'true'){
-        $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+    if(historyData.length > 0){
+        if(historyData[0].reflectionFlag == 'true'){
+            $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
+        }else{
+            $('.reflection-confirm-modal-wrapper').addClass('is-visible'); // 振り返り確認モーダルの表示
+        }
     }else{
-        $('.reflection-confirm-modal-wrapper').addClass('is-visible'); // 振り返り確認モーダルの表示
-
+        $('.learning-setting-modal-wrapper').addClass('is-visible'); // 目標の設定モーダルの表示
     }
 
     $(".learning-setting-modal-wrapper #classDate").datepicker({
@@ -428,7 +431,7 @@ function displayLearningSetting(){
                 'goal': $('#goal').val(),
                 'insertTime': new Date().getTime(),
                 'recordTime': 0,
-                'subjects': '2020年基礎数学B' //前期用固定値[要検討]
+                'subjects': '2021年基礎数学C' //前期用固定値[要検討]
             };
             // Ajax通信
             $.ajax({

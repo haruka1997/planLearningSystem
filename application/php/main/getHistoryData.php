@@ -11,7 +11,7 @@
         // MySQL ネイティブの静的プレースホルダを使用する
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId AND history.subjects = "2020年基礎数学B"'); 
+        $stmt = $dbh->prepare('SELECT * FROM history WHERE userId = :userId AND history.subjects = "2021年基礎数学C"'); 
 
         $stmt->bindParam(':userId', $_SESSION['userId'], PDO::PARAM_STR);
 
