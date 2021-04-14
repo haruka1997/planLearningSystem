@@ -1628,10 +1628,10 @@ function getHistoryData(){
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
         // 学習履歴がない（初めてのログイン）の時
-        $('.learning-history-tbody').append(
-            '<tr><td class="coverage">1回(10/1)</td><td colspan="5"></td>'
-            + '</td></tr>'
-        ); 
+        // $('.learning-history-tbody').append(
+        //     '<tr><td class="coverage">1回(10/1)</td><td colspan="5"></td>'
+        //     + '</td></tr>'
+        // ); 
         alert('「新規学習計画の作成」ボタンから学習計画を作成しましょう')
     });
 }
