@@ -28,22 +28,31 @@ function reflectionRegist(category){
         Q1: '',
         Q2: '',
         Q3: '',
-        Q4: ''
+        Q4: '',
+        Q5: '',
+        Q6: ''
+
     };
     if(category == 'non-execting'){ // 計画実施率が100%未満の場合
-        $('input:checkbox[name="Q1"]:checked').each(function() {
-			postData.Q1 +=  ' ' + $(this).val();
+        postData.Q1 = $('#testScore').val();
+        $('input:checkbox[name="Q2"]:checked').each(function() {
+			postData.Q2 +=  ' ' + $(this).val();
         });
-        postData.Q2 = $('input:radio[name="Q2"]:checked').val();
         postData.Q3 = $('input:radio[name="Q3"]:checked').val();
-        postData.Q4 = $('#reflectionText').val();
+        postData.Q4 = $('input:radio[name="Q4"]:checked').val();
+        postData.Q5 = $('#reflectionText').val();
+        postData.Q6 = $('#learningSatisfaction').val();
+        console.log(postData)
     }else{　//計画実施率が100%の場合
-        postData.Q1 = $('#Q1').val();
-        postData.Q2 = $('input:radio[name="Q2"]:checked').val();
-        $('input:checkbox[name="Q3"]:checked').each(function() {
-			postData.Q3 += ' ' + $(this).val();
+        postData.Q1 = $('#testScore').val();
+        postData.Q2 = $('#Q2').val();
+        postData.Q3 = $('input:radio[name="Q3"]:checked').val();
+        $('input:checkbox[name="Q4"]:checked').each(function() {
+			postData.Q4 += ' ' + $(this).val();
         });
-        postData.Q4 = $('#Q4').val();
+        postData.Q5 = $('#Q5').val();
+        postData.Q6 = $('#learningSatisfaction').val();
+        console.log(postData)
     }
     
     // DBに登録
