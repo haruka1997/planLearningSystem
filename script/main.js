@@ -74,7 +74,7 @@ function initDOM(){
 
     // 学習の振り返りの履歴をクリックされたら
     $(document).on("click", ".learning-history-tbody td .chatbot-history-comp-button", function () {
-        window.open('https://tkg-lab.tk/chatbot/page/lesson/2020b/history/index.php');　// 振り返り履歴画面に遷移
+        window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/history/index.php');　// 振り返り履歴画面に遷移
     });
 
 
@@ -589,7 +589,7 @@ function displayChatbotSystem(coverage){
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('https://tkg-lab.tk/chatbot/page/lesson/2020b/bot/' + Number(selectCoverage) + '.php');
+    window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '.php');
 }
 
 /**

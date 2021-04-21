@@ -12,7 +12,7 @@ module.exports = {
       log: `./script/log.js`,
       reflection: `./script/reflection.js`,
     },
-    mode: 'development',
+    mode: 'production',
    
     // ファイルの出力設定
     output: {

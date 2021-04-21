@@ -11,13 +11,15 @@
         // MySQL ネイティブの静的プレースホルダを使用する
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $stmt = $dbh->prepare('INSERT INTO reflection (settingId, category, Q1, Q2, Q3, Q4) VALUES(:settingId, :category, :Q1, :Q2, :Q3, :Q4)'); 
+        $stmt = $dbh->prepare('INSERT INTO reflection (settingId, category, Q1, Q2, Q3, Q4, Q5, Q6) VALUES(:settingId, :category, :Q1, :Q2, :Q3, :Q4, :Q5, :Q6)'); 
         $stmt->bindParam(':settingId', $_POST['settingId'], PDO::PARAM_STR);
         $stmt->bindParam(':category', $_POST['category'], PDO::PARAM_STR);
         $stmt->bindParam(':Q1', $_POST['Q1'], PDO::PARAM_STR);
         $stmt->bindParam(':Q2', $_POST['Q2'], PDO::PARAM_STR);
         $stmt->bindParam(':Q3', $_POST['Q3'], PDO::PARAM_STR);
         $stmt->bindParam(':Q4', $_POST['Q4'], PDO::PARAM_STR);
+        $stmt->bindParam(':Q5', $_POST['Q5'], PDO::PARAM_STR);
+        $stmt->bindParam(':Q6', $_POST['Q6'], PDO::PARAM_STR);
         $flag = $stmt->execute();
 
         if ($flag) { 
