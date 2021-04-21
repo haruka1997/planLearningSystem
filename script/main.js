@@ -512,8 +512,8 @@ function displayReflectionDetail(settingId){
     // キャンセルボタンが押されたら
     $('.header-cansel-button').click(function () {
         // チェックした内容の表示をリセット
-        $('.Q3').empty();
-        $('.Q1').empty();
+        $('.Q4').empty();
+        $('.Q2').empty();
         $('.reflection-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
     });
 
@@ -536,21 +536,41 @@ function displayReflectionDetail(settingId){
                 $('#comp-execting').show();  // 100%の振り返り内容を表示
                 $('.Q1').text(reflectionData.Q1);
                 $('.Q2').text(reflectionData.Q2);
-                let Q3 = reflectionData.Q3.split(/\s+/);
-                for(let item of Q3){
-                    $('.Q3').append('<div>' + item +  '</div>');
+                $('.Q3').text(reflectionData.Q3);
+                let Q4 = reflectionData.Q4.split(/\s+/);
+                for(let item of Q4){
+                    $('.Q4').append('<div>' + item +  '</div>');
                 }
-                $('.Q4').text(reflectionData.Q4);
+                $('.Q5').text(reflectionData.Q5);
+                let Q6 = ''
+                switch(reflectionData.Q6){
+                    case '0': Q6 = 'まったく満足していない'; break
+                    case '25': Q6 = 'あまり満足していない'; break
+                    case '50': Q6 = 'どちらともいえない'; break
+                    case '75': Q6 = 'まあ満足している'; break
+                    case '100': Q6 = '非常に満足している'; break
+                }
+                $('.Q6').text(Q6);
             }else{
                 $('#comp-execting').hide();  // 100%の振り返り内容を非表示
                 $('#non-execting').show();  // 100%未満の振り返り内容を表示
-                let Q1 = reflectionData.Q1.split(/\s+/);
-                for(let item of Q1){
-                    $('.Q1').append('<div>' + item +  '</div>');
+                $('.Q1').text(reflectionData.Q1);
+                let Q2 = reflectionData.Q2.split(/\s+/);
+                for(let item of Q2){
+                    $('.Q2').append('<div>' + item +  '</div>');
                 }
-                $('.Q2').text(reflectionData.Q2);
                 $('.Q3').text(reflectionData.Q3);
                 $('.Q4').text(reflectionData.Q4);
+                $('.Q5').text(reflectionData.Q5);
+                let Q6 = ''
+                switch(reflectionData.Q6){
+                    case '0': Q6 = 'まったく満足していない'; break
+                    case '25': Q6 = 'あまり満足していない'; break
+                    case '50': Q6 = 'どちらともいえない'; break
+                    case '75': Q6 = 'まあ満足している'; break
+                    case '100': Q6 = '非常に満足している'; break
+                }
+                $('.Q6').text(Q6);
             }
         }
     })
@@ -628,8 +648,8 @@ function displayHistoryDetail(settingId){
                 editData.classDate = coverageInfo[1];
                 editData.understanding = $('.history-detail-modal-wrapper #understanding').val();
                 editData.goal = $('.history-detail-modal-wrapper #goal').val();
-                editData.satisfaction = $('.history-detail-modal-wrapper #learningSatisfaction').val();
-                editData.testScore = $('.history-detail-modal-wrapper #testScore').val();
+                editData.satisfaction = selectData.satisfaction;
+                editData.testScore = selectData.testScore;
                 editData.settingId = settingId;
                 editData.recordTime = selectData.recordTime;
                 editData.planFlag = selectData.planFlag;
@@ -1531,7 +1551,9 @@ function getHistoryData(){
     $.ajax({
         url:'./../../php/main/getHistoryData.php',
         type:'POST',
-        data:{},
+        data:{
+            'settingId': selectSettingId
+        },
         dataType: 'json'       
     })
     // Ajaxリクエストが成功した時発動
@@ -1546,9 +1568,87 @@ function getHistoryData(){
             historyData.sort(function (a, b) {
                 return b.coverage - a.coverage;
             });
+
+            // 直近の振り返り内容の取得
+            // 一番最新の振り返りがあるsettingIdを取得
+            let selectSettingId;
+            for(let history of historyData){
+                // 振り返り済みのデータを抽出(historyは降順に並んでいるので直近データ)
+                if(history.reflectionFlag == 'true'){
+                    selectSettingId = history.settingId;
+                    // 振り返りデータの取得
+                    $.ajax({
+                        url:'./../../php/main/getReflectionData.php',
+                        type:'POST',
+                        data:{
+                            'settingId': selectSettingId
+                        },
+                        dataType: 'json'       
+                    })
+                    // Ajaxリクエストが成功した時発動
+                    .done( (data) => {
+                        if(data) {
+                            let reflectionData = data[0];
+                             // 直近の振り返り内容を上部に表示
+                            let reflection = reflectionData.Q5;
+                            $('.learning-history-reflection #reflection').text(reflection);
+                            
+                            // もしまだテストの点数と満足度がhistoryTableに追加されていなければ
+                            if((history.testScore == null || history.testScore == '') && (history.satisfaction == null || history.satisfaction == '')){
+                                history.testScore = reflectionData.Q1
+                                history.satisfaction = reflectionData.Q6
+                                if(history.goal <= history.testScore){
+                                    history.achievement = 100;
+                                }else{
+                                    history.achievement = 0;
+                                }
+                                updateSetting(history);
+                            }
+                        }
+                    })
+                    // Ajaxリクエストが失敗した時発動
+                    .fail( (data, error) => {
+                        alert('計画の振り返りの取得を失敗しました');
+                        console.log(error)
+                    });
+                    break;
+                }
+            }
+            // selectSettingId = data.history[0].settingId;    // 先頭(最新)のsettingIdをselectSettingに設定
+            // selectHistoryData = data.history[0];    // 先頭(最新)のデータをselectHistoryDataに設定
+            // displayCalenderDate = selectHistoryData.classDate;
+            // displayHistoryTable();
+            // displayChartHistory();
+            // getCalenderItem();
+
+            // for(let i=0; i<historyData.length; i++){
+            //     historyData[i].chatbotFlag = false;
+            //     for(let j=0; j<data.chatbot.length; j++){
+            //         if(Number(historyData[i].classDate) == data.chatbot[j].classDate){
+            //             historyData[i].chatbotFlag = true;
+            //             // 目標達成度がNULLだったらチャットボットから点数を持ってくる
+            //             if(historyData[i].achievement == null || historyData[i].achievement == ''){
+            //                 // historyData[i].goal = data.chatbot[j].goal;
+            //                 historyData[i].testScore = data.chatbot[j].testScore;
+            //                 if(historyData[i].goal <= historyData[i].testScore){
+            //                     historyData[i].achievement = 100;
+            //                 }else{
+            //                     historyData[i].achievement = 0;
+            //                 }
+            //                 updateSetting(historyData[i]);
+            //             }
+            //             // 学習満足度がNULLだったら...
+            //             if(historyData[i].satisfaction == null || historyData[i].satisfaction == ''){
+            //                 historyData[i].satisfaction = data.chatbot[j].satisfaction;
+            //                 updateSetting(historyData[i]);
+            //             }
+            //         }
+            //     }
+            // }
+
             
             // chatbotのテスト点数を格納
-            if(data.chatbot){
+            // if(data.reflection){
                 // // 第1回のデータを取得
                 // for(let chatbot of data.chatbot){
                 //     if(chatbot.classDate == "1601478000000"){  //第1回のデータ
@@ -1561,63 +1661,62 @@ function getHistoryData(){
                 //         });
                 //     }
                 // }
-                for(let i=0; i<historyData.length; i++){
-                    historyData[i].chatbotFlag = false;
-                    for(let j=0; j<data.chatbot.length; j++){
-                        if(Number(historyData[i].classDate) == data.chatbot[j].classDate){
-                            historyData[i].chatbotFlag = true;
-                            // 目標達成度がNULLだったらチャットボットから点数を持ってくる
-                            if(historyData[i].achievement == null || historyData[i].achievement == ''){
-                                // historyData[i].goal = data.chatbot[j].goal;
-                                historyData[i].testScore = data.chatbot[j].testScore;
-                                if(historyData[i].goal <= historyData[i].testScore){
-                                    historyData[i].achievement = 100;
-                                }else{
-                                    historyData[i].achievement = 0;
-                                }
-                                updateSetting(historyData[i]);
-                            }
-                            // 学習満足度がNULLだったら...
-                            if(historyData[i].satisfaction == null || historyData[i].satisfaction == ''){
-                                historyData[i].satisfaction = data.chatbot[j].satisfaction;
-                                updateSetting(historyData[i]);
-                            }
-                        }
-                    }
-                }
-
-                // 直近の振り返り内容の取得
-                // 一番最新の振り返りがあるsettingIdを取得
-                let selectSettingId;
-                for(let history of historyData){
-                    if(history.reflectionFlag == 'true'){
-                        selectSettingId = history.settingId;
-                        break;
-                    }
-                }
-                getReflectionData(selectSettingId); // 画面上部の振り返り内容を取得
-                // $.ajax({
-                //     url:'./../../php/main/getReflectionData.php',
-                //     type:'POST',
-                //     data:{
-                //         'settingId': selectSettingId
-                //     },
-                //     dataType: 'json'       
-                // })
-                // // Ajaxリクエストが成功した時発動
-                // .done( (data) => {
-                //     if(data) {
-                //         // 直近の振り返り内容の表示
-                //         let reflection = data[0].Q4;
-                //         $('.learning-history-reflection #reflection').text(reflection);
+                // for(let i=0; i<historyData.length; i++){
+                //     historyData[i].chatbotFlag = false;
+                //     for(let j=0; j<data.chatbot.length; j++){
+                //         if(Number(historyData[i].classDate) == data.chatbot[j].classDate){
+                //             historyData[i].chatbotFlag = true;
+                //             // 目標達成度がNULLだったらチャットボットから点数を持ってくる
+                //             if(historyData[i].achievement == null || historyData[i].achievement == ''){
+                //                 // historyData[i].goal = data.chatbot[j].goal;
+                //                 historyData[i].testScore = data.chatbot[j].testScore;
+                //                 if(historyData[i].goal <= historyData[i].testScore){
+                //                     historyData[i].achievement = 100;
+                //                 }else{
+                //                     historyData[i].achievement = 0;
+                //                 }
+                //                 updateSetting(historyData[i]);
+                //             }
+                //             // 学習満足度がNULLだったら...
+                //             if(historyData[i].satisfaction == null || historyData[i].satisfaction == ''){
+                //                 historyData[i].satisfaction = data.chatbot[j].satisfaction;
+                //                 updateSetting(historyData[i]);
+                //             }
+                //         }
                 //     }
-                // })
-                // // Ajaxリクエストが失敗した時発動
-                // .fail( (data) => {
-                //    alert('計画の振り返りの取得を失敗しました');
-                // });
-            } 
-        }
+                // }
+
+                // // 直近の振り返り内容の取得
+                // // 一番最新の振り返りがあるsettingIdを取得
+                // let selectSettingId;
+                // for(let history of historyData){
+                //     if(history.reflectionFlag == 'true'){
+                //         selectSettingId = history.settingId;
+                //         break;
+                //     }
+                // }
+                // getReflectionData(selectSettingId); // 画面上部の振り返り内容を取得
+                // // $.ajax({
+                // //     url:'./../../php/main/getReflectionData.php',
+                // //     type:'POST',
+                // //     data:{
+                // //         'settingId': selectSettingId
+                // //     },
+                // //     dataType: 'json'       
+                // // })
+                // // // Ajaxリクエストが成功した時発動
+                // // .done( (data) => {
+                // //     if(data) {
+                // //         // 直近の振り返り内容の表示
+                // //         let reflection = data[0].Q4;
+                // //         $('.learning-history-reflection #reflection').text(reflection);
+                // //     }
+                // // })
+                // // // Ajaxリクエストが失敗した時発動
+                // // .fail( (data) => {
+                // //    alert('計画の振り返りの取得を失敗しました');
+                // // });
+        } 
         selectSettingId = data.history[0].settingId;    // 先頭(最新)のsettingIdをselectSettingに設定
         selectHistoryData = data.history[0];    // 先頭(最新)のデータをselectHistoryDataに設定
         displayCalenderDate = selectHistoryData.classDate;
@@ -1712,7 +1811,7 @@ function updateSetting(historyData){
     })
     // Ajaxリクエストが成功した時発動
     .done( (data) => {
-        console.log('更新完了');
+        displayChartHistory();
     })
     // Ajaxリクエストが失敗した時発動
     .fail( (data) => {
@@ -1928,8 +2027,9 @@ function getReflectionData(settingId){
     .done( (data) => {
         if(data) {
             // 直近の振り返り内容の表示
-            let reflection = data[0].Q4;
+            let reflection = data[0].Q5;
             $('.learning-history-reflection #reflection').text(reflection);
+            return data
         }
     })
     // Ajaxリクエストが失敗した時発動
