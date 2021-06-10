@@ -237,8 +237,8 @@ function displayHistoryTable(){
         // }else{
         //     tableText.chatbot = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
         // }
-
-        if(historyData[i].coverage !== '9'){
+        console.log(historyData[i].coverage)
+        if(historyData[i].coverage !== 9){
             // 事前テスト登録の項目
             tableText.beforeTest = '<button id="' + historyData[i].coverage + '" class="regist-beforeTest-button mdl-button mdl-js-button">登録</button>'
 
