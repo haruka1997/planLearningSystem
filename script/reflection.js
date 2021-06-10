@@ -15,7 +15,8 @@ function initDOM(){
     $('#execting').text('あなたの計画実施率は' + executing + '%でした');
     // 振り返り画面の登録ボタンをクリックされたら
     $(document).on("click", ".reflection-regist-button", function () {
-        let category = $(this).attr('id');
+        // let category = $(this).attr('id');
+        let category = 'big-reflection';
         reflectionRegist(category); //登録処理
     });
     
@@ -33,27 +34,17 @@ function reflectionRegist(category){
         Q6: ''
 
     };
-    if(category == 'non-execting'){ // 計画実施率が100%未満の場合
-        postData.Q1 = $('#testScore').val();
-        $('input:checkbox[name="Q2"]:checked').each(function() {
-			postData.Q2 +=  ' ' + $(this).val();
-        });
-        postData.Q3 = $('input:radio[name="Q3"]:checked').val();
-        postData.Q4 = $('input:radio[name="Q4"]:checked').val();
-        postData.Q5 = $('#reflectionText').val();
-        postData.Q6 = $('#learningSatisfaction').val();
-        console.log(postData)
-    }else{　//計画実施率が100%の場合
-        postData.Q1 = $('#testScore').val();
-        postData.Q2 = $('#Q2').val();
-        postData.Q3 = $('input:radio[name="Q3"]:checked').val();
-        $('input:checkbox[name="Q4"]:checked').each(function() {
-			postData.Q4 += ' ' + $(this).val();
-        });
-        postData.Q5 = $('#Q5').val();
-        postData.Q6 = $('#learningSatisfaction').val();
-        console.log(postData)
-    }
+    // postData.Q1 = $('#testScore').val();
+    // postData.Q2 = $('#Q2').val();
+    // postData.Q3 = $('#Q3').val();
+    // postData.Q4 = $('#Q4').val();
+    // postData.Q5 = $('#learningSatisfaction').val();
+    postData.Q1 = $('#Q1').val();
+    postData.Q2 = $('#Q2').val();
+    postData.Q3 = $('#Q3').val();
+    postData.Q4 = $('#Q4').val();
+    postData.Q5 = $('#Q5').val();
+    postData.Q6 = $('#Q6').val();
     
     // DBに登録
     $.ajax({

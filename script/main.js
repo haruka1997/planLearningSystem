@@ -63,9 +63,25 @@ function initDOM(){
     });
 
     // 学習の振り返りの登録ボタンをクリックされたら
-    $(document).on("click", ".learning-history-tbody td .history-chatbot-button", function () {
-        displayChatbotSystem($(this).attr('id'));  // 学習履歴の詳細表示
+    // $(document).on("click", ".learning-history-tbody td .history-chatbot-button", function () {
+    //     displayChatbotSystem($(this).attr('id'));  // 学習履歴の詳細表示
+    // });
+
+    // 事後テスト登録ボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .regist-afterTest-button", function () {
+        displayAfterTest($(this).attr('id'));  // チャットボット画面表示
     });
+
+    // 事前テスト登録ボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .regist-beforeTest-button", function () {
+        displayBeforeTest($(this).attr('id'));  // チャットボット画面表示
+    });
+
+    // 確認テスト登録ボタンをクリックされたら
+    $(document).on("click", ".learning-history-tbody td .regist-middleTest-button", function () {
+        window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/9.php');  // チャットボット画面表示
+    });
+    
 
     // テーブルのTAコメントボタンが押されたら
     // $(document).on("click", ".learning-history-tbody td .display-comment-button", function () {
@@ -188,7 +204,10 @@ function displayHistoryTable(){
             understanding: historyData[i].understanding,
             plan: '',
             record: '',
-            history: ''
+            history: '',
+            beforeTest: '',
+            afterTest: '',
+            middleTest: ''
         }
 
         // 学習計画の項目
@@ -213,10 +232,23 @@ function displayHistoryTable(){
         }
 
         // 学習の振り返りの項目
-        if(historyData[i].chatbotFlag){
-            tableText.chatbot = '<button class="chatbot-history-comp-button mdl-button mdl-js-button">履歴</button>'
+        // if(historyData[i].chatbotFlag){
+        //     tableText.chatbot = '<button class="chatbot-history-comp-button mdl-button mdl-js-button">履歴</button>'
+        // }else{
+        //     tableText.chatbot = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+        // }
+
+        if(historyData[i].coverage !== '9'){
+            // 事前テスト登録の項目
+            tableText.beforeTest = '<button id="' + historyData[i].coverage + '" class="regist-beforeTest-button mdl-button mdl-js-button">登録</button>'
+
+            // 事後テスト登録の項目
+            tableText.afterTest = '<button id="' + historyData[i].coverage + '" class="regist-afterTest-button mdl-button mdl-js-button">登録</button>'
+
         }else{
-            tableText.chatbot = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
+            // 確認テスト登録の項目
+            tableText.middleTest = '<button id="' + historyData[i].coverage + '" class="regist-middleTest-button mdl-button mdl-js-button">登録</button>'
+
         }
 
         // テーブル内容の表示
@@ -224,8 +256,10 @@ function displayHistoryTable(){
             '<tr id=' + tableText.settingId + '><td class="coverage">' + tableText.coverage + '</td><td>' + tableText.understanding + '</td>'
             + '<td>' + tableText.plan
             + '<td>' + tableText.record
+            + '<td>' + tableText.beforeTest 
+            + '<td>' + tableText.afterTest
+            + '<td>' + tableText.middleTest
             + '<td>' + tableText.reflection
-            + '<td>' + tableText.chatbot 
             + '<td class="history-detail-button" id=' + tableText.settingId + '>' + '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'
             + '</td></tr>'
         );  
@@ -493,13 +527,15 @@ function displayReflection(settingId){
     // 計画実施率をsessionに保存(振り返り画面に表示させるため)
     sessionStorage.setItem('executing', selectExecuting);
 
-    if(selectExecuting == 100){ // 計画実施率が100%だったら
-        // 新規ウィンドウで学習計画の振り返り画面を表示
-        win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
-    }else if(selectExecuting < 100){
-        // 新規ウィンドウで学習計画の振り返り画面を表示
-        win = window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
-    }
+    win = window.open('./reflection.php', null, 'top=10,left=10,width=500,height=300');
+
+    // if(selectExecuting == 100){ // 計画実施率が100%だったら
+    //     // 新規ウィンドウで学習計画の振り返り画面を表示
+    //     win = window.open('./reflectionCompExecting.php', null, 'top=10,left=10,width=500,height=300');
+    // }else if(selectExecuting < 100){
+    //     // 新規ウィンドウで学習計画の振り返り画面を表示
+    //     win = window.open('./reflectionNonExecting.php', null, 'top=10,left=10,width=500,height=300');
+    // }
 }
 
 /**
@@ -512,8 +548,8 @@ function displayReflectionDetail(settingId){
     // キャンセルボタンが押されたら
     $('.header-cansel-button').click(function () {
         // チェックした内容の表示をリセット
-        $('.Q4').empty();
-        $('.Q2').empty();
+        // $('.Q4').empty();
+        // $('.Q2').empty();
         $('.reflection-detail-modal-wrapper').removeClass('is-visible');    //モーダル閉じる
     });
 
@@ -530,47 +566,50 @@ function displayReflectionDetail(settingId){
     .done( (data) => {
         if(data) {
             let reflectionData = data[0];
-
-            if(reflectionData.category == 'comp-execting'){ // 計画実施率が100%の振り返りの場合
-                $('#non-execting').hide();  // 100%未満の振り返り内容を非表示
-                $('#comp-execting').show();  // 100%の振り返り内容を表示
+            console.log(reflectionData.category)
+            if(reflectionData.category == 'comp-execting'){ // 小さな振り返りの場合
+                $('#big-reflection').hide();  // 小さな振り返り内容を非表示
+                $('#small-reflection').show();  // 大きな振り返り内容を表示
                 $('.Q1').text(reflectionData.Q1);
                 $('.Q2').text(reflectionData.Q2);
                 $('.Q3').text(reflectionData.Q3);
-                let Q4 = reflectionData.Q4.split(/\s+/);
-                for(let item of Q4){
-                    $('.Q4').append('<div>' + item +  '</div>');
-                }
-                $('.Q5').text(reflectionData.Q5);
-                let Q6 = ''
-                switch(reflectionData.Q6){
-                    case '0': Q6 = 'まったく満足していない'; break
-                    case '25': Q6 = 'あまり満足していない'; break
-                    case '50': Q6 = 'どちらともいえない'; break
-                    case '75': Q6 = 'まあ満足している'; break
-                    case '100': Q6 = '非常に満足している'; break
-                }
-                $('.Q6').text(Q6);
-            }else{
-                $('#comp-execting').hide();  // 100%の振り返り内容を非表示
-                $('#non-execting').show();  // 100%未満の振り返り内容を表示
-                $('.Q1').text(reflectionData.Q1);
-                let Q2 = reflectionData.Q2.split(/\s+/);
-                for(let item of Q2){
-                    $('.Q2').append('<div>' + item +  '</div>');
-                }
-                $('.Q3').text(reflectionData.Q3);
+                // let Q4 = reflectionData.Q4.split(/\s+/);
+                // for(let item of Q4){
+                //     $('.Q4').append('<div>' + item +  '</div>');
+                // }
                 $('.Q4').text(reflectionData.Q4);
-                $('.Q5').text(reflectionData.Q5);
-                let Q6 = ''
-                switch(reflectionData.Q6){
-                    case '0': Q6 = 'まったく満足していない'; break
-                    case '25': Q6 = 'あまり満足していない'; break
-                    case '50': Q6 = 'どちらともいえない'; break
-                    case '75': Q6 = 'まあ満足している'; break
-                    case '100': Q6 = '非常に満足している'; break
+                let Q5 = ''
+                switch(reflectionData.Q5){
+                    case '0': Q5 = 'まったく満足していない'; break
+                    case '25': Q5 = 'あまり満足していない'; break
+                    case '50': Q5 = 'どちらともいえない'; break
+                    case '75': Q5 = 'まあ満足している'; break
+                    case '100': Q5 = '非常に満足している'; break
                 }
-                $('.Q6').text(Q6);
+                $('.Q5').text(Q5);
+                // $('.Q6').text(reflectionData.Q6);
+            }
+            if(reflectionData.category == 'big-reflection'){ // 大きな振り返りの場合
+                $('#big-reflection').show();  // 小さな振り返り内容を表示
+                $('#small-reflection').hide();  // 大きな振り返り内容を非表示
+                $('.Q1').text(reflectionData.Q1);
+                $('.Q2').text(reflectionData.Q2);
+                $('.Q3').text(reflectionData.Q3);
+                // let Q4 = reflectionData.Q4.split(/\s+/);
+                // for(let item of Q4){
+                //     $('.Q4').append('<div>' + item +  '</div>');
+                // }
+                $('.Q4').text(reflectionData.Q4);
+                // let Q5 = ''
+                // switch(reflectionData.Q5){
+                //     case '0': Q5 = 'まったく満足していない'; break
+                //     case '25': Q5 = 'あまり満足していない'; break
+                //     case '50': Q5 = 'どちらともいえない'; break
+                //     case '75': Q5 = 'まあ満足している'; break
+                //     case '100': Q5 = '非常に満足している'; break
+                // }
+                $('.Q5').text(reflectionData.Q5);
+                $('.Q6').text(reflectionData.Q6);
             }
         }
     })
@@ -584,12 +623,37 @@ function displayReflectionDetail(settingId){
  * チャットボットの表示
  * @param {*} settingId 
  */
-function displayChatbotSystem(coverage){
+// function displayChatbotSystem(coverage){
+//     // 選択した授業回を取得
+//     let selectCoverage = coverage;
+
+//     // 別タブでリンク表示
+//     window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '.php');
+// }
+
+
+/**
+ * 事前テストの登録画面表示
+ * @param {*} coverage 
+ */
+function displayBeforeTest(coverage){
     // 選択した授業回を取得
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '.php');
+    window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '_1.php');
+}
+
+/**
+ * 事後テストの登録画面表示
+ * @param {*} coverage 
+ */
+ function displayAfterTest(coverage){
+    // 選択した授業回を取得
+    let selectCoverage = coverage;
+
+    // 別タブでリンク表示
+    window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '_2.php');
 }
 
 /**
@@ -1590,13 +1654,13 @@ function getHistoryData(){
                         if(data) {
                             let reflectionData = data[0];
                              // 直近の振り返り内容を上部に表示
-                            let reflection = reflectionData.Q5;
+                            let reflection = reflectionData.Q6;
                             $('.learning-history-reflection #reflection').text(reflection);
                             
                             // もしまだテストの点数と満足度がhistoryTableに追加されていなければ
                             if((history.testScore == null || history.testScore == '') && (history.satisfaction == null || history.satisfaction == '')){
-                                history.testScore = reflectionData.Q1
-                                history.satisfaction = reflectionData.Q6
+                                // history.testScore = reflectionData.Q1
+                                history.satisfaction = reflectionData.Q5
                                 if(history.goal <= history.testScore){
                                     history.achievement = 100;
                                 }else{
@@ -2027,7 +2091,7 @@ function getReflectionData(settingId){
     .done( (data) => {
         if(data) {
             // 直近の振り返り内容の表示
-            let reflection = data[0].Q5;
+            let reflection = data[0].Q4;
             $('.learning-history-reflection #reflection').text(reflection);
             return data
         }
