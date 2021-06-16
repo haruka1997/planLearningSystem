@@ -1654,14 +1654,20 @@ function getHistoryData(){
                         if(data) {
                             let reflectionData = data[0];
                              // 直近の振り返り内容を上部に表示
-                            let reflection = reflectionData.Q6;
+                            let reflection = ''
+                            if(reflectionData.category == 'big-reflection'){
+                                reflection = reflectionData.Q6;
+                            }else{
+                                reflection = reflectionData.Q4;
+                            }
+                            console.log(reflectionData.category)
                             $('.learning-history-reflection #reflection').text(reflection);
                             
                             // もしまだテストの点数と満足度がhistoryTableに追加されていなければ
                             if((history.testScore == null || history.testScore == '') && (history.satisfaction == null || history.satisfaction == '')){
                                 // history.testScore = reflectionData.Q1
-                                history.satisfaction = reflectionData.Q5
-                                if(history.goal <= history.testScore){
+                                history.satisfaction = reflectionData.Q5 //MEMO:要修正
+                                if(history.goal <= Number(reflectionData.Q1)){
                                     history.achievement = 100;
                                 }else{
                                     history.achievement = 0;
@@ -2091,7 +2097,12 @@ function getReflectionData(settingId){
     .done( (data) => {
         if(data) {
             // 直近の振り返り内容の表示
-            let reflection = data[0].Q4;
+            let reflection = ''
+            if(data.category == 'big-reflection'){
+                reflection = data[0].Q6;
+            }else{
+                reflection = data[0].Q4;
+            }
             $('.learning-history-reflection #reflection').text(reflection);
             return data
         }

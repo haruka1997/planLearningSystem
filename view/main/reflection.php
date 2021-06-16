@@ -14,9 +14,9 @@
     <main class="mdl-layout__content">
         <div class="reflection-page">
             <div class="reflection-title">学習計画の振り返り</div>
-            <!-- <div id="execting"></div> -->
-            <div style="font-weight:bold;color:red;">これまでの計画実施率、完了率を確認してください！</div>
-            <!-- <div class="reflection-question-content">
+            <div id="execting"></div>
+            <!-- <div style="font-weight:bold;color:red;">これまでの計画実施率、完了率を確認してください！</div> -->
+            <div class="reflection-question-content">
                 <div class="reflection-question">
                     <div>Q1. 事前テストの点数を入力してください</div>
                     <select class="select-simple form-control pmd-select2 learning-content" id="testScore">
@@ -63,8 +63,8 @@
                 <div class="reflection-modal-footer-button">
                     <button class="reflection-regist-button mdl-button mdl-js-button mdl-button--raised" id="comp-execting">登録</button>
                 </div>
-            </div>  -->
-            <div class="reflection-question-content">
+            </div> 
+            <!-- <div class="reflection-question-content">
                 <div class="reflection-question">
                     <div>Q1. これまでの学習計画を立てる経験を通して、学習計画の立て方や学習計画を立てる際の心構えについて、あなたが変わったこと(進歩したこと、成長したこと)は何ですか？</div>
                     <textarea class="form-control required" id="Q1"></textarea>
@@ -96,7 +96,7 @@
                 <div class="reflection-modal-footer-button">
                     <button class="reflection-regist-button mdl-button mdl-js-button mdl-button--raised" id="comp-execting">登録</button>
                 </div>
-            </div>      
+            </div>       -->
         </div>
     </main>
 </div>

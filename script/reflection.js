@@ -16,7 +16,7 @@ function initDOM(){
     // 振り返り画面の登録ボタンをクリックされたら
     $(document).on("click", ".reflection-regist-button", function () {
         // let category = $(this).attr('id');
-        let category = 'big-reflection';
+        let category = 'comp-execting';
         reflectionRegist(category); //登録処理
     });
     
@@ -34,17 +34,17 @@ function reflectionRegist(category){
         Q6: ''
 
     };
-    // postData.Q1 = $('#testScore').val();
-    // postData.Q2 = $('#Q2').val();
-    // postData.Q3 = $('#Q3').val();
-    // postData.Q4 = $('#Q4').val();
-    // postData.Q5 = $('#learningSatisfaction').val();
-    postData.Q1 = $('#Q1').val();
+    postData.Q1 = $('#testScore').val();
     postData.Q2 = $('#Q2').val();
     postData.Q3 = $('#Q3').val();
     postData.Q4 = $('#Q4').val();
-    postData.Q5 = $('#Q5').val();
-    postData.Q6 = $('#Q6').val();
+    postData.Q5 = $('#learningSatisfaction').val();
+    // postData.Q1 = $('#Q1').val();
+    // postData.Q2 = $('#Q2').val();
+    // postData.Q3 = $('#Q3').val();
+    // postData.Q4 = $('#Q4').val();
+    // postData.Q5 = $('#Q5').val();
+    // postData.Q6 = $('#Q6').val();
     
     // DBに登録
     $.ajax({
