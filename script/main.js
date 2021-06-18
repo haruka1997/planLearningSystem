@@ -79,7 +79,8 @@ function initDOM(){
 
     // 確認テスト登録ボタンをクリックされたら
     $(document).on("click", ".learning-history-tbody td .regist-middleTest-button", function () {
-        window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/9.php');  // チャットボット画面表示
+        // window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/9.php');  // チャットボット画面表示
+        window.open('http://153.126.193.128/chatbot/page/lesson/2021c/bot/9.php');  // チャットボット画面表示
     });
     
 
@@ -90,7 +91,7 @@ function initDOM(){
 
     // 学習の振り返りの履歴をクリックされたら
     $(document).on("click", ".learning-history-tbody td .chatbot-history-comp-button", function () {
-        window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/history/index.php');　// 振り返り履歴画面に遷移
+        window.open('http://153.126.193.128/chatbot/page/lesson/2021c/history/index.php');　// 振り返り履歴画面に遷移
     });
 
 
@@ -237,15 +238,15 @@ function displayHistoryTable(){
         // }else{
         //     tableText.chatbot = '<button id="' + historyData[i].coverage + '" class="history-chatbot-button mdl-button mdl-js-button">登録</button>'
         // }
-        console.log(historyData[i].coverage)
-        if(Number(historyData[i].coverage) !== 9){
+        if(Number(historyData[i].coverage) !== 9 && Number(historyData[i].coverage) !== 10){
             // 事前テスト登録の項目
             tableText.beforeTest = '<button id="' + historyData[i].coverage + '" class="regist-beforeTest-button mdl-button mdl-js-button">登録</button>'
 
             // 事後テスト登録の項目
             tableText.afterTest = '<button id="' + historyData[i].coverage + '" class="regist-afterTest-button mdl-button mdl-js-button">登録</button>'
 
-        }else{
+        }
+        if(Number(historyData[i].coverage) == 9){
             // 確認テスト登録の項目
             tableText.middleTest = '<button id="' + historyData[i].coverage + '" class="regist-middleTest-button mdl-button mdl-js-button">登録</button>'
 
@@ -641,7 +642,7 @@ function displayBeforeTest(coverage){
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '_1.php');
+    window.open('http://153.126.193.128/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '_1.php');
 }
 
 /**
@@ -653,7 +654,7 @@ function displayBeforeTest(coverage){
     let selectCoverage = coverage;
 
     // 別タブでリンク表示
-    window.open('https://tkg-lab.tk/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '_2.php');
+    window.open('http://153.126.193.128/chatbot/page/lesson/2021c/bot/' + Number(selectCoverage) + '_2.php');
 }
 
 /**
