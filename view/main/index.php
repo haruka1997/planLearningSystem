@@ -1,7 +1,7 @@
 <?php
   session_start();
   if(!isset($_SESSION['userId'])){
-    header('Location: http://153.126.193.128/chatbot/page/Login.php');
+    header('Location: https://tkg-lab.tk/chatbot/page/Login.php');
   }
 ?>
 <html>
